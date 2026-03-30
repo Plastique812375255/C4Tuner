@@ -107,6 +107,6 @@ Rotorflight borrows ideas and code also from [HeliFlight3D](https://github.com/h
 Big thanks to everyone who has contributed along the journey!
 
 
-## Contact
+## C4Master Edition Extra
 
-Team Rotorflight can be contacted by email at rotorflightfc@gmail.com.
+For more newcomers to use that, i reproduce some user interface so that it can be more friendly.
