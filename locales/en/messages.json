@@ -401,6 +401,288 @@
     "tabSetup": {
         "message": "Setup"
     },
+    "tabSetupWizard": {
+        "message": "Setup Wizard"
+    },
+    "setupWizardBack": {
+        "message": "Back"
+    },
+    "setupWizardHelp": {
+        "message": "Help"
+    },
+    "setupWizardNext": {
+        "message": "Next"
+    },
+    "setupWizardFinish": {
+        "message": "Finish"
+    },
+    "setupWizardStepProgress": {
+        "message": "Step {{current}} / {{total}}"
+    },
+    "setupWizardHelpDemo": {
+        "message": "[Demo] Help is not implemented."
+    },
+    "setupWizardFinishDemo": {
+        "message": "[Demo] Wizard finished."
+    },
+    "setupWizardIntroTitle": {
+        "message": "Setup Wizard Start"
+    },
+    "setupWizardIntroLine1": {
+        "message": "This wizard currently supports only helicopters with a tail servo and collective pitch. Other types may be added later."
+    },
+    "setupWizardIntroLine2": {
+        "message": "Ensure your helicopter is fully assembled per the manual and linkage lengths match the manual."
+    },
+    "setupWizardIntroLine3": {
+        "message": "If this is the first time tuning this Rotor Flight unit, connect only the tuning cable to the gyro—do not connect servos or ESC yet."
+    },
+    "setupWizardIntroLine4": {
+        "message": "Assemble the helicopter and have a pitch gauge and linkage tools ready."
+    },
+    "setupWizardIntroLine5": {
+        "message": "Click Next to start."
+    },
+    "setupWizardTitleServoType": {
+        "message": "Servo Type"
+    },
+    "setupWizardServoTypePrompt": {
+        "message": "Select your servo types:"
+    },
+    "setupWizardSwashServo": {
+        "message": "Swash servos"
+    },
+    "setupWizardTailServo": {
+        "message": "Tail servo"
+    },
+    "setupWizardNeutralPoint": {
+        "message": "Neutral"
+    },
+    "setupWizardFrequency": {
+        "message": "Frequency"
+    },
+    "setupWizardSelectPlaceholder": {
+        "message": "Please select"
+    },
+    "setupWizardTitleBasic": {
+        "message": "Basic Settings"
+    },
+    "setupWizardSwashplateType": {
+        "message": "Swashplate type"
+    },
+    "setupWizardInstallDirection": {
+        "message": "Install orientation"
+    },
+    "setupWizardRotationDirection": {
+        "message": "Rotation direction"
+    },
+    "setupWizardPositivePitchDirection": {
+        "message": "Positive pitch direction"
+    },
+    "setupWizardTitleReceiver": {
+        "message": "Receiver Calibration"
+    },
+    "setupWizardReceiverType": {
+        "message": "Receiver type"
+    },
+    "setupWizardReceiverHint": {
+        "message": "Plug the receiver into the CRSF port."
+    },
+    "setupWizardStatusFlightMode": {
+        "message": "Flight mode: 1"
+    },
+    "setupWizardStatusArming": {
+        "message": "Arming: armed"
+    },
+    "setupWizardStatusThrottle": {
+        "message": "Throttle: +80"
+    },
+    "setupWizardChannelCollective": {
+        "message": "Collective"
+    },
+    "setupWizardChannelElevator": {
+        "message": "Elevator"
+    },
+    "setupWizardChannelRudder": {
+        "message": "Rudder"
+    },
+    "setupWizardChannelAileron": {
+        "message": "Aileron"
+    },
+    "setupWizardTitleServoDir": {
+        "message": "Servo Direction"
+    },
+    "setupWizardServoDirLine1": {
+        "message": "Connect all wiring per the table below and power on the helicopter."
+    },
+    "setupWizardServoDirLine2": {
+        "message": "Move the collective stick (non-returning) and observe swashplate motion."
+    },
+    "setupWizardServoDirLine3": {
+        "message": "Switch direction groups until the swashplate motion matches the animation on the right."
+    },
+    "setupWizardTablePort": {
+        "message": "Port"
+    },
+    "setupWizardTableConnect": {
+        "message": "Connect to"
+    },
+    "setupWizardWireS1": {
+        "message": "Rear swash servo"
+    },
+    "setupWizardWireS2": {
+        "message": "Left swash servo"
+    },
+    "setupWizardWireS3": {
+        "message": "Right swash servo"
+    },
+    "setupWizardWireTail": {
+        "message": "Tail servo"
+    },
+    "setupWizardWireEsc": {
+        "message": "ESC signal"
+    },
+    "setupWizardWireRpm": {
+        "message": "ESC RPM telemetry"
+    },
+    "setupWizardWireTlm": {
+        "message": "ESC telemetry"
+    },
+    "setupWizardAnimationPlaceholder": {
+        "message": "Swashplate animation (placeholder)"
+    },
+    "setupWizardTitleZeroPitch": {
+        "message": "Zero Pitch"
+    },
+    "setupWizardZeroPitchWarn": {
+        "message": "Warning: ensure rotor blade geometry is consistent before this step. Use Help for a tutorial."
+    },
+    "setupWizardZeroPitchLine2": {
+        "message": "Fold main blades in the same direction and use the buttons below until both blades overlap when viewed from the side."
+    },
+    "setupWizardZeroPitchLine3": {
+        "message": "Unfold the blades when done."
+    },
+    "setupWizardPitchUp": {
+        "message": "Pitch Up"
+    },
+    "setupWizardPitchDown": {
+        "message": "Pitch Down"
+    },
+    "setupWizardTitleSwashLevel": {
+        "message": "Swash Leveling"
+    },
+    "setupWizardSwashLevelHint": {
+        "message": "Use the buttons below to adjust the swash so it is perpendicular to the main shaft."
+    },
+    "setupWizardTitlePitchCalib": {
+        "message": "Pitch Calibration"
+    },
+    "setupWizardPitchStep1": {
+        "message": "Step 1: Zero the pitch gauge. Place the heli on solid ground, click Zero on the right, place the gauge on the main blade above the tail boom, and zero the gauge."
+    },
+    "setupWizardPitchStep2": {
+        "message": "Step 2: Collective pitch. Click Test, then use Increase/Decrease until the gauge shows 12°."
+    },
+    "setupWizardPitchStep3": {
+        "message": "Step 3: Cyclic pitch. Click Test, then use Increase/Decrease until the gauge shows 9°."
+    },
+    "setupWizardZeroBtn": {
+        "message": "Zero"
+    },
+    "setupWizardTestBtn": {
+        "message": "Test"
+    },
+    "setupWizardIncrease": {
+        "message": "Increase"
+    },
+    "setupWizardDecrease": {
+        "message": "Decrease"
+    },
+    "setupWizardTitleTail": {
+        "message": "Tail Adjustment"
+    },
+    "setupWizardTailDirection": {
+        "message": "Tail direction"
+    },
+    "setupWizardTailForward": {
+        "message": "Normal"
+    },
+    "setupWizardTailReverse": {
+        "message": "Reverse"
+    },
+    "setupWizardLeftLimit": {
+        "message": "Left limit"
+    },
+    "setupWizardRightLimit": {
+        "message": "Right limit"
+    },
+    "setupWizardTitleGovernor": {
+        "message": "Governor"
+    },
+    "setupWizardGovernor": {
+        "message": "Governor"
+    },
+    "setupWizardMotorKv": {
+        "message": "Motor KV"
+    },
+    "setupWizardMotorPoles": {
+        "message": "Motor poles"
+    },
+    "setupWizardBatteryVoltage": {
+        "message": "Battery voltage"
+    },
+    "setupWizardGearRatio": {
+        "message": "Gear ratio"
+    },
+    "setupWizardCalculator": {
+        "message": "Calculator"
+    },
+    "setupWizardGovStatusThrottle": {
+        "message": "Throttle input: 86%"
+    },
+    "setupWizardGovStatusRpm": {
+        "message": "Target RPM: 2230"
+    },
+    "setupWizardTitlePresets": {
+        "message": "Parameter Presets"
+    },
+    "setupWizardPresetSize": {
+        "message": "Helicopter size"
+    },
+    "setupWizardPresetModel": {
+        "message": "Helicopter model"
+    },
+    "setupWizardPresetServo": {
+        "message": "Servo model"
+    },
+    "setupWizardPresetRotor": {
+        "message": "Main rotor"
+    },
+    "setupWizardPresetHint": {
+        "message": "No exact match. The list below is for reference only."
+    },
+    "setupWizardWriteParams": {
+        "message": "Write parameters"
+    },
+    "setupWizardDemoPitch": {
+        "message": "[Demo] Pitch adjust"
+    },
+    "setupWizardDemoDpad": {
+        "message": "[Demo] Swash trim: {{dir}}"
+    },
+    "setupWizardDemoAdjust": {
+        "message": "[Demo] Adjust"
+    },
+    "setupWizardDemoCalibBtn": {
+        "message": "[Demo] Calibration action"
+    },
+    "setupWizardDemoCalculator": {
+        "message": "[Demo] Calculator"
+    },
+    "setupWizardDemoWrite": {
+        "message": "[Demo] Write parameters"
+    },
     "tabSetupOSD": {
         "message": "OSD Setup"
     },

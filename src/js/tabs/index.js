@@ -24,4 +24,5 @@ import "./receiver.js";
 import "./sensors.js";
 import "./servos.js";
 import "./setup.js";
+import "./setup_wizard.js";
 import "./status.js";
