@@ -41,13 +41,13 @@
                 <p class="wizard-prompt" i18n="setupWizardServoTypePrompt"></p>
                 <div class="wizard-grid-row">
                     <span class="wizard-row-label" i18n="setupWizardSwashServo"></span>
-                    <label><span i18n="setupWizardNeutralPoint"></span><select class="wizard-select"><option i18n="setupWizardSelectPlaceholder"></option></select></label>
-                    <label><span i18n="setupWizardFrequency"></span><select class="wizard-select"><option i18n="setupWizardSelectPlaceholder"></option></select></label>
+                    <label class="wizard-control"><span class="wizard-label-text" i18n="setupWizardNeutralPoint"></span><select class="wizard-select"><option i18n="setupWizardSelectPlaceholder"></option></select></label>
+                    <label class="wizard-control"><span class="wizard-label-text" i18n="setupWizardFrequency"></span><select class="wizard-select"><option i18n="setupWizardSelectPlaceholder"></option></select></label>
                 </div>
                 <div class="wizard-grid-row">
                     <span class="wizard-row-label" i18n="setupWizardTailServo"></span>
-                    <label><span i18n="setupWizardNeutralPoint"></span><select class="wizard-select"><option i18n="setupWizardSelectPlaceholder"></option></select></label>
-                    <label><span i18n="setupWizardFrequency"></span><select class="wizard-select"><option i18n="setupWizardSelectPlaceholder"></option></select></label>
+                    <label class="wizard-control"><span class="wizard-label-text" i18n="setupWizardNeutralPoint"></span><select class="wizard-select"><option i18n="setupWizardSelectPlaceholder"></option></select></label>
+                    <label class="wizard-control"><span class="wizard-label-text" i18n="setupWizardFrequency"></span><select class="wizard-select"><option i18n="setupWizardSelectPlaceholder"></option></select></label>
                 </div>
             </div>
             <footer class="wizard-footer">
@@ -77,16 +77,32 @@
                 </div>
                 <div class="wizard-field-row">
                     <span class="wizard-field-label" i18n="setupWizardInstallDirection"></span>
-                    <div class="wizard-radio-group wizard-radio-group--stacked">
-                        <label class="wizard-pill wizard-pill--tall"><input type="radio" name="install" value="1" checked /><span>Face Up / Wire Front</span></label>
-                        <label class="wizard-pill wizard-pill--tall"><input type="radio" name="install" value="2" /><span>Face Up / Wire Rear</span></label>
-                        <label class="wizard-pill wizard-pill--tall"><input type="radio" name="install" value="3" /><span>Face Down / Wire Front</span></label>
-                        <label class="wizard-pill wizard-pill--tall"><input type="radio" name="install" value="4" /><span>Face Down / Wire Rear</span></label>
+                    <div class="wizard-radio-group wizard-radio-group--install-grid">
+                        <label class="wizard-install-tile">
+                            <input type="radio" name="install" value="1" checked />
+                            <span class="wizard-install-tile-visual" aria-hidden="true"></span>
+                            <span class="wizard-install-tile-caption">Face Up / Wire Front</span>
+                        </label>
+                        <label class="wizard-install-tile">
+                            <input type="radio" name="install" value="2" />
+                            <span class="wizard-install-tile-visual" aria-hidden="true"></span>
+                            <span class="wizard-install-tile-caption">Face Up / Wire Rear</span>
+                        </label>
+                        <label class="wizard-install-tile">
+                            <input type="radio" name="install" value="3" />
+                            <span class="wizard-install-tile-visual" aria-hidden="true"></span>
+                            <span class="wizard-install-tile-caption">Face Down / Wire Front</span>
+                        </label>
+                        <label class="wizard-install-tile">
+                            <input type="radio" name="install" value="4" />
+                            <span class="wizard-install-tile-visual" aria-hidden="true"></span>
+                            <span class="wizard-install-tile-caption">Face Down / Wire Rear</span>
+                        </label>
                     </div>
                 </div>
                 <div class="wizard-field-row wizard-field-row--split">
-                    <label><span i18n="setupWizardRotationDirection"></span><select class="wizard-select"><option i18n="setupWizardSelectPlaceholder"></option></select></label>
-                    <label><span i18n="setupWizardPositivePitchDirection"></span><select class="wizard-select"><option i18n="setupWizardSelectPlaceholder"></option></select></label>
+                    <label class="wizard-control"><span class="wizard-label-text" i18n="setupWizardRotationDirection"></span><select class="wizard-select"><option i18n="setupWizardSelectPlaceholder"></option></select></label>
+                    <label class="wizard-control"><span class="wizard-label-text" i18n="setupWizardPositivePitchDirection"></span><select class="wizard-select"><option i18n="setupWizardSelectPlaceholder"></option></select></label>
                 </div>
             </div>
             <footer class="wizard-footer">
@@ -106,7 +122,7 @@
             </header>
             <div class="wizard-body">
                 <div class="wizard-receiver-row">
-                    <label><span i18n="setupWizardReceiverType"></span><select class="wizard-select"><option i18n="setupWizardSelectPlaceholder"></option></select></label>
+                    <label class="wizard-control"><span class="wizard-label-text" i18n="setupWizardReceiverType"></span><select class="wizard-select"><option i18n="setupWizardSelectPlaceholder"></option></select></label>
                     <div class="wizard-hint-box" i18n="setupWizardReceiverHint"></div>
                 </div>
                 <div class="wizard-status-row">
@@ -114,26 +130,32 @@
                     <span i18n="setupWizardStatusArming"></span>
                     <span i18n="setupWizardStatusThrottle"></span>
                 </div>
-                <div class="wizard-channels">
-                    <div class="wizard-channel-vertical">
-                        <span i18n="setupWizardChannelCollective"></span>
-                        <div class="wizard-bar wizard-bar-v"><div class="wizard-bar-fill" style="height:50%"></div></div>
-                        <span class="wizard-channel-value">0</span>
+                <div class="wizard-channels wizard-channels--lr">
+                    <div class="wizard-channels-left">
+                        <div class="wizard-channel-horizontal">
+                            <span class="wizard-channel-name" i18n="setupWizardChannelRudder"></span>
+                            <div class="wizard-bar wizard-bar-h"><div class="wizard-bar-fill" style="width:50%"></div></div>
+                            <span class="wizard-channel-value">0</span>
+                        </div>
+                        <div class="wizard-channel-horizontal">
+                            <span class="wizard-channel-name" i18n="setupWizardChannelAileron"></span>
+                            <div class="wizard-bar wizard-bar-h"><div class="wizard-bar-fill" style="width:50%"></div></div>
+                            <span class="wizard-channel-value">0</span>
+                        </div>
                     </div>
-                    <div class="wizard-channel-vertical">
-                        <span i18n="setupWizardChannelElevator"></span>
-                        <div class="wizard-bar wizard-bar-v"><div class="wizard-bar-fill" style="height:50%"></div></div>
-                        <span class="wizard-channel-value">0</span>
-                    </div>
-                    <div class="wizard-channel-horizontal">
-                        <span i18n="setupWizardChannelRudder"></span>
-                        <div class="wizard-bar wizard-bar-h"><div class="wizard-bar-fill" style="width:50%"></div></div>
-                        <span class="wizard-channel-value">0</span>
-                    </div>
-                    <div class="wizard-channel-horizontal">
-                        <span i18n="setupWizardChannelAileron"></span>
-                        <div class="wizard-bar wizard-bar-h"><div class="wizard-bar-fill" style="width:50%"></div></div>
-                        <span class="wizard-channel-value">0</span>
+                    <div class="wizard-channels-right">
+                        <div class="wizard-vertical-panel">
+                            <div class="wizard-channel-vertical">
+                                <span class="wizard-channel-name" i18n="setupWizardChannelCollective"></span>
+                                <div class="wizard-bar wizard-bar-v"><div class="wizard-bar-fill" style="height:50%"></div></div>
+                                <span class="wizard-channel-value">0</span>
+                            </div>
+                            <div class="wizard-channel-vertical">
+                                <span class="wizard-channel-name" i18n="setupWizardChannelElevator"></span>
+                                <div class="wizard-bar wizard-bar-v"><div class="wizard-bar-fill" style="height:50%"></div></div>
+                                <span class="wizard-channel-value">0</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -242,23 +264,32 @@
             </header>
             <div class="wizard-body wizard-body--pitch-calib">
                 <div class="wizard-calib-block">
-                    <p i18n="setupWizardPitchStep1"></p>
-                    <a href="#" class="regular-button wizard-calib-side-btn" i18n="setupWizardZeroBtn"></a>
-                </div>
-                <div class="wizard-calib-block">
-                    <p i18n="setupWizardPitchStep2"></p>
-                    <a href="#" class="regular-button wizard-calib-side-btn" i18n="setupWizardTestBtn"></a>
-                    <div class="wizard-calib-adjust">
-                        <a href="#" class="regular-button" i18n="setupWizardIncrease"></a>
-                        <a href="#" class="regular-button" i18n="setupWizardDecrease"></a>
+                    <span class="wizard-calib-step-num" aria-hidden="true">1</span>
+                    <p class="wizard-calib-text" i18n="setupWizardPitchStep1"></p>
+                    <div class="wizard-calib-actions">
+                        <a href="#" class="regular-button wizard-calib-side-btn" i18n="setupWizardZeroBtn"></a>
                     </div>
                 </div>
                 <div class="wizard-calib-block">
-                    <p i18n="setupWizardPitchStep3"></p>
-                    <a href="#" class="regular-button wizard-calib-side-btn" i18n="setupWizardTestBtn"></a>
-                    <div class="wizard-calib-adjust">
-                        <a href="#" class="regular-button" i18n="setupWizardIncrease"></a>
-                        <a href="#" class="regular-button" i18n="setupWizardDecrease"></a>
+                    <span class="wizard-calib-step-num" aria-hidden="true">2</span>
+                    <p class="wizard-calib-text" i18n="setupWizardPitchStep2"></p>
+                    <div class="wizard-calib-actions">
+                        <a href="#" class="regular-button wizard-calib-side-btn" i18n="setupWizardTestBtn"></a>
+                        <div class="wizard-calib-adjust">
+                            <a href="#" class="regular-button" i18n="setupWizardIncrease"></a>
+                            <a href="#" class="regular-button" i18n="setupWizardDecrease"></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="wizard-calib-block">
+                    <span class="wizard-calib-step-num" aria-hidden="true">3</span>
+                    <p class="wizard-calib-text" i18n="setupWizardPitchStep3"></p>
+                    <div class="wizard-calib-actions">
+                        <a href="#" class="regular-button wizard-calib-side-btn" i18n="setupWizardTestBtn"></a>
+                        <div class="wizard-calib-adjust">
+                            <a href="#" class="regular-button" i18n="setupWizardIncrease"></a>
+                            <a href="#" class="regular-button" i18n="setupWizardDecrease"></a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -315,14 +346,19 @@
             </header>
             <div class="wizard-body">
                 <div class="wizard-form-stack">
-                    <label><span i18n="setupWizardGovernor"></span><select class="wizard-select"><option i18n="setupWizardSelectPlaceholder"></option></select></label>
-                    <label><span i18n="setupWizardMotorKv"></span><input type="text" class="wizard-input" /></label>
-                    <label><span i18n="setupWizardMotorPoles"></span><input type="text" class="wizard-input" /></label>
-                    <label><span i18n="setupWizardBatteryVoltage"></span><input type="text" class="wizard-input" /></label>
-                    <label class="wizard-label-with-btn">
-                        <span><span i18n="setupWizardGearRatio"></span><input type="text" class="wizard-input wizard-input--inline" /></span>
+                    <label class="wizard-control"><span class="wizard-label-text" i18n="setupWizardGovernor"></span><select class="wizard-select"><option i18n="setupWizardSelectPlaceholder"></option></select></label>
+                    <div class="wizard-governor-metrics-row">
+                        <label class="wizard-control"><span class="wizard-label-text" i18n="setupWizardMotorKv"></span><input type="text" class="wizard-input" /></label>
+                        <label class="wizard-control"><span class="wizard-label-text" i18n="setupWizardMotorPoles"></span><select id="wizard-motor-poles" class="wizard-select"><option value="" i18n="setupWizardSelectPlaceholder"></option></select></label>
+                        <label class="wizard-control"><span class="wizard-label-text" i18n="setupWizardBatteryVoltage"></span><input type="text" class="wizard-input" /></label>
+                    </div>
+                    <div class="wizard-label-with-btn">
+                        <label class="wizard-control wizard-control--inline">
+                            <span class="wizard-label-text" i18n="setupWizardGearRatio"></span>
+                            <input type="text" class="wizard-input wizard-input--inline" />
+                        </label>
                         <a href="#" class="regular-button wizard-calc-btn" i18n="setupWizardCalculator"></a>
-                    </label>
+                    </div>
                 </div>
                 <div class="wizard-governor-status">
                     <span i18n="setupWizardGovStatusThrottle"></span>
@@ -347,10 +383,10 @@
             <div class="wizard-body">
                 <div class="wizard-presets-layout">
                     <div class="wizard-presets-left">
-                        <label><span i18n="setupWizardPresetSize"></span><select class="wizard-select"><option i18n="setupWizardSelectPlaceholder"></option></select></label>
-                        <label><span i18n="setupWizardPresetModel"></span><select class="wizard-select"><option i18n="setupWizardSelectPlaceholder"></option></select></label>
-                        <label><span i18n="setupWizardPresetServo"></span><select class="wizard-select"><option i18n="setupWizardSelectPlaceholder"></option></select></label>
-                        <label><span i18n="setupWizardPresetRotor"></span><select class="wizard-select"><option i18n="setupWizardSelectPlaceholder"></option></select></label>
+                        <label class="wizard-control"><span class="wizard-label-text" i18n="setupWizardPresetSize"></span><select class="wizard-select"><option i18n="setupWizardSelectPlaceholder"></option></select></label>
+                        <label class="wizard-control"><span class="wizard-label-text" i18n="setupWizardPresetModel"></span><select class="wizard-select"><option i18n="setupWizardSelectPlaceholder"></option></select></label>
+                        <label class="wizard-control"><span class="wizard-label-text" i18n="setupWizardPresetServo"></span><select class="wizard-select"><option i18n="setupWizardSelectPlaceholder"></option></select></label>
+                        <label class="wizard-control"><span class="wizard-label-text" i18n="setupWizardPresetRotor"></span><select class="wizard-select"><option i18n="setupWizardSelectPlaceholder"></option></select></label>
                     </div>
                     <div class="wizard-presets-right">
                         <p i18n="setupWizardPresetHint"></p>

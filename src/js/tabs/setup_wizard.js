@@ -24,6 +24,13 @@ tab.initialize = function (callback) {
     $('#content').load("/src/tabs/setup_wizard.html", function () {
         i18n.localizePage();
 
+        const $motorPoles = $('#wizard-motor-poles');
+        if ($motorPoles.length) {
+            for (let n = 2; n <= 20; n++) {
+                $motorPoles.append($('<option></option>').val(String(n)).text(String(n)));
+            }
+        }
+
         goToScreen(0);
 
         $('.tab-setup-wizard').on('click', '.wizard-btn-back', function (e) {
