@@ -17,6 +17,7 @@ export const GuiControl = function () {
     this.current_tab = null;
     this.tab_switch_in_progress = false;
     this.reboot_in_progress = false;
+    this.setupWizardDisconnectPending = false;
     this.operating_system = null;
     this.interval_array = [];
     this.timeout_array = [];
@@ -441,7 +442,49 @@ GuiControl.prototype.saveDefaultTab = function(tabName) {
     config.set({ lastTab: tabName });
 };
 
+GuiControl.prototype.activateSetupWizardAfterReconnect = function () {
+    const tabObj = globalThis.TABS?.setup_wizard;
+    if (!tabObj) {
+        this.setupWizardDisconnectPending = false;
+        const lastTab = config.get('lastTab');
+        if (config.get('rememberLastTab') && lastTab) {
+            $(`#tabs ul.mode-connected .tab_${lastTab} a`).click();
+        } else {
+            $('#tabs ul.mode-connected .tab_status a').click();
+        }
+        return;
+    }
+
+    const ui_tabs = $('#tabs > ul');
+    $('li', ui_tabs).removeClass('active');
+    $('#tabs ul.mode-connected .tab_setup_wizard').addClass('active');
+
+    this.active_tab = 'setup_wizard';
+    this.current_tab = tabObj;
+    this.tab_switch_in_progress = false;
+    this.setupWizardDisconnectPending = false;
+
+    if (typeof tabObj.onReconnect === 'function') {
+        tabObj.onReconnect();
+    }
+};
+
 GuiControl.prototype.selectDefaultTabWhenConnected = function() {
+    if (this.setupWizardDisconnectPending) {
+        if (globalThis.TABS?.setup_wizard) {
+            this.activateSetupWizardAfterReconnect();
+        } else {
+            this.setupWizardDisconnectPending = false;
+            const lastTab = config.get('lastTab');
+            if (config.get('rememberLastTab') && lastTab) {
+                $(`#tabs ul.mode-connected .tab_${lastTab} a`).click();
+            } else {
+                $('#tabs ul.mode-connected .tab_status a').click();
+            }
+        }
+        return;
+    }
+
     const lastTab = config.get('lastTab');
     if (config.get('rememberLastTab') && lastTab) {
         $(`#tabs ul.mode-connected .tab_${lastTab} a`).click();

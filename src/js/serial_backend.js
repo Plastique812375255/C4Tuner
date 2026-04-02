@@ -193,6 +193,7 @@ function finishClose() {
     }
 
     const wasConnected = CONFIGURATOR.connectionValid;
+    const preserveSetupWizard = wasConnected && GUI.active_tab === 'setup_wizard';
 
     // close reset to custom defaults dialog
     $('#dialogResetToCustomDefaults')[0].close();
@@ -222,12 +223,21 @@ function finishClose() {
     // reset active sensor indicators
     sensor_status(0);
 
-    if (wasConnected) {
+    if (preserveSetupWizard) {
+        GUI.setupWizardDisconnectPending = true;
+        config.set({ lastTab: 'setup_wizard' });
+    } else {
+        GUI.setupWizardDisconnectPending = false;
+    }
+
+    if (wasConnected && !preserveSetupWizard) {
         // detach listeners and remove element data
         $('#content').empty();
     }
 
-    $('#tabs .tab_landing a').trigger("click");
+    if (!preserveSetupWizard) {
+        $('#tabs .tab_landing a').trigger("click");
+    }
 }
 
 function setConnectionTimeout() {
