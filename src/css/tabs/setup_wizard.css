@@ -257,6 +257,87 @@ html[data-theme="dark"] .tab-setup-wizard .wizard-input {
     padding-left: 10px;
 }
 
+.tab-setup-wizard .wizard-basic-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px 20px;
+    align-items: stretch;
+}
+
+@media (max-width: 900px) {
+    .tab-setup-wizard .wizard-basic-columns {
+        grid-template-columns: 1fr;
+    }
+}
+
+.tab-setup-wizard .wizard-field-row--basic-col {
+    margin-bottom: 0;
+    min-width: 0;
+}
+
+.tab-setup-wizard .wizard-more-skip-hint {
+    margin: 0 0 16px 0;
+    padding: 10px 12px;
+    border: 1px solid var(--attention);
+    border-radius: 6px;
+    background: var(--wizard-surface-elevated);
+    color: var(--defaultText);
+}
+
+.tab-setup-wizard .wizard-more-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px 20px;
+    align-items: stretch;
+}
+
+@media (max-width: 900px) {
+    .tab-setup-wizard .wizard-more-columns {
+        grid-template-columns: 1fr;
+    }
+}
+
+.tab-setup-wizard .wizard-more-group {
+    margin-bottom: 0;
+}
+
+.tab-setup-wizard .wizard-img-radio-group {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.tab-setup-wizard .wizard-more-img-tile .wizard-install-tile-visual {
+    margin-bottom: 0;
+}
+
+/* Visually hide text but keep it accessible to screen readers. */
+.tab-setup-wizard .wizard-visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.tab-setup-wizard .wizard-radio-group--quad-2x2 {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    width: 100%;
+}
+
+.tab-setup-wizard .wizard-radio-group--quad-2x2 .wizard-pill {
+    justify-content: center;
+    min-width: 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
 .tab-setup-wizard .wizard-radio-group {
     display: flex;
     flex-wrap: wrap;
@@ -280,6 +361,10 @@ html[data-theme="dark"] .tab-setup-wizard .wizard-input {
     .tab-setup-wizard .wizard-radio-group--install-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+}
+
+.tab-setup-wizard .wizard-radio-group--install-grid.wizard-radio-group--install-grid-2x2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .tab-setup-wizard .wizard-install-tile {
@@ -328,11 +413,38 @@ html[data-theme="dark"] .tab-setup-wizard .wizard-install-tile:has(input:checked
     margin-bottom: 6px;
 }
 
+.tab-setup-wizard .wizard-screen[data-screen="2"] .wizard-install-tile-visual {
+    /* Screen 2: Swash/Install tiles use SVG/empty spans.
+     * Fix its height so SVG content cannot change the overall selection box height. */
+    flex: 0 0 auto;
+    height: 96px;
+}
+
+.tab-setup-wizard .wizard-install-tile-visual:has(img) {
+    /* Keep the same frame/bg/spacing as non-image tiles (right-side install direction). */
+    background: var(--wizard-surface-elevated);
+    border: 1px dashed var(--wizard-outline);
+    border-radius: 6px;
+    margin-bottom: 6px;
+}
+
+.tab-setup-wizard .wizard-install-tile-visual img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    pointer-events: none;
+}
+
 .tab-setup-wizard .wizard-install-tile-caption {
     font-size: 0.75rem;
     line-height: 1.25;
     color: var(--defaultText);
     word-break: break-word;
+}
+
+.tab-setup-wizard .wizard-screen[data-screen="2"] .wizard-install-tile-caption {
+    white-space: nowrap;
 }
 
 .tab-setup-wizard .wizard-pill {
@@ -935,4 +1047,11 @@ html[data-theme="dark"] .tab-setup-wizard .wizard-bar {
         max-height: calc(100dvh - 64px);
         padding: 0 4px 4px;
     }
+}
+
+/* Setup Wizard: Screen 1 "save & reboot" flow (strategy B) */
+.tab-setup-wizard .wizard-btn-next.wizard-next-saving {
+    pointer-events: none;
+    cursor: default;
+    opacity: 0.6;
 }

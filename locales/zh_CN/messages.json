@@ -453,11 +453,41 @@
     "setupWizardTitleBasic": {
         "message": "基础设置"
     },
+    "setupWizardTitleMore": {
+        "message": "更多设置"
+    },
+    "setupWizardMoreSkipHint": {
+        "message": "对于大部分直升机，此页可直接跳过。"
+    },
     "setupWizardSwashplateType": {
         "message": "十字盘类型"
     },
     "setupWizardInstallDirection": {
         "message": "安装方向"
+    },
+    "setupWizardSwashH3": {
+        "message": "120° H3"
+    },
+    "setupWizardSwashHR3": {
+        "message": "120° HR3"
+    },
+    "setupWizardSwash135": {
+        "message": "135° HR3"
+    },
+    "setupWizardSwash140": {
+        "message": "140° HR3"
+    },
+    "setupWizardInstallFaceUpWireFront": {
+        "message": "正面朝上，出线向前"
+    },
+    "setupWizardInstallFaceUpWireRear": {
+        "message": "正面朝上，出线向后"
+    },
+    "setupWizardInstallFaceDownWireFront": {
+        "message": "正面朝下，出线向前"
+    },
+    "setupWizardInstallFaceDownWireRear": {
+        "message": "正面朝下，出线向后"
     },
     "setupWizardRotationDirection": {
         "message": "旋转方向"

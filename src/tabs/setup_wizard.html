@@ -27,7 +27,7 @@
             </footer>
         </div>
 
-        <!-- Screen 1: step 1/10 servo type -->
+        <!-- Screen 1: step 1/11 servo type -->
         <div class="wizard-screen" data-screen="1">
             <header class="wizard-topbar">
                 <div class="wizard-topbar-left">
@@ -41,13 +41,13 @@
                 <p class="wizard-prompt" i18n="setupWizardServoTypePrompt"></p>
                 <div class="wizard-grid-row">
                     <span class="wizard-row-label" i18n="setupWizardSwashServo"></span>
-                    <label class="wizard-control"><span class="wizard-label-text" i18n="setupWizardNeutralPoint"></span><select class="wizard-select"><option i18n="setupWizardSelectPlaceholder"></option></select></label>
-                    <label class="wizard-control"><span class="wizard-label-text" i18n="setupWizardFrequency"></span><select class="wizard-select"><option i18n="setupWizardSelectPlaceholder"></option></select></label>
+                    <label class="wizard-control"><span class="wizard-label-text" i18n="setupWizardNeutralPoint"></span><select id="wizard-swash-neutral-point" class="wizard-select"><option i18n="setupWizardSelectPlaceholder"></option></select></label>
+                    <label class="wizard-control"><span class="wizard-label-text" i18n="setupWizardFrequency"></span><select id="wizard-swash-frequency" class="wizard-select"><option i18n="setupWizardSelectPlaceholder"></option></select></label>
                 </div>
                 <div class="wizard-grid-row">
                     <span class="wizard-row-label" i18n="setupWizardTailServo"></span>
-                    <label class="wizard-control"><span class="wizard-label-text" i18n="setupWizardNeutralPoint"></span><select class="wizard-select"><option i18n="setupWizardSelectPlaceholder"></option></select></label>
-                    <label class="wizard-control"><span class="wizard-label-text" i18n="setupWizardFrequency"></span><select class="wizard-select"><option i18n="setupWizardSelectPlaceholder"></option></select></label>
+                    <label class="wizard-control"><span class="wizard-label-text" i18n="setupWizardNeutralPoint"></span><select id="wizard-tail-neutral-point" class="wizard-select"><option i18n="setupWizardSelectPlaceholder"></option></select></label>
+                    <label class="wizard-control"><span class="wizard-label-text" i18n="setupWizardFrequency"></span><select id="wizard-tail-frequency" class="wizard-select"><option i18n="setupWizardSelectPlaceholder"></option></select></label>
                 </div>
             </div>
             <footer class="wizard-footer">
@@ -66,43 +66,69 @@
                 <a href="#" class="regular-button wizard-btn-help" i18n="setupWizardHelp"></a>
             </header>
             <div class="wizard-body">
-                <div class="wizard-field-row">
-                    <span class="wizard-field-label" i18n="setupWizardSwashplateType"></span>
-                    <div class="wizard-radio-group" data-name="swash">
-                        <label class="wizard-pill"><input type="radio" name="swash" value="h3" checked /> H3</label>
-                        <label class="wizard-pill"><input type="radio" name="swash" value="hr3" /> HR3</label>
-                        <label class="wizard-pill"><input type="radio" name="swash" value="135" /> 135°</label>
-                        <label class="wizard-pill"><input type="radio" name="swash" value="140" /> 140°</label>
+                <div class="wizard-basic-columns">
+                    <div class="wizard-field-row wizard-field-row--basic-col">
+                        <span class="wizard-field-label" i18n="setupWizardSwashplateType"></span>
+                        <div class="wizard-radio-group wizard-radio-group--install-grid wizard-radio-group--install-grid-2x2" data-name="swash">
+                            <label class="wizard-install-tile">
+                                <input type="radio" name="swash" value="h3" checked />
+                                <span class="wizard-install-tile-visual" aria-hidden="true">
+                                    <img src="/images/setup_wizard/swash_h3.svg" alt="" />
+                                </span>
+                                <span class="wizard-install-tile-caption" aria-hidden="true" i18n="setupWizardSwashH3"></span>
+                                <span class="wizard-visually-hidden">H3</span>
+                            </label>
+                            <label class="wizard-install-tile">
+                                <input type="radio" name="swash" value="hr3" />
+                                <span class="wizard-install-tile-visual" aria-hidden="true">
+                                    <img src="/images/setup_wizard/swash_hr3.svg" alt="" />
+                                </span>
+                                <span class="wizard-install-tile-caption" aria-hidden="true" i18n="setupWizardSwashHR3"></span>
+                                <span class="wizard-visually-hidden">HR3</span>
+                            </label>
+                            <label class="wizard-install-tile">
+                                <input type="radio" name="swash" value="135" />
+                                <span class="wizard-install-tile-visual" aria-hidden="true">
+                                    <img src="/images/setup_wizard/swash_135.svg" alt="" />
+                                </span>
+                                <span class="wizard-install-tile-caption" aria-hidden="true" i18n="setupWizardSwash135"></span>
+                                <span class="wizard-visually-hidden">135°</span>
+                            </label>
+                            <label class="wizard-install-tile">
+                                <input type="radio" name="swash" value="140" />
+                                <span class="wizard-install-tile-visual" aria-hidden="true">
+                                    <img src="/images/setup_wizard/swash_140.svg" alt="" />
+                                </span>
+                                <span class="wizard-install-tile-caption" aria-hidden="true" i18n="setupWizardSwash140"></span>
+                                <span class="wizard-visually-hidden">140°</span>
+                            </label>
+                        </div>
                     </div>
-                </div>
-                <div class="wizard-field-row">
-                    <span class="wizard-field-label" i18n="setupWizardInstallDirection"></span>
-                    <div class="wizard-radio-group wizard-radio-group--install-grid">
-                        <label class="wizard-install-tile">
-                            <input type="radio" name="install" value="1" checked />
-                            <span class="wizard-install-tile-visual" aria-hidden="true"></span>
-                            <span class="wizard-install-tile-caption">Face Up / Wire Front</span>
-                        </label>
-                        <label class="wizard-install-tile">
-                            <input type="radio" name="install" value="2" />
-                            <span class="wizard-install-tile-visual" aria-hidden="true"></span>
-                            <span class="wizard-install-tile-caption">Face Up / Wire Rear</span>
-                        </label>
-                        <label class="wizard-install-tile">
-                            <input type="radio" name="install" value="3" />
-                            <span class="wizard-install-tile-visual" aria-hidden="true"></span>
-                            <span class="wizard-install-tile-caption">Face Down / Wire Front</span>
-                        </label>
-                        <label class="wizard-install-tile">
-                            <input type="radio" name="install" value="4" />
-                            <span class="wizard-install-tile-visual" aria-hidden="true"></span>
-                            <span class="wizard-install-tile-caption">Face Down / Wire Rear</span>
-                        </label>
+                    <div class="wizard-field-row wizard-field-row--basic-col">
+                        <span class="wizard-field-label" i18n="setupWizardInstallDirection"></span>
+                        <div class="wizard-radio-group wizard-radio-group--install-grid wizard-radio-group--install-grid-2x2">
+                            <label class="wizard-install-tile">
+                                <input type="radio" name="install" value="1" checked />
+                                <span class="wizard-install-tile-visual" aria-hidden="true"></span>
+                                <span class="wizard-install-tile-caption" i18n="setupWizardInstallFaceUpWireFront"></span>
+                            </label>
+                            <label class="wizard-install-tile">
+                                <input type="radio" name="install" value="2" />
+                                <span class="wizard-install-tile-visual" aria-hidden="true"></span>
+                                <span class="wizard-install-tile-caption" i18n="setupWizardInstallFaceUpWireRear"></span>
+                            </label>
+                            <label class="wizard-install-tile">
+                                <input type="radio" name="install" value="3" />
+                                <span class="wizard-install-tile-visual" aria-hidden="true"></span>
+                                <span class="wizard-install-tile-caption" i18n="setupWizardInstallFaceDownWireFront"></span>
+                            </label>
+                            <label class="wizard-install-tile">
+                                <input type="radio" name="install" value="4" />
+                                <span class="wizard-install-tile-visual" aria-hidden="true"></span>
+                                <span class="wizard-install-tile-caption" i18n="setupWizardInstallFaceDownWireRear"></span>
+                            </label>
+                        </div>
                     </div>
-                </div>
-                <div class="wizard-field-row wizard-field-row--split">
-                    <label class="wizard-control"><span class="wizard-label-text" i18n="setupWizardRotationDirection"></span><select class="wizard-select"><option i18n="setupWizardSelectPlaceholder"></option></select></label>
-                    <label class="wizard-control"><span class="wizard-label-text" i18n="setupWizardPositivePitchDirection"></span><select class="wizard-select"><option i18n="setupWizardSelectPlaceholder"></option></select></label>
                 </div>
             </div>
             <footer class="wizard-footer">
@@ -110,8 +136,59 @@
             </footer>
         </div>
 
-        <!-- Screen 3: receiver -->
+        <!-- Screen 3: more settings -->
         <div class="wizard-screen" data-screen="3">
+            <header class="wizard-topbar">
+                <div class="wizard-topbar-left">
+                    <a href="#" class="regular-button wizard-btn-back" i18n="setupWizardBack"></a>
+                    <span class="wizard-step-label"></span>
+                </div>
+                <h2 class="wizard-title" i18n="setupWizardTitleMore"></h2>
+                <a href="#" class="regular-button wizard-btn-help" i18n="setupWizardHelp"></a>
+            </header>
+            <div class="wizard-body">
+                <p class="wizard-more-skip-hint" i18n="setupWizardMoreSkipHint"></p>
+                <div class="wizard-more-columns">
+                    <div class="wizard-field-row wizard-more-group">
+                        <span class="wizard-field-label" i18n="setupWizardRotationDirection"></span>
+                        <div class="wizard-img-radio-group" role="radiogroup" aria-label="rotation_direction">
+                            <label class="wizard-install-tile wizard-more-img-tile">
+                                <input type="radio" name="more_rotation_dir" value="clockwise" checked />
+                                <span class="wizard-install-tile-visual" aria-hidden="true"></span>
+                                <span class="wizard-visually-hidden" i18n="mixerClockwise"></span>
+                            </label>
+                            <label class="wizard-install-tile wizard-more-img-tile">
+                                <input type="radio" name="more_rotation_dir" value="counter_clockwise" />
+                                <span class="wizard-install-tile-visual" aria-hidden="true"></span>
+                                <span class="wizard-visually-hidden" i18n="mixerCounterClockwise"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="wizard-field-row wizard-more-group">
+                        <span class="wizard-field-label" i18n="setupWizardPositivePitchDirection"></span>
+                        <div class="wizard-img-radio-group" role="radiogroup" aria-label="positive_pitch_direction">
+                            <label class="wizard-install-tile wizard-more-img-tile">
+                                <input type="radio" name="more_positive_pitch_dir" value="positive" checked />
+                                <span class="wizard-install-tile-visual" aria-hidden="true"></span>
+                                <span class="wizard-visually-hidden" i18n="mixerCollectiveTiltCorrectionPos"></span>
+                            </label>
+                            <label class="wizard-install-tile wizard-more-img-tile">
+                                <input type="radio" name="more_positive_pitch_dir" value="negative" />
+                                <span class="wizard-install-tile-visual" aria-hidden="true"></span>
+                                <span class="wizard-visually-hidden" i18n="mixerCollectiveTiltCorrectionNeg"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="wizard-footer">
+                <a href="#" class="regular-button wizard-btn-next" i18n="setupWizardNext"></a>
+            </footer>
+        </div>
+
+        <!-- Screen 4: receiver -->
+        <div class="wizard-screen" data-screen="4">
             <header class="wizard-topbar">
                 <div class="wizard-topbar-left">
                     <a href="#" class="regular-button wizard-btn-back" i18n="setupWizardBack"></a>
@@ -122,7 +199,7 @@
             </header>
             <div class="wizard-body">
                 <div class="wizard-receiver-row">
-                    <label class="wizard-control"><span class="wizard-label-text" i18n="setupWizardReceiverType"></span><select class="wizard-select"><option i18n="setupWizardSelectPlaceholder"></option></select></label>
+                    <label class="wizard-control"><span class="wizard-label-text" i18n="setupWizardReceiverType"></span><select class="wizard-select"><option value="9">TBS CRSF</option></select></label>
                     <div class="wizard-hint-box" i18n="setupWizardReceiverHint"></div>
                 </div>
                 <div class="wizard-status-row">
@@ -164,8 +241,8 @@
             </footer>
         </div>
 
-        <!-- Screen 4: servo direction -->
-        <div class="wizard-screen" data-screen="4">
+        <!-- Screen 5: servo direction -->
+        <div class="wizard-screen" data-screen="5">
             <header class="wizard-topbar">
                 <div class="wizard-topbar-left">
                     <a href="#" class="regular-button wizard-btn-back" i18n="setupWizardBack"></a>
@@ -204,8 +281,8 @@
             </footer>
         </div>
 
-        <!-- Screen 5: zero pitch -->
-        <div class="wizard-screen" data-screen="5">
+        <!-- Screen 6: zero pitch -->
+        <div class="wizard-screen" data-screen="6">
             <header class="wizard-topbar">
                 <div class="wizard-topbar-left">
                     <a href="#" class="regular-button wizard-btn-back" i18n="setupWizardBack"></a>
@@ -228,8 +305,8 @@
             </footer>
         </div>
 
-        <!-- Screen 6: swash level -->
-        <div class="wizard-screen" data-screen="6">
+        <!-- Screen 7: swash level -->
+        <div class="wizard-screen" data-screen="7">
             <header class="wizard-topbar">
                 <div class="wizard-topbar-left">
                     <a href="#" class="regular-button wizard-btn-back" i18n="setupWizardBack"></a>
@@ -252,8 +329,8 @@
             </footer>
         </div>
 
-        <!-- Screen 7: pitch calibration -->
-        <div class="wizard-screen" data-screen="7">
+        <!-- Screen 8: pitch calibration -->
+        <div class="wizard-screen" data-screen="8">
             <header class="wizard-topbar">
                 <div class="wizard-topbar-left">
                     <a href="#" class="regular-button wizard-btn-back" i18n="setupWizardBack"></a>
@@ -298,8 +375,8 @@
             </footer>
         </div>
 
-        <!-- Screen 8: tail -->
-        <div class="wizard-screen" data-screen="8">
+        <!-- Screen 9: tail -->
+        <div class="wizard-screen" data-screen="9">
             <header class="wizard-topbar">
                 <div class="wizard-topbar-left">
                     <a href="#" class="regular-button wizard-btn-back" i18n="setupWizardBack"></a>
@@ -334,8 +411,8 @@
             </footer>
         </div>
 
-        <!-- Screen 9: governor -->
-        <div class="wizard-screen" data-screen="9">
+        <!-- Screen 10: governor -->
+        <div class="wizard-screen" data-screen="10">
             <header class="wizard-topbar">
                 <div class="wizard-topbar-left">
                     <a href="#" class="regular-button wizard-btn-back" i18n="setupWizardBack"></a>
@@ -370,8 +447,8 @@
             </footer>
         </div>
 
-        <!-- Screen 10: presets / finish -->
-        <div class="wizard-screen" data-screen="10">
+        <!-- Screen 11: presets / finish -->
+        <div class="wizard-screen" data-screen="11">
             <header class="wizard-topbar">
                 <div class="wizard-topbar-left">
                     <a href="#" class="regular-button wizard-btn-back" i18n="setupWizardBack"></a>

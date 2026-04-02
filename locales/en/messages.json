@@ -467,11 +467,41 @@
     "setupWizardTitleBasic": {
         "message": "Basic Settings"
     },
+    "setupWizardTitleMore": {
+        "message": "More settings"
+    },
+    "setupWizardMoreSkipHint": {
+        "message": "For most helicopters, you can skip this page."
+    },
     "setupWizardSwashplateType": {
         "message": "Swashplate type"
     },
     "setupWizardInstallDirection": {
         "message": "Install orientation"
+    },
+    "setupWizardSwashH3": {
+        "message": "120° H3"
+    },
+    "setupWizardSwashHR3": {
+        "message": "120° HR3"
+    },
+    "setupWizardSwash135": {
+        "message": "135° HR3"
+    },
+    "setupWizardSwash140": {
+        "message": "140° HR3"
+    },
+    "setupWizardInstallFaceUpWireFront": {
+        "message": "Face Up / Wire Front"
+    },
+    "setupWizardInstallFaceUpWireRear": {
+        "message": "Face Up / Wire Rear"
+    },
+    "setupWizardInstallFaceDownWireFront": {
+        "message": "Face Down / Wire Front"
+    },
+    "setupWizardInstallFaceDownWireRear": {
+        "message": "Face Down / Wire Rear"
     },
     "setupWizardRotationDirection": {
         "message": "Rotation direction"
