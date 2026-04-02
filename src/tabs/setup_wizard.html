@@ -481,5 +481,19 @@
                 <a href="#" class="regular-button wizard-btn-finish" i18n="setupWizardFinish"></a>
             </footer>
         </div>
+
+        <!-- Help view (replaces wizard screen contents) -->
+        <div class="wizard-help-screen" aria-hidden="true">
+            <header class="wizard-topbar">
+                <!-- Empty left slot to keep the same grid layout -->
+                <div class="wizard-topbar-left" aria-hidden="true"></div>
+                <h2 class="wizard-title" id="wizard-help-title"></h2>
+                <a href="#" class="regular-button wizard-btn-help wizard-btn-help--back" i18n="setupWizardBack"></a>
+            </header>
+            <div class="wizard-body">
+                <div id="wizard-help-content"></div>
+            </div>
+        </div>
+
     </div>
 </div>

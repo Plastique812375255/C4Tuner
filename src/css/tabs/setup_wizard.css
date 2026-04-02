@@ -45,6 +45,19 @@ html[data-theme="dark"] .tab-setup-wizard {
     overflow: hidden;
 }
 
+.tab-setup-wizard .wizard-help-screen {
+    display: none;
+}
+
+.tab-setup-wizard .wizard-help-screen.active {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+}
+
 .tab-setup-wizard .wizard-topbar {
     display: flex;
     align-items: center;

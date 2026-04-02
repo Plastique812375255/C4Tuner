@@ -9,6 +9,8 @@ const LAST_INDEX = WIZARD_SCREENS - 1;
 
 const STORAGE_KEY = 'rftuner_setup_wizard_state_v1';
 
+let wizardHelpPrevScreenIndex = 0;
+
 const SWASH_SERVO_INDICES = [0, 1, 2];
 const TAIL_SERVO_INDEX = 3;
 
@@ -157,6 +159,32 @@ function applyPersistedWizardState() {
 
 function switchToSetupTab() {
     $('#tabs ul.mode-connected .tab_setup a').trigger('click');
+}
+
+function openWizardHelp() {
+    const $screen = $('.tab-setup-wizard .wizard-screen.active');
+    if (!$screen.length) return;
+
+    wizardHelpPrevScreenIndex = parseInt($screen.attr('data-screen'), 10);
+    if (!Number.isFinite(wizardHelpPrevScreenIndex)) {
+        wizardHelpPrevScreenIndex = 0;
+    }
+
+    const baseTitle = $screen.find('.wizard-title').first().text().trim();
+    const helpSuffix = i18n.getMessage('setupWizardHelp');
+    $('#wizard-help-title').text(`${baseTitle} - ${helpSuffix}`);
+
+    // Placeholder: each screen uses its index so content is guaranteed different.
+    $('#wizard-help-content').text(`SETUP_WIZARD_HELP_TODO_SCREEN_${wizardHelpPrevScreenIndex}`);
+
+    $('.tab-setup-wizard .wizard-screen').removeClass('active');
+    $('.tab-setup-wizard .wizard-help-screen').addClass('active');
+    $('.tab-setup-wizard .wizard-help-screen.active .wizard-body').scrollTop(0);
+}
+
+function closeWizardHelp() {
+    $('.tab-setup-wizard .wizard-help-screen').removeClass('active');
+    goToScreen(wizardHelpPrevScreenIndex);
 }
 
 function populateMotorPolesOptions() {
@@ -577,9 +605,14 @@ function bindWizardEvents() {
         switchToSetupTab();
     });
 
-    $('.tab-setup-wizard').on('click', '.wizard-btn-help', function (e) {
+    $('.tab-setup-wizard').on('click', '.wizard-screen .wizard-btn-help', function (e) {
         e.preventDefault();
-        GUI.log(i18n.getMessage('setupWizardHelpDemo'));
+        openWizardHelp();
+    });
+
+    $('.tab-setup-wizard').on('click', '.wizard-help-screen .wizard-btn-help--back', function (e) {
+        e.preventDefault();
+        closeWizardHelp();
     });
 
     $('.tab-setup-wizard').on('click', '.wizard-dir-prev', function (e) {
@@ -655,6 +688,7 @@ function bindWizardEvents() {
 }
 
 tab.onReconnect = function () {
+    $('.tab-setup-wizard .wizard-help-screen').removeClass('active');
     applyPersistedWizardState();
 
     // Ensure strategy B UI is restored after reboot/connect.
