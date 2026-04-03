@@ -194,6 +194,19 @@ function finishClose() {
 
     const wasConnected = CONFIGURATOR.connectionValid;
     const preserveSetupWizard = wasConnected && GUI.active_tab === 'setup_wizard';
+    /** 向导在发 MSP_SET_REBOOT 前可预置 `setupWizardDisconnectPending`，断线时 `active_tab` 可能已不是 setup_wizard，但仍需保留 #content。 */
+    const keepWizardDom = preserveSetupWizard || GUI.setupWizardDisconnectPending;
+
+    GUI.log(
+        `[SetupWizard] finishClose: wasConnected=${wasConnected} active_tab=${GUI.active_tab} preserve=${preserveSetupWizard} pendingIn=${GUI.setupWizardDisconnectPending} keepDom=${keepWizardDom}`,
+    );
+    console.log('[SetupWizard] finishClose', {
+        wasConnected,
+        active_tab: GUI.active_tab,
+        preserveSetupWizard,
+        setupWizardDisconnectPending: GUI.setupWizardDisconnectPending,
+        keepWizardDom,
+    });
 
     // close reset to custom defaults dialog
     $('#dialogResetToCustomDefaults')[0].close();
@@ -226,16 +239,18 @@ function finishClose() {
     if (preserveSetupWizard) {
         GUI.setupWizardDisconnectPending = true;
         config.set({ lastTab: 'setup_wizard' });
-    } else {
+    } else if (!GUI.setupWizardDisconnectPending) {
         GUI.setupWizardDisconnectPending = false;
     }
 
-    if (wasConnected && !preserveSetupWizard) {
+    GUI.log(`[SetupWizard] finishClose: after flags pendingOut=${GUI.setupWizardDisconnectPending}`);
+
+    if (wasConnected && !keepWizardDom) {
         // detach listeners and remove element data
         $('#content').empty();
     }
 
-    if (!preserveSetupWizard) {
+    if (!keepWizardDom) {
         $('#tabs .tab_landing a').trigger("click");
     }
 }
@@ -487,6 +502,12 @@ function finishOpen() {
 
     onConnect();
 
+    GUI.log(
+        `[SetupWizard] finishOpen → selectDefaultTab: pending=${GUI.setupWizardDisconnectPending} reboot_in_progress was cleared`,
+    );
+    console.log('[SetupWizard] finishOpen before selectDefaultTabWhenConnected', {
+        setupWizardDisconnectPending: GUI.setupWizardDisconnectPending,
+    });
     GUI.selectDefaultTabWhenConnected();
 }
 

@@ -429,6 +429,129 @@
     "setupWizardIntroLine5": {
         "message": "点击下一步开始调机。"
     },
+    "setupWizardIntroRecommendTitle": {
+        "message": "强烈推荐您使用我们的基础设置"
+    },
+    "setupWizardIntroRecommendLine1": {
+        "message": "这是大多数人使用的设置方式，可以覆盖RF全部功能"
+    },
+    "setupWizardIntroRecommendLine2": {
+        "message": "主要设置以下内容："
+    },
+    "setupWizardIntroRecommendLine3": {
+        "message": "设置ARM开关、参数切换开关、模式切换开关"
+    },
+    "setupWizardIntroRecommendLine4": {
+        "message": "它不限制直升机种类，只是开启基础的功能"
+    },
+    "setupWizardIntroRecommendLine5": {
+        "message": "点击帮助可以查看具体更改方式"
+    },
+    "setupWizardQuickBasicSetup": {
+        "message": "一键设置基础数据"
+    },
+    "setupWizardQuickBasicWriting": {
+        "message": "写入中…"
+    },
+    "setupWizardQuickBasicDone": {
+        "message": "已设置完成"
+    },
+    "setupWizardQuickBasicFailed": {
+        "message": "无法完成一键设置或校验未通过，请检查模式与调整页。"
+    },
+    "setupWizardQuickBasicNeedAux": {
+        "message": "需要至少 3 个 AUX 通道（接收机需映射 AUX1–AUX3）。"
+    },
+    "setupWizardQuickBasicFailedTitle": {
+        "message": "一键基础数据失败"
+    },
+    "setupWizardQuickBasicFailUnknown": {
+        "message": "未知原因（无详细说明）。"
+    },
+    "setupWizardQuickBasicFailAux": {
+        "message": "AUX 通道：至少需要 {{need}} 个，当前可用 AUX 数量为 {{current}}。"
+    },
+    "setupWizardQuickBasicFailBoxArm": {
+        "message": "飞控模式列表中无 ARM（请检查固件 / MSP_BOXNAMES）。"
+    },
+    "setupWizardQuickBasicFailBoxAngle": {
+        "message": "飞控模式列表中无 ANGLE（请检查固件 / MSP_BOXNAMES）。"
+    },
+    "setupWizardQuickBasicFailBox": {
+        "message": "模式名问题：{{detail}}"
+    },
+    "setupWizardQuickBasicFailModeEmpty": {
+        "message": "未返回任何模式范围（MODE_RANGES 为空）。"
+    },
+    "setupWizardQuickBasicFailModeLen": {
+        "message": "MODE_RANGES 条数（{{mr}}）与 MODE_RANGES_EXTRA（{{mre}}）不一致。"
+    },
+    "setupWizardQuickBasicFailModeNoArm": {
+        "message": "缺少 ARM 范围：AUX1，1900–2100 µs。"
+    },
+    "setupWizardQuickBasicFailModeNoAngle": {
+        "message": "缺少 ANGLE 范围：AUX3，1900–2100 µs。"
+    },
+    "setupWizardQuickBasicFailModeExtraArm": {
+        "message": "存在与目标不符的额外 ARM 范围（需先在模式页删除其它 ARM 范围）。"
+    },
+    "setupWizardQuickBasicFailModeExtraAngle": {
+        "message": "存在与目标不符的额外 ANGLE 范围（需先在模式页删除其它 ANGLE 范围）。"
+    },
+    "setupWizardQuickBasicFailMode": {
+        "message": "模式范围：{{detail}}"
+    },
+    "setupWizardQuickBasicFailAdjEmpty": {
+        "message": "无调整项（ADJUSTMENT_RANGES 为空）。"
+    },
+    "setupWizardQuickBasicFailAdjMissingPid": {
+        "message": "缺少与预设一致的「飞行参数选择」映射行。"
+    },
+    "setupWizardQuickBasicFailAdjMissingRate": {
+        "message": "缺少与预设一致的「Rate 配置文件」映射行。"
+    },
+    "setupWizardQuickBasicFailAdjBadPid": {
+        "message": "第 {{slot}} 条飞行参数映射与预设不符（启用应为「总是」、参数通道 AUX2、970–2025 映射到 1–3）。"
+    },
+    "setupWizardQuickBasicFailAdjBadRate": {
+        "message": "第 {{slot}} 条 Rate 映射与预设不符（启用应为「总是」、参数通道 AUX2、970–2025 映射到 1–3）。"
+    },
+    "setupWizardQuickBasicFailAdjDupPid": {
+        "message": "存在多条飞行参数映射（{{count}} 条），应只保留一条。"
+    },
+    "setupWizardQuickBasicFailAdjDupRate": {
+        "message": "存在多条 Rate 映射（{{count}} 条），应只保留一条。"
+    },
+    "setupWizardQuickBasicFailAdj": {
+        "message": "调整项：{{detail}}"
+    },
+    "setupWizardQuickBasicFailModeSlotArm": {
+        "message": "没有空闲槽位可写入 ARM（模式槽已满，请在模式页腾出空位）。"
+    },
+    "setupWizardQuickBasicFailModeSlotAngle": {
+        "message": "没有空闲槽位可写入 ANGLE（模式槽已满，请在模式页腾出空位）。"
+    },
+    "setupWizardQuickBasicFailAdjSlotPid": {
+        "message": "没有空闲调整槽位可写入飞行参数映射。"
+    },
+    "setupWizardQuickBasicFailAdjSlotRate": {
+        "message": "没有空闲调整槽位可写入 Rate 映射。"
+    },
+    "setupWizardQuickBasicFailPatch": {
+        "message": "应用阶段错误码：{{code}}"
+    },
+    "setupWizardQuickBasicFailPatchNoop": {
+        "message": "应用阶段未产生任何修改（异常）。"
+    },
+    "setupWizardQuickBasicFailVerifyTitle": {
+        "message": "已写入 EEPROM，但读回校验未通过，原因如下："
+    },
+    "setupWizardQuickBasicFailMspRead": {
+        "message": "MSP 读取失败或连接已断开（无法读回飞控状态）。"
+    },
+    "setupWizardQuickBasicVerifyRetry": {
+        "message": "读回与目标不一致，正在自动再写入并校验一次…"
+    },
     "setupWizardTitleServoType": {
         "message": "舵机类型选择"
     },
@@ -464,6 +587,24 @@
     },
     "setupWizardInstallDirection": {
         "message": "安装方向"
+    },
+    "setupWizardSwashHr3_120": {
+        "message": "HR3 120"
+    },
+    "setupWizardSwashHr3_135": {
+        "message": "HR3 135"
+    },
+    "setupWizardSwashHr3_140": {
+        "message": "HR3 140"
+    },
+    "setupWizardSwashH3_120": {
+        "message": "H3 120"
+    },
+    "setupWizardSwashH3_135": {
+        "message": "H3 135"
+    },
+    "setupWizardSwashH3_140": {
+        "message": "H3 140"
     },
     "setupWizardSwashH3": {
         "message": "120° H3"
@@ -504,14 +645,29 @@
     "setupWizardReceiverHint": {
         "message": "请将接收机插入 CRSF 接口"
     },
-    "setupWizardStatusFlightMode": {
-        "message": "飞行模式: 1"
+    "setupWizardReceiverStatusArmLabel": {
+        "message": "ARM："
     },
-    "setupWizardStatusArming": {
-        "message": "解锁状态: 已解锁"
+    "setupWizardReceiverArmYes": {
+        "message": "是"
     },
-    "setupWizardStatusThrottle": {
-        "message": "油门位置: +80"
+    "setupWizardReceiverArmNo": {
+        "message": "否"
+    },
+    "setupWizardReceiverStatusThrottleLabel": {
+        "message": "油门位置："
+    },
+    "setupWizardReceiverStatusBankLabel": {
+        "message": "Bank："
+    },
+    "setupWizardReceiverStatusMotorLabel": {
+        "message": "电机："
+    },
+    "setupWizardReceiverMotorStarted": {
+        "message": "启动"
+    },
+    "setupWizardReceiverMotorStopped": {
+        "message": "未启动"
     },
     "setupWizardChannelCollective": {
         "message": "总距"
@@ -524,6 +680,27 @@
     },
     "setupWizardChannelAileron": {
         "message": "副翼"
+    },
+    "setupWizardReceiverPctZero": {
+        "message": "0%"
+    },
+    "setupWizardReceiverPctPitchForward": {
+        "message": "前 {{percent}}%"
+    },
+    "setupWizardReceiverPctPitchBack": {
+        "message": "后 {{percent}}%"
+    },
+    "setupWizardReceiverPctLateralRight": {
+        "message": "右 {{percent}}%"
+    },
+    "setupWizardReceiverPctLateralLeft": {
+        "message": "左 {{percent}}%"
+    },
+    "setupWizardReceiverPctCollectivePos": {
+        "message": "正螺距 {{percent}}%"
+    },
+    "setupWizardReceiverPctCollectiveNeg": {
+        "message": "负螺距 {{percent}}%"
     },
     "setupWizardTitleServoDir": {
         "message": "舵机方向"
@@ -591,6 +768,18 @@
     "setupWizardSwashLevelHint": {
         "message": "点击以下按钮调整倾斜盘的方向，使其完全垂直于主轴。"
     },
+    "setupWizardSwashFront": {
+        "message": "前"
+    },
+    "setupWizardSwashBack": {
+        "message": "后"
+    },
+    "setupWizardSwashLeft": {
+        "message": "左"
+    },
+    "setupWizardSwashRight": {
+        "message": "右"
+    },
     "setupWizardTitlePitchCalib": {
         "message": "螺距校正"
     },
@@ -608,6 +797,9 @@
     },
     "setupWizardTestBtn": {
         "message": "测试"
+    },
+    "setupWizardTestEndBtn": {
+        "message": "完成"
     },
     "setupWizardIncrease": {
         "message": "增加"
@@ -632,6 +824,27 @@
     },
     "setupWizardRightLimit": {
         "message": "右侧极限"
+    },
+    "setupWizardTitleTailPitch": {
+        "message": "尾部螺距调整"
+    },
+    "setupWizardTailZeroStep": {
+        "message": "点击右侧测试按钮，调整至尾桨螺距为0。"
+    },
+    "setupWizardTailPitch22Step": {
+        "message": "点击右侧测试按钮，调整至尾桨螺距为22°。"
+    },
+    "setupWizardTailTravelLeftStep": {
+        "message": "点击测试按钮，调节左侧行程，直到其接近极限。"
+    },
+    "setupWizardTailTravelRightStep": {
+        "message": "点击测试按钮，调节右侧行程，直到其接近极限。"
+    },
+    "setupWizardTailLeft": {
+        "message": "向左"
+    },
+    "setupWizardTailRight": {
+        "message": "向右"
     },
     "setupWizardTitleGovernor": {
         "message": "定速器设置"

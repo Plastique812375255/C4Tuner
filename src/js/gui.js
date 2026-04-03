@@ -444,6 +444,8 @@ GuiControl.prototype.saveDefaultTab = function(tabName) {
 
 GuiControl.prototype.activateSetupWizardAfterReconnect = function () {
     const tabObj = globalThis.TABS?.setup_wizard;
+    GUI.log(`[SetupWizard] activateAfterReconnect: tabObj=${!!tabObj}`);
+    console.log('[SetupWizard] activateSetupWizardAfterReconnect', { hasTab: !!tabObj });
     if (!tabObj) {
         this.setupWizardDisconnectPending = false;
         const lastTab = config.get('lastTab');
@@ -467,13 +469,23 @@ GuiControl.prototype.activateSetupWizardAfterReconnect = function () {
     if (typeof tabObj.onReconnect === 'function') {
         tabObj.onReconnect();
     }
+    GUI.log('[SetupWizard] activateAfterReconnect: onReconnect returned');
 };
 
 GuiControl.prototype.selectDefaultTabWhenConnected = function() {
+    GUI.log(
+        `[SetupWizard] selectDefaultTab: pending=${this.setupWizardDisconnectPending} hasWizardTab=${!!globalThis.TABS?.setup_wizard}`,
+    );
+    console.log('[SetupWizard] selectDefaultTabWhenConnected', {
+        setupWizardDisconnectPending: this.setupWizardDisconnectPending,
+        hasWizardTab: !!globalThis.TABS?.setup_wizard,
+    });
     if (this.setupWizardDisconnectPending) {
         if (globalThis.TABS?.setup_wizard) {
+            GUI.log('[SetupWizard] selectDefaultTab: pending → activateSetupWizardAfterReconnect');
             this.activateSetupWizardAfterReconnect();
         } else {
+            GUI.log('[SetupWizard] selectDefaultTab: pending but no TABS.setup_wizard — clearing pending');
             this.setupWizardDisconnectPending = false;
             const lastTab = config.get('lastTab');
             if (config.get('rememberLastTab') && lastTab) {
@@ -487,8 +499,10 @@ GuiControl.prototype.selectDefaultTabWhenConnected = function() {
 
     const lastTab = config.get('lastTab');
     if (config.get('rememberLastTab') && lastTab) {
+        GUI.log(`[SetupWizard] selectDefaultTab: rememberLastTab → ${lastTab}`);
         $(`#tabs ul.mode-connected .tab_${lastTab} a`).click();
     } else {
+        GUI.log('[SetupWizard] selectDefaultTab: default → status');
         $('#tabs ul.mode-connected .tab_status a').click();
     }
 };

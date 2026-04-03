@@ -152,15 +152,68 @@ html[data-theme="dark"] .tab-setup-wizard {
     line-height: 1.5;
 }
 
-.tab-setup-wizard .wizard-intro-text {
-    max-width: 640px;
+.tab-setup-wizard .wizard-intro-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px 24px;
+    align-items: start;
+    max-width: 960px;
     margin: 0 auto;
+    width: 100%;
+}
+
+@media (max-width: 720px) {
+    .tab-setup-wizard .wizard-intro-columns {
+        grid-template-columns: 1fr;
+    }
+}
+
+.tab-setup-wizard .wizard-intro-col {
+    min-width: 0;
+}
+
+.tab-setup-wizard .wizard-intro-text {
+    max-width: none;
+    margin: 0;
 }
 
 .tab-setup-wizard .wizard-intro-text p {
     margin: 0 0 12px;
     line-height: 1.55;
     color: var(--defaultText);
+}
+
+.tab-setup-wizard .wizard-intro-recommend p {
+    margin: 0 0 12px;
+    line-height: 1.55;
+    color: var(--defaultText);
+}
+
+.tab-setup-wizard .wizard-intro-recommend-title {
+    font-weight: 600;
+}
+
+.tab-setup-wizard .wizard-btn-quick-basic {
+    margin-top: 4px;
+    width: 100%;
+    max-width: 280px;
+}
+
+/* 一键写入：整页不可点，避免写入过程中误操作 */
+.tab-setup-wizard.wizard-quick-basic-busy {
+    pointer-events: none;
+    user-select: none;
+}
+
+.tab-setup-wizard.wizard-quick-basic-busy .wizard-btn-quick-basic {
+    opacity: 0.75;
+    cursor: wait;
+}
+
+/* 已满足目标配置：主按钮为灰色不可点 */
+.tab-setup-wizard .wizard-btn-quick-basic.wizard-btn-quick-basic--done:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
 .tab-setup-wizard .wizard-footer {
@@ -272,7 +325,7 @@ html[data-theme="dark"] .tab-setup-wizard .wizard-input {
 
 .tab-setup-wizard .wizard-basic-columns {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 3fr 2fr;
     gap: 16px 20px;
     align-items: stretch;
 }
@@ -322,6 +375,10 @@ html[data-theme="dark"] .tab-setup-wizard .wizard-input {
 
 .tab-setup-wizard .wizard-more-img-tile .wizard-install-tile-visual {
     margin-bottom: 0;
+}
+
+.tab-setup-wizard .wizard-more-img-tile .wizard-install-tile-caption {
+    margin-top: 6px;
 }
 
 /* Visually hide text but keep it accessible to screen readers. */
@@ -380,6 +437,17 @@ html[data-theme="dark"] .tab-setup-wizard .wizard-input {
     grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+/* Basic settings: six swash presets — 3 columns × 2 rows */
+.tab-setup-wizard .wizard-radio-group--install-grid.wizard-radio-group--swash-six {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (max-width: 900px) {
+    .tab-setup-wizard .wizard-radio-group--install-grid.wizard-radio-group--swash-six {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
 .tab-setup-wizard .wizard-install-tile {
     position: relative;
     display: flex;
@@ -433,12 +501,34 @@ html[data-theme="dark"] .tab-setup-wizard .wizard-install-tile:has(input:checked
     height: 96px;
 }
 
+/* Screen 2: swash schematic tiles — fixed white diagram background (not theme gray). */
+.tab-setup-wizard .wizard-screen[data-screen="2"] .wizard-radio-group[data-name="swash"] .wizard-install-tile-visual {
+    background: #ffffff;
+    border-color: #c8c8c8;
+}
+
+html[data-theme="dark"] .tab-setup-wizard .wizard-screen[data-screen="2"] .wizard-radio-group[data-name="swash"] .wizard-install-tile-visual {
+    background: #ffffff;
+    border-color: #c8c8c8;
+}
+
 .tab-setup-wizard .wizard-install-tile-visual:has(img) {
     /* Keep the same frame/bg/spacing as non-image tiles (right-side install direction). */
     background: var(--wizard-surface-elevated);
     border: 1px dashed var(--wizard-outline);
     border-radius: 6px;
     margin-bottom: 6px;
+}
+
+/* Override generic :has(img) background for swash schematics on screen 2 */
+.tab-setup-wizard .wizard-screen[data-screen="2"] .wizard-radio-group[data-name="swash"] .wizard-install-tile-visual:has(img) {
+    background: #ffffff;
+    border-color: #c8c8c8;
+}
+
+html[data-theme="dark"] .tab-setup-wizard .wizard-screen[data-screen="2"] .wizard-radio-group[data-name="swash"] .wizard-install-tile-visual:has(img) {
+    background: #ffffff;
+    border-color: #c8c8c8;
 }
 
 .tab-setup-wizard .wizard-install-tile-visual img {
@@ -525,13 +615,50 @@ html[data-theme="dark"] .tab-setup-wizard .wizard-install-tile:has(input:checked
     color: var(--defaultText);
 }
 
-.tab-setup-wizard .wizard-status-row {
+.tab-setup-wizard .wizard-receiver-status-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+@media (max-width: 720px) {
+    .tab-setup-wizard .wizard-receiver-status-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+.tab-setup-wizard .wizard-receiver-status-cell {
+    padding: 10px 12px;
+    border: 1px solid var(--wizard-outline);
+    border-radius: 8px;
+    background: var(--wizard-surface-elevated);
+    min-width: 0;
+}
+
+.tab-setup-wizard .wizard-receiver-status-line {
     display: flex;
     flex-wrap: wrap;
-    gap: 16px;
-    margin-bottom: 16px;
-    font-size: 0.95rem;
+    align-items: baseline;
+    gap: 4px 6px;
+    font-size: 0.9rem;
+    line-height: 1.35;
     color: var(--defaultText);
+}
+
+.tab-setup-wizard .wizard-receiver-status-label {
+    font-weight: 700;
+    color: var(--accent);
+    flex-shrink: 0;
+}
+
+.tab-setup-wizard .wizard-receiver-status-value {
+    font-weight: 600;
+    word-break: break-word;
+}
+
+.tab-setup-wizard .wizard-receiver-status-value--danger {
+    color: var(--error);
 }
 
 .tab-setup-wizard .wizard-channels--lr {
@@ -642,6 +769,7 @@ html[data-theme="dark"] .tab-setup-wizard .wizard-bar {
     max-width: 280px;
 }
 
+/* Receiver screen (4): signed bars from center; unsigned legacy fill still bottom-left if used elsewhere */
 .tab-setup-wizard .wizard-bar-fill {
     position: absolute;
     left: 0;
@@ -650,7 +778,57 @@ html[data-theme="dark"] .tab-setup-wizard .wizard-bar {
     border-radius: 2px;
 }
 
-.tab-setup-wizard .wizard-bar-h .wizard-bar-fill {
+.tab-setup-wizard .wizard-bar--signed {
+    overflow: hidden;
+}
+
+.tab-setup-wizard .wizard-bar--signed .wizard-bar-center {
+    position: absolute;
+    z-index: 2;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    margin-left: -1px;
+    background: rgba(0, 0, 0, 0.25);
+    pointer-events: none;
+}
+
+html[data-theme="dark"] .tab-setup-wizard .wizard-bar--signed .wizard-bar-center {
+    background: rgba(255, 255, 255, 0.35);
+}
+
+.tab-setup-wizard .wizard-bar-v.wizard-bar--signed .wizard-bar-center {
+    left: 0;
+    right: 0;
+    top: 50%;
+    bottom: auto;
+    width: auto;
+    height: 2px;
+    margin-left: 0;
+    margin-top: -1px;
+}
+
+.tab-setup-wizard .wizard-bar--signed .wizard-bar-fill--h {
+    top: 0;
+    bottom: 0;
+    height: 100%;
+    left: 50%;
+    width: 0;
+    z-index: 1;
+}
+
+.tab-setup-wizard .wizard-bar--signed .wizard-bar-fill--v {
+    left: 0;
+    right: 0;
+    width: 100%;
+    bottom: 50%;
+    height: 0;
+    top: auto;
+    z-index: 1;
+}
+
+.tab-setup-wizard .wizard-bar-h .wizard-bar-fill:not(.wizard-bar-fill--h) {
     top: 0;
     bottom: 0;
     height: 100%;
@@ -756,6 +934,77 @@ html[data-theme="dark"] .tab-setup-wizard .wizard-bar {
     margin: 24px 0;
 }
 
+/* Screen 6: zero pitch — half/half: figures | copy + buttons */
+.tab-setup-wizard .wizard-zero-pitch-row {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    gap: 16px;
+    margin: 24px 0;
+    min-width: 0;
+}
+
+.tab-setup-wizard .wizard-zero-pitch-figures {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.tab-setup-wizard .wizard-zero-pitch-right {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.tab-setup-wizard .wizard-zero-pitch-right > p {
+    margin: 0 0 0.25em;
+    line-height: 1.35;
+}
+
+.tab-setup-wizard .wizard-zero-pitch-right > p:last-of-type {
+    margin-bottom: 0;
+}
+
+.tab-setup-wizard .wizard-zero-pitch-figures img {
+    width: 90%;
+    max-width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+}
+
+.tab-setup-wizard .wizard-zero-pitch-actions.wizard-stack-btns {
+    margin: 16px 0 0;
+    align-items: stretch;
+}
+
+.tab-setup-wizard .wizard-zero-pitch-actions .regular-button {
+    width: 100%;
+    box-sizing: border-box;
+    margin-left: 0;
+    margin-right: 0;
+    text-align: center;
+}
+
+@media (max-width: 560px) {
+    .tab-setup-wizard .wizard-zero-pitch-row {
+        flex-direction: column;
+    }
+
+    .tab-setup-wizard .wizard-zero-pitch-figures,
+    .tab-setup-wizard .wizard-zero-pitch-right,
+    .tab-setup-wizard .wizard-zero-pitch-actions.wizard-stack-btns {
+        flex: 1 1 auto;
+    }
+}
+
 .tab-setup-wizard .wizard-dpad {
     position: relative;
     width: 220px;
@@ -768,21 +1017,27 @@ html[data-theme="dark"] .tab-setup-wizard .wizard-bar {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 56px;
-    height: 56px;
+    min-width: 56px;
+    min-height: 56px;
+    padding: 8px 10px;
+    box-sizing: border-box;
     background: var(--accent);
     color: #fff;
     text-decoration: none;
-    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.2;
+    text-align: center;
 }
 
-.tab-setup-wizard .wizard-dpad-up {
+.tab-setup-wizard .wizard-dpad-front {
     top: 0;
     left: 50%;
     transform: translateX(-50%);
 }
 
-.tab-setup-wizard .wizard-dpad-down {
+.tab-setup-wizard .wizard-dpad-back {
     bottom: 0;
     left: 50%;
     transform: translateX(-50%);
@@ -832,6 +1087,19 @@ html[data-theme="dark"] .tab-setup-wizard .wizard-bar {
     margin-top: 2px;
 }
 
+/* 与 .wizard-field-label 同系：左侧 4px 强调条（替代序号圆点） */
+.tab-setup-wizard .wizard-calib-accent-bar {
+    grid-column: 1;
+    width: 4px;
+    min-height: 28px;
+    align-self: start;
+    margin-top: 4px;
+    justify-self: center;
+    background: var(--accent);
+    border-radius: 2px;
+    flex-shrink: 0;
+}
+
 .tab-setup-wizard .wizard-calib-text {
     grid-column: 2;
     margin: 0;
@@ -861,6 +1129,33 @@ html[data-theme="dark"] .tab-setup-wizard .wizard-bar {
     justify-content: flex-end;
 }
 
+/* 尾部螺距页：三块略压缩高度，避免一屏溢出 */
+.tab-setup-wizard .wizard-body--tail-pitch-screen .wizard-calib-block {
+    gap: 5px 10px;
+    margin-bottom: 6px;
+    padding: 5px 8px;
+}
+
+.tab-setup-wizard .wizard-body--tail-pitch-screen .wizard-calib-text {
+    font-size: 0.9rem;
+    line-height: 1.32;
+}
+
+.tab-setup-wizard .wizard-body--tail-pitch-screen .wizard-calib-step-num {
+    width: 26px;
+    height: 26px;
+    font-size: 0.8rem;
+    margin-top: 1px;
+}
+
+.tab-setup-wizard .wizard-body--tail-pitch-screen .wizard-calib-actions {
+    gap: 4px;
+}
+
+.tab-setup-wizard .wizard-body--tail-pitch-screen .wizard-calib-adjust {
+    gap: 6px;
+}
+
 @media (max-width: 700px) {
     .tab-setup-wizard .wizard-body--pitch-calib .wizard-calib-block {
         grid-template-columns: 28px 1fr;
@@ -870,6 +1165,12 @@ html[data-theme="dark"] .tab-setup-wizard .wizard-bar {
     .tab-setup-wizard .wizard-calib-step-num {
         grid-column: 1;
         grid-row: 1;
+    }
+
+    .tab-setup-wizard .wizard-calib-accent-bar {
+        grid-column: 1;
+        grid-row: 1;
+        align-self: start;
     }
 
     .tab-setup-wizard .wizard-calib-text {
@@ -902,30 +1203,6 @@ html[data-theme="dark"] .tab-setup-wizard .wizard-bar {
     background: var(--wizard-surface-elevated);
 }
 
-.tab-setup-wizard .wizard-tail-limits {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
-    text-align: center;
-}
-
-.tab-setup-wizard .wizard-tail-limits > div {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    align-items: center;
-    padding: 12px;
-    border: 1px solid var(--wizard-outline);
-    border-radius: 8px;
-    background: var(--wizard-surface-elevated);
-}
-
-.tab-setup-wizard .wizard-limit-label {
-    font-weight: 700;
-    margin-bottom: 4px;
-    color: var(--defaultText);
-}
-
 .tab-setup-wizard .wizard-form-stack {
     display: flex;
     flex-direction: column;
@@ -938,7 +1215,7 @@ html[data-theme="dark"] .tab-setup-wizard .wizard-bar {
 }
 
 /* 定速器：整表单拉满宽；三列用 grid + minmax(0,1fr) 防止 select 最小宽度把第三列挤出视口 */
-.tab-setup-wizard .wizard-screen[data-screen="9"] .wizard-form-stack {
+.tab-setup-wizard .wizard-screen[data-screen="11"] .wizard-form-stack {
     max-width: none;
     width: 100%;
     min-width: 0;
@@ -1064,6 +1341,13 @@ html[data-theme="dark"] .tab-setup-wizard .wizard-bar {
 
 /* Setup Wizard: Screen 1 "save & reboot" flow (strategy B) */
 .tab-setup-wizard .wizard-btn-next.wizard-next-saving {
+    pointer-events: none;
+    cursor: default;
+    opacity: 0.6;
+}
+
+/* Setup Wizard: Screen 5 servo direction "save immediately" flow */
+.tab-setup-wizard .wizard-dir-group.wizard-dir-saving {
     pointer-events: none;
     cursor: default;
     opacity: 0.6;

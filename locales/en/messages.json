@@ -443,6 +443,129 @@
     "setupWizardIntroLine5": {
         "message": "Click Next to start."
     },
+    "setupWizardIntroRecommendTitle": {
+        "message": "We strongly recommend using our basic preset"
+    },
+    "setupWizardIntroRecommendLine1": {
+        "message": "This is how most people set up the unit; it enables the full RF feature set."
+    },
+    "setupWizardIntroRecommendLine2": {
+        "message": "It mainly configures:"
+    },
+    "setupWizardIntroRecommendLine3": {
+        "message": "ARM switch, profile switch, and flight mode switch."
+    },
+    "setupWizardIntroRecommendLine4": {
+        "message": "It does not lock you to a helicopter type—it only enables basic functions."
+    },
+    "setupWizardIntroRecommendLine5": {
+        "message": "Open Help to see exactly what will change."
+    },
+    "setupWizardQuickBasicSetup": {
+        "message": "Apply basic preset"
+    },
+    "setupWizardQuickBasicWriting": {
+        "message": "Applying…"
+    },
+    "setupWizardQuickBasicDone": {
+        "message": "Basic preset applied"
+    },
+    "setupWizardQuickBasicFailed": {
+        "message": "Could not apply or verify the basic preset. Check modes and adjustments tabs."
+    },
+    "setupWizardQuickBasicNeedAux": {
+        "message": "At least three AUX channels are required (receiver must expose AUX1–AUX3)."
+    },
+    "setupWizardQuickBasicFailedTitle": {
+        "message": "Basic preset failed"
+    },
+    "setupWizardQuickBasicFailUnknown": {
+        "message": "Unknown failure (no detail)."
+    },
+    "setupWizardQuickBasicFailAux": {
+        "message": "AUX channels: need at least {{need}}, current usable AUX count is {{current}}."
+    },
+    "setupWizardQuickBasicFailBoxArm": {
+        "message": "Flight mode list from FC has no ARM (check firmware / MSP_BOXNAMES)."
+    },
+    "setupWizardQuickBasicFailBoxAngle": {
+        "message": "Flight mode list from FC has no ANGLE (check firmware / MSP_BOXNAMES)."
+    },
+    "setupWizardQuickBasicFailBox": {
+        "message": "Box name issue: {{detail}}"
+    },
+    "setupWizardQuickBasicFailModeEmpty": {
+        "message": "No mode ranges returned (MODE_RANGES empty)."
+    },
+    "setupWizardQuickBasicFailModeLen": {
+        "message": "MODE_RANGES length ({{mr}}) does not match MODE_RANGES_EXTRA ({{mre}})."
+    },
+    "setupWizardQuickBasicFailModeNoArm": {
+        "message": "Missing ARM range: AUX1, 1900–2100 µs."
+    },
+    "setupWizardQuickBasicFailModeNoAngle": {
+        "message": "Missing ANGLE range: AUX3, 1900–2100 µs."
+    },
+    "setupWizardQuickBasicFailModeExtraArm": {
+        "message": "Extra ARM ranges found that do not match the target (other channels/ranges must be removed first)."
+    },
+    "setupWizardQuickBasicFailModeExtraAngle": {
+        "message": "Extra ANGLE ranges found that do not match the target (other channels/ranges must be removed first)."
+    },
+    "setupWizardQuickBasicFailMode": {
+        "message": "Mode ranges: {{detail}}"
+    },
+    "setupWizardQuickBasicFailAdjEmpty": {
+        "message": "No adjustment ranges (ADJUSTMENT_RANGES empty)."
+    },
+    "setupWizardQuickBasicFailAdjMissingPid": {
+        "message": "Missing Profile Selection (PID) mapping row matching the preset."
+    },
+    "setupWizardQuickBasicFailAdjMissingRate": {
+        "message": "Missing Rate Profile Selection mapping row matching the preset."
+    },
+    "setupWizardQuickBasicFailAdjBadPid": {
+        "message": "PID/Profile row at slot index {{slot}} does not match preset (ena always, AUX2 map 970–2025 → 1–3)."
+    },
+    "setupWizardQuickBasicFailAdjBadRate": {
+        "message": "Rate row at slot index {{slot}} does not match preset (ena always, AUX2 map 970–2025 → 1–3)."
+    },
+    "setupWizardQuickBasicFailAdjDupPid": {
+        "message": "Multiple PID/Profile mapping rows ({{count}}); only one should remain."
+    },
+    "setupWizardQuickBasicFailAdjDupRate": {
+        "message": "Multiple Rate mapping rows ({{count}}); only one should remain."
+    },
+    "setupWizardQuickBasicFailAdj": {
+        "message": "Adjustments: {{detail}}"
+    },
+    "setupWizardQuickBasicFailModeSlotArm": {
+        "message": "No free mode slot to write ARM (all slots in use; free one in Modes tab)."
+    },
+    "setupWizardQuickBasicFailModeSlotAngle": {
+        "message": "No free mode slot to write ANGLE (all slots in use; free one in Modes tab)."
+    },
+    "setupWizardQuickBasicFailAdjSlotPid": {
+        "message": "No free adjustment slot to write PID/Profile mapping."
+    },
+    "setupWizardQuickBasicFailAdjSlotRate": {
+        "message": "No free adjustment slot to write Rate mapping."
+    },
+    "setupWizardQuickBasicFailPatch": {
+        "message": "Apply error code: {{code}}"
+    },
+    "setupWizardQuickBasicFailPatchNoop": {
+        "message": "Apply produced no changes (unexpected)."
+    },
+    "setupWizardQuickBasicFailVerifyTitle": {
+        "message": "EEPROM saved but verification failed — details:"
+    },
+    "setupWizardQuickBasicFailMspRead": {
+        "message": "MSP read failed or connection lost (could not read back FC state)."
+    },
+    "setupWizardQuickBasicVerifyRetry": {
+        "message": "Verification did not match; retrying one more write to EEPROM."
+    },
     "setupWizardTitleServoType": {
         "message": "Servo Type"
     },
@@ -478,6 +601,24 @@
     },
     "setupWizardInstallDirection": {
         "message": "Install orientation"
+    },
+    "setupWizardSwashHr3_120": {
+        "message": "HR3 120"
+    },
+    "setupWizardSwashHr3_135": {
+        "message": "HR3 135"
+    },
+    "setupWizardSwashHr3_140": {
+        "message": "HR3 140"
+    },
+    "setupWizardSwashH3_120": {
+        "message": "H3 120"
+    },
+    "setupWizardSwashH3_135": {
+        "message": "H3 135"
+    },
+    "setupWizardSwashH3_140": {
+        "message": "H3 140"
     },
     "setupWizardSwashH3": {
         "message": "120° H3"
@@ -518,14 +659,29 @@
     "setupWizardReceiverHint": {
         "message": "Plug the receiver into the CRSF port."
     },
-    "setupWizardStatusFlightMode": {
-        "message": "Flight mode: 1"
+    "setupWizardReceiverStatusArmLabel": {
+        "message": "ARM:"
     },
-    "setupWizardStatusArming": {
-        "message": "Arming: armed"
+    "setupWizardReceiverArmYes": {
+        "message": "Yes"
     },
-    "setupWizardStatusThrottle": {
-        "message": "Throttle: +80"
+    "setupWizardReceiverArmNo": {
+        "message": "No"
+    },
+    "setupWizardReceiverStatusThrottleLabel": {
+        "message": "Throttle:"
+    },
+    "setupWizardReceiverStatusBankLabel": {
+        "message": "Bank:"
+    },
+    "setupWizardReceiverStatusMotorLabel": {
+        "message": "Motor:"
+    },
+    "setupWizardReceiverMotorStarted": {
+        "message": "Started"
+    },
+    "setupWizardReceiverMotorStopped": {
+        "message": "Stopped"
     },
     "setupWizardChannelCollective": {
         "message": "Collective"
@@ -538,6 +694,27 @@
     },
     "setupWizardChannelAileron": {
         "message": "Aileron"
+    },
+    "setupWizardReceiverPctZero": {
+        "message": "0%"
+    },
+    "setupWizardReceiverPctPitchForward": {
+        "message": "Forward {{percent}}%"
+    },
+    "setupWizardReceiverPctPitchBack": {
+        "message": "Aft {{percent}}%"
+    },
+    "setupWizardReceiverPctLateralRight": {
+        "message": "Right {{percent}}%"
+    },
+    "setupWizardReceiverPctLateralLeft": {
+        "message": "Left {{percent}}%"
+    },
+    "setupWizardReceiverPctCollectivePos": {
+        "message": "Positive pitch {{percent}}%"
+    },
+    "setupWizardReceiverPctCollectiveNeg": {
+        "message": "Negative pitch {{percent}}%"
     },
     "setupWizardTitleServoDir": {
         "message": "Servo Direction"
@@ -605,6 +782,18 @@
     "setupWizardSwashLevelHint": {
         "message": "Use the buttons below to adjust the swash so it is perpendicular to the main shaft."
     },
+    "setupWizardSwashFront": {
+        "message": "Front"
+    },
+    "setupWizardSwashBack": {
+        "message": "Back"
+    },
+    "setupWizardSwashLeft": {
+        "message": "Left"
+    },
+    "setupWizardSwashRight": {
+        "message": "Right"
+    },
     "setupWizardTitlePitchCalib": {
         "message": "Pitch Calibration"
     },
@@ -622,6 +811,9 @@
     },
     "setupWizardTestBtn": {
         "message": "Test"
+    },
+    "setupWizardTestEndBtn": {
+        "message": "Finish"
     },
     "setupWizardIncrease": {
         "message": "Increase"
@@ -646,6 +838,27 @@
     },
     "setupWizardRightLimit": {
         "message": "Right limit"
+    },
+    "setupWizardTitleTailPitch": {
+        "message": "Tail pitch adjustment"
+    },
+    "setupWizardTailZeroStep": {
+        "message": "Click Test on the right, then adjust until tail blade pitch is 0°."
+    },
+    "setupWizardTailPitch22Step": {
+        "message": "Click Test on the right, then adjust until tail blade pitch is 22°."
+    },
+    "setupWizardTailTravelLeftStep": {
+        "message": "Click Test, then adjust the left travel until it is near the limit."
+    },
+    "setupWizardTailTravelRightStep": {
+        "message": "Click Test, then adjust the right travel until it is near the limit."
+    },
+    "setupWizardTailLeft": {
+        "message": "Left"
+    },
+    "setupWizardTailRight": {
+        "message": "Right"
     },
     "setupWizardTitleGovernor": {
         "message": "Governor"
