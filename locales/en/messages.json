@@ -443,6 +443,12 @@
     "setupWizardIntroLine5": {
         "message": "Click Next to start."
     },
+    "setupWizardIntroLine6": {
+        "message": "This is an alpha build; unknown bugs may exist. The governor page has no real functionality yet. Experienced users are strongly advised to verify parameters via other tabs."
+    },
+    "setupWizardIntroLine7": {
+        "message": "This section was designed by C4Master (C4教主) to simplify the Rotorflight setup workflow."
+    },
     "setupWizardIntroRecommendTitle": {
         "message": "We strongly recommend using our basic preset"
     },

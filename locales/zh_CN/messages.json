@@ -429,6 +429,12 @@
     "setupWizardIntroLine5": {
         "message": "点击下一步开始调机。"
     },
+    "setupWizardIntroLine6": {
+        "message": "当前为alpha测试版本，存在各种不可知的bug。定速器页面尚无任何实际功能。强烈建议有经验者使用，并通过其他页面验证参数是否启用。"
+    },
+    "setupWizardIntroLine7": {
+        "message": "本部分由C4教主(C4Master)设计，旨在简化Rotorflight的设定流程。"
+    },
     "setupWizardIntroRecommendTitle": {
         "message": "强烈推荐您使用我们的基础设置"
     },
