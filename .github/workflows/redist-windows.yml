@@ -20,6 +20,9 @@ run-name: Windows redist cloud
 jobs:
   win64:
     runs-on: windows-latest
+    env:
+      # Use Node 24 for JS-based actions (checkout, setup-python, pnpm); silences deprecation warning.
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
       - name: Check out repository
@@ -31,9 +34,9 @@ jobs:
           python-version: "3.11"
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v5
         with:
-          version: 10
+          # Do not set "version": package.json has "packageManager". Both together triggers ERR_PNPM_BAD_PM_VERSION.
           run_install: false
 
       - name: Install Node.js
