@@ -14,7 +14,8 @@ on:
         required: false
         default: ""
 
-run-name: Windows redist (${{ inputs.semver != '' && inputs.semver || 'package.json version' }})
+# Avoid complex expressions in run-name (can prevent workflow from loading on GitHub).
+run-name: Windows redist cloud
 
 jobs:
   win64:
