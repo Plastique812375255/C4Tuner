@@ -2,6 +2,7 @@ import semver from 'semver';
 import * as config from '@/js/config.js';
 import { API_VERSION_12_8 } from '@/js/configurator.svelte.js';
 import { Mixer } from '@/js/Mixer.js';
+import { serial } from '@/js/serial.js';
 import { reinitialiseConnection } from "@/js/serial_backend.js";
 
 const tab = {
@@ -55,6 +56,21 @@ const WIZARD_MIXER_TAIL_SCALE_MOTOR = 0.1;
 const WIZARD_SWASH_TRIM_STEP = 2;
 /** ±100.0% display range → ±1000 internal (mixer inputs use max 100 on form). */
 const WIZARD_SWASH_TRIM_ABS_MAX = 1000;
+
+/** 与 `mixer.html` 循环/集体螺距校准一致：min 20–200%，step 0.1%；内部 rate 为显示值×10。 */
+const WIZARD_PITCH_CALIB_RATE_STEP = 2;
+const WIZARD_PITCH_CALIB_RATE_ABS_MIN = 200;
+const WIZARD_PITCH_CALIB_RATE_ABS_MAX = 2000;
+
+/** 尾桨航向校准（`mixerTailRotorCalibration`）：显示 10–500%，每次 ±0.2% → rate ±2。 */
+const WIZARD_TAIL_YAW_CALIB_RATE_ABS_MIN = 100;
+const WIZARD_TAIL_YAW_CALIB_RATE_ABS_MAX = 5000;
+
+/** 尾桨中心微调：与混控一致，电动尾为 %、普通尾桨为 °，每次 ±0.2。 */
+const WIZARD_TAIL_CENTER_TRIM_STEP_DISP = 0.2;
+
+/** 尾桨行程极限：与混控 `mixerTailRotorMinYaw` / `MaxYaw`（或 Motor 等价）一致，每次 ±0.2（显示单位）。 */
+const WIZARD_TAIL_TRAVEL_STEP_DISP = 0.2;
 
 // Keep in sync with `src/js/tabs/servos.js` (FLAG_REVERSE = 1).
 const SERVO_FLAG_REVERSE = 1;
@@ -802,12 +818,15 @@ function loadQuickBasicMspData() {
 function setWizardQuickBasicUIState(state) {
     wizardQuickBasicUiState = state;
     const $root = $('.tab-setup-wizard');
+    // Always strip root classes first: if `.wizard-btn-quick-basic` is missing we used to return early
+    // and left `wizard-quick-basic-busy` on the DOM while JS state could already be `idle`.
+    $root.removeClass('wizard-quick-basic-busy wizard-quick-basic-done');
+
     const $btn = $root.find('.wizard-btn-quick-basic');
     if (!$btn.length) {
         return;
     }
 
-    $root.removeClass('wizard-quick-basic-busy wizard-quick-basic-done');
     $btn.removeClass('wizard-btn-quick-basic--done');
     $btn.prop('disabled', false);
 
@@ -921,6 +940,11 @@ function runWizardQuickBasicWrite() {
             GUI.log(i18n.getMessage('setupWizardQuickBasicFailedTitle'));
             GUI.log(i18n.getMessage('setupWizardQuickBasicFailMspRead'));
             setWizardQuickBasicUIState('idle');
+        })
+        .finally(() => {
+            if (wizardQuickBasicUiState === 'writing') {
+                setWizardQuickBasicUIState('idle');
+            }
         });
 }
 
@@ -1047,11 +1071,31 @@ function syncWizardMixerScreen10Idle() {
 function resetPitchCalibScreenUI() {
     const $s = $('.tab-setup-wizard .wizard-screen[data-screen="8"]');
     if (!$s.length) return;
-    $s.removeClass('wizard-pitch-test-mode-collective wizard-pitch-test-mode-cyclic');
+    $s.removeClass(
+        'wizard-pitch-test-mode-collective wizard-pitch-test-mode-cyclic wizard-pitch-zero-test-mode',
+    );
     $s.find('.wizard-topbar a.regular-button, .wizard-footer a.regular-button').removeClass('disabled');
     $s.find('.wizard-body--pitch-calib .wizard-calib-block .regular-button').removeClass('disabled');
     $s.find('.wizard-calib-pitch-test-btn').text(i18n.getMessage('setupWizardTestBtn'));
     $s.find('.wizard-calib-pitch-adjust-btn').addClass('disabled');
+    $s.find('.wizard-calib-pitch-zero-btn').text(i18n.getMessage('setupWizardZeroBtn'));
+}
+
+/** 第一步「归零」：混控四轴覆盖为 0°；顶栏/底栏及其余块置灰，归零键变为「完成」。 */
+function applyPitchZeroTestModeActive() {
+    const $s = $('.tab-setup-wizard .wizard-screen[data-screen="8"]');
+    if (!$s.length) return;
+    resetPitchCalibScreenUI();
+    $s.addClass('wizard-pitch-zero-test-mode');
+    $s.find('.wizard-topbar a.regular-button, .wizard-footer a.regular-button').addClass('disabled');
+    $s.find('.wizard-pitch-calib-main .regular-button').addClass('disabled');
+    $s.find('.wizard-calib-pitch-zero-btn').removeClass('disabled').text(i18n.getMessage('setupWizardTestEndBtn'));
+    wizardSetFourAxes({ mode: 'values', roll: 0, pitch: 0, collective: 0, tail: 0 });
+}
+
+function exitPitchZeroTestMode() {
+    resetPitchCalibScreenUI();
+    syncWizardMixerScreen8Idle();
 }
 
 /** 集体 / 循环螺距：测试进行中时，仅当前块内「结束 + 增加/降低」可点，其余按钮置灰。 */
@@ -1450,6 +1494,397 @@ function mixerInputDirectionSign(inputIndex) {
     return inputs[inputIndex].rate < 0 ? -1 : 1;
 }
 
+/** Same scaling as `mixer.js` `data_to_form` for mixer input rate → display %. */
+function wizardMixerInputRateAbsPercent(inputIndex) {
+    const r = FC.MIXER_INPUTS?.[inputIndex]?.rate;
+    if (typeof r !== 'number') {
+        return null;
+    }
+    return Math.abs(r) * 0.1;
+}
+
+/** Tail center trim display string (motor: %, rotor: °) — matches mixer tab. */
+function wizardFormatTailCenterTrimDisplay() {
+    const mode = FC.MIXER_CONFIG?.tail_rotor_mode;
+    const t = FC.MIXER_CONFIG?.tail_center_trim;
+    if (typeof mode !== 'number' || typeof t !== 'number') {
+        return '—';
+    }
+    if (mode > 0) {
+        return `${(t * 0.1).toFixed(1)}%`;
+    }
+    return `${((t * 24) / 1000).toFixed(1)}°`;
+}
+
+/** Tail yaw travel limits in degrees for display — matches mixer tab min/max fields. */
+function wizardTailYawMinDegDisplay() {
+    const motor = FC.MIXER_CONFIG?.tail_rotor_mode > 0;
+    const min = FC.MIXER_INPUTS?.[MIXER_INPUT_TAIL_INDEX]?.min;
+    if (typeof min !== 'number') {
+        return null;
+    }
+    if (motor) {
+        return min * -0.1;
+    }
+    return (min * -24) / 1000;
+}
+
+function wizardTailYawMaxDegDisplay() {
+    const motor = FC.MIXER_CONFIG?.tail_rotor_mode > 0;
+    const max = FC.MIXER_INPUTS?.[MIXER_INPUT_TAIL_INDEX]?.max;
+    if (typeof max !== 'number') {
+        return null;
+    }
+    if (motor) {
+        return max * 0.1;
+    }
+    return (max * 24) / 1000;
+}
+
+function updateWizardScreen6Live() {
+    const t = FC.MIXER_CONFIG?.swash_trim?.[2];
+    const v = typeof t === 'number' ? t * 0.1 : null;
+    const num = v === null ? '—' : v.toFixed(1);
+    const text = i18n.getMessage('setupWizardLiveCollectiveTrim', { value: num });
+    $('.tab-setup-wizard .wizard-screen[data-screen="6"] .wizard-zero-pitch-live').text(text);
+}
+
+/**
+ * Roll trim (swash_trim[0]): 与 `.wizard-dpad-btn` 左/右键一致，方向由 `mixerInputDirectionSign(AILERON)` 决定。
+ * 语义符号 = rawTrim * ailSign：正 → 右，负 → 左；数值为绝对值 %。
+ */
+function wizardSwashRollDirAndAbsPct(rawTrim) {
+    if (typeof rawTrim !== 'number') {
+        return { dir: '—', val: '—' };
+    }
+    const pct = rawTrim * 0.1;
+    const av = Math.abs(pct);
+    if (av < 1e-9) {
+        return { dir: i18n.getMessage('setupWizardSwashTrimCenter'), val: '0.0' };
+    }
+    const semantic = rawTrim * mixerInputDirectionSign(MIXER_INPUT_AILERON_INDEX);
+    const dir =
+        semantic > 0
+            ? i18n.getMessage('setupWizardSwashRight')
+            : i18n.getMessage('setupWizardSwashLeft');
+    return { dir, val: av.toFixed(1) };
+}
+
+/**
+ * Pitch trim (swash_trim[1]): 与前/后键一致，方向由 `mixerInputDirectionSign(ELEVATOR)` 决定。
+ * 语义符号 = rawTrim * elevSign：正 → 前，负 → 后；数值为绝对值 %。
+ */
+function wizardSwashPitchDirAndAbsPct(rawTrim) {
+    if (typeof rawTrim !== 'number') {
+        return { dir: '—', val: '—' };
+    }
+    const pct = rawTrim * 0.1;
+    const av = Math.abs(pct);
+    if (av < 1e-9) {
+        return { dir: i18n.getMessage('setupWizardSwashTrimCenter'), val: '0.0' };
+    }
+    const semantic = rawTrim * mixerInputDirectionSign(MIXER_INPUT_ELEVATOR_INDEX);
+    const dir =
+        semantic > 0
+            ? i18n.getMessage('setupWizardSwashFront')
+            : i18n.getMessage('setupWizardSwashBack');
+    return { dir, val: av.toFixed(1) };
+}
+
+function updateWizardScreen7Live() {
+    const raw0 = FC.MIXER_CONFIG?.swash_trim?.[0];
+    const raw1 = FC.MIXER_CONFIG?.swash_trim?.[1];
+    const roll = wizardSwashRollDirAndAbsPct(raw0);
+    const pitch = wizardSwashPitchDirAndAbsPct(raw1);
+    const text = i18n.getMessage('setupWizardLiveSwashAdjust', {
+        rollDir: roll.dir,
+        rollVal: roll.val,
+        pitchDir: pitch.dir,
+        pitchVal: pitch.val,
+    });
+    $('.tab-setup-wizard .wizard-screen[data-screen="7"] .wizard-swash-level-live').text(text);
+}
+
+function updateWizardScreen8Live() {
+    const coll = wizardMixerInputRateAbsPercent(MIXER_INPUT_COLLECTIVE_INDEX);
+    const cyc = wizardMixerInputRateAbsPercent(MIXER_INPUT_AILERON_INDEX);
+    const collStr = coll === null ? '—' : coll.toFixed(1);
+    const cycStr = cyc === null ? '—' : cyc.toFixed(1);
+    const $s = $('.tab-setup-wizard .wizard-screen[data-screen="8"]');
+    $s.find('.wizard-calib-block--pitch-collective .wizard-calib-live').text(
+        i18n.getMessage('setupWizardLiveCollectiveCalib', { value: collStr }),
+    );
+    $s.find('.wizard-calib-block--pitch-cyclic .wizard-calib-live').text(
+        i18n.getMessage('setupWizardLiveCyclicCalib', { value: cycStr }),
+    );
+}
+
+function updateWizardScreen9Live() {
+    const val = wizardFormatTailCenterTrimDisplay();
+    const text = i18n.getMessage('setupWizardLiveTailTrim', { value: val });
+    $('.tab-setup-wizard .wizard-screen[data-screen="9"] .wizard-calib-block--tail-zero .wizard-calib-live').text(text);
+}
+
+function updateWizardScreen10Live() {
+    const yaw = wizardMixerInputRateAbsPercent(MIXER_INPUT_TAIL_INDEX);
+    const yawStr = yaw === null ? '—' : yaw.toFixed(1);
+    const minD = wizardTailYawMinDegDisplay();
+    const maxD = wizardTailYawMaxDegDisplay();
+    const minStr = minD === null ? '—' : minD.toFixed(1);
+    const maxStr = maxD === null ? '—' : maxD.toFixed(1);
+    const $s = $('.tab-setup-wizard .wizard-screen[data-screen="10"]');
+    $s.find('.wizard-calib-block--tail-pitch22 .wizard-calib-live').text(
+        i18n.getMessage('setupWizardLiveTailYawCalib', { value: yawStr }),
+    );
+    $s.find('.wizard-calib-block--tail-travel-left .wizard-calib-live').text(
+        i18n.getMessage('setupWizardLiveTailYawLimitCCW', { value: minStr }),
+    );
+    $s.find('.wizard-calib-block--tail-travel-right .wizard-calib-live').text(
+        i18n.getMessage('setupWizardLiveTailYawLimitCW', { value: maxStr }),
+    );
+}
+
+function updateWizardMixerLiveForScreen(screenIndex) {
+    const i = screenIndex | 0;
+    if (i === 6) {
+        updateWizardScreen6Live();
+    } else if (i === 7) {
+        updateWizardScreen7Live();
+    } else if (i === 8) {
+        updateWizardScreen8Live();
+    } else if (i === 9) {
+        updateWizardScreen9Live();
+    } else if (i === 10) {
+        updateWizardScreen10Live();
+    }
+}
+
+/**
+ * 第 8 页螺距校正：增加/降低集体或循环校准（与混控页 `mixerCyclicCalibration` / `mixerCollectiveCalibration` 一致）。
+ * 显示每次变化 0.2% → 内部 rate 变化 ±2。
+ */
+function applyWizardPitchCalibrationAdjust(isCollective, increase) {
+    if (wizardPitchCalibSaveInProgress) {
+        return;
+    }
+    const inputs = FC.MIXER_INPUTS;
+    if (!Array.isArray(inputs)) {
+        return;
+    }
+    const deltaSign = increase ? 1 : -1;
+
+    if (isCollective) {
+        const inp = inputs[MIXER_INPUT_COLLECTIVE_INDEX];
+        if (!inp || typeof inp.rate !== 'number') {
+            return;
+        }
+        const dir = mixerInputDirectionSign(MIXER_INPUT_COLLECTIVE_INDEX);
+        const curAbs = Math.abs(inp.rate);
+        let nextAbs = curAbs + deltaSign * WIZARD_PITCH_CALIB_RATE_STEP;
+        nextAbs = Math.max(
+            WIZARD_PITCH_CALIB_RATE_ABS_MIN,
+            Math.min(WIZARD_PITCH_CALIB_RATE_ABS_MAX, nextAbs),
+        );
+        if (nextAbs === curAbs) {
+            return;
+        }
+        inp.rate = nextAbs * dir;
+        wizardPitchCalibSaveInProgress = true;
+        mspHelper.sendMixerInput(MIXER_INPUT_COLLECTIVE_INDEX, function () {
+            MSP.send_message(MSPCodes.MSP_EEPROM_WRITE, false, false, function () {
+                wizardPitchCalibSaveInProgress = false;
+                updateWizardScreen8Live();
+            });
+        });
+        return;
+    }
+
+    const i1 = inputs[MIXER_INPUT_AILERON_INDEX];
+    const i2 = inputs[MIXER_INPUT_ELEVATOR_INDEX];
+    if (!i1 || !i2 || typeof i1.rate !== 'number' || typeof i2.rate !== 'number') {
+        return;
+    }
+    const ailDir = mixerInputDirectionSign(MIXER_INPUT_AILERON_INDEX);
+    const elevDir = mixerInputDirectionSign(MIXER_INPUT_ELEVATOR_INDEX);
+    const curAbs = Math.abs(i1.rate);
+    let nextAbs = curAbs + deltaSign * WIZARD_PITCH_CALIB_RATE_STEP;
+    nextAbs = Math.max(
+        WIZARD_PITCH_CALIB_RATE_ABS_MIN,
+        Math.min(WIZARD_PITCH_CALIB_RATE_ABS_MAX, nextAbs),
+    );
+    if (nextAbs === curAbs) {
+        return;
+    }
+    i1.rate = nextAbs * ailDir;
+    i2.rate = nextAbs * elevDir;
+    wizardPitchCalibSaveInProgress = true;
+    mspHelper.sendMixerInput(MIXER_INPUT_AILERON_INDEX, function () {
+        mspHelper.sendMixerInput(MIXER_INPUT_ELEVATOR_INDEX, function () {
+            MSP.send_message(MSPCodes.MSP_EEPROM_WRITE, false, false, function () {
+                wizardPitchCalibSaveInProgress = false;
+                updateWizardScreen8Live();
+            });
+        });
+    });
+}
+
+function wizardSendMixerConfigThenEeprom(onDone) {
+    MSP.send_message(MSPCodes.MSP_SET_MIXER_CONFIG, mspHelper.crunch(MSPCodes.MSP_SET_MIXER_CONFIG), false, function () {
+        MSP.send_message(MSPCodes.MSP_EEPROM_WRITE, false, false, onDone);
+    });
+}
+
+function wizardSendMixerInput3ThenEeprom(onDone) {
+    mspHelper.sendMixerInput(MIXER_INPUT_TAIL_INDEX, function () {
+        MSP.send_message(MSPCodes.MSP_EEPROM_WRITE, false, false, onDone);
+    });
+}
+
+/**
+ * 第 9 页：左/右调整尾桨中心微调（`tail_center_trim`），与混控 `mixerTailMotorCenterTrim` / `mixerTailRotorCenterTrim` 一致。
+ * 右为增加、左为减少，步长 0.2（% 或 °）。
+ */
+function applyWizardTailCenterTrimAdjust(isRight) {
+    if (wizardTailMixerSaveInProgress || !FC.MIXER_CONFIG) {
+        return;
+    }
+    const t = FC.MIXER_CONFIG.tail_center_trim;
+    if (typeof t !== 'number') {
+        return;
+    }
+    const motor = FC.MIXER_CONFIG.tail_rotor_mode > 0;
+    const deltaSign = isRight ? 1 : -1;
+    const step = WIZARD_TAIL_CENTER_TRIM_STEP_DISP;
+
+    let next;
+    if (motor) {
+        let disp = t * 0.1;
+        disp += deltaSign * step;
+        disp = Math.max(-50, Math.min(50, disp));
+        next = Math.round(disp * 10);
+    } else {
+        let disp = (t * 24) / 1000;
+        disp += deltaSign * step;
+        disp = Math.max(-25, Math.min(25, disp));
+        next = Math.round(disp * (1000 / 24));
+    }
+    if (next === t) {
+        return;
+    }
+    FC.MIXER_CONFIG.tail_center_trim = next;
+    wizardTailMixerSaveInProgress = true;
+    wizardSendMixerConfigThenEeprom(function () {
+        wizardTailMixerSaveInProgress = false;
+        updateWizardScreen9Live();
+    });
+}
+
+/**
+ * 第 10 页第 1 块：航向校准（`MIXER_INPUTS[3].rate` 幅值），与 `mixerTailRotorCalibration` 一致，每次 ±0.2%。
+ */
+function applyWizardTailYawCalibrationAdjust(increase) {
+    if (wizardTailMixerSaveInProgress) {
+        return;
+    }
+    const inp = FC.MIXER_INPUTS?.[MIXER_INPUT_TAIL_INDEX];
+    if (!inp || typeof inp.rate !== 'number') {
+        return;
+    }
+    const dir = mixerInputDirectionSign(MIXER_INPUT_TAIL_INDEX);
+    const deltaSign = increase ? 1 : -1;
+    const curAbs = Math.abs(inp.rate);
+    let nextAbs = curAbs + deltaSign * WIZARD_PITCH_CALIB_RATE_STEP;
+    nextAbs = Math.max(
+        WIZARD_TAIL_YAW_CALIB_RATE_ABS_MIN,
+        Math.min(WIZARD_TAIL_YAW_CALIB_RATE_ABS_MAX, nextAbs),
+    );
+    if (nextAbs === curAbs) {
+        return;
+    }
+    inp.rate = nextAbs * dir;
+    wizardTailMixerSaveInProgress = true;
+    wizardSendMixerInput3ThenEeprom(function () {
+        wizardTailMixerSaveInProgress = false;
+        updateWizardScreen10Live();
+    });
+}
+
+/**
+ * 第 10 页第 2 块：逆时针/左侧行程极限（`INPUTS[3].min`），与混控 `mixerTailRotorMinYaw` / `mixerTailMotorMinYaw` 显示一致。
+ */
+function applyWizardTailTravelMinAdjust(increase) {
+    if (wizardTailMixerSaveInProgress) {
+        return;
+    }
+    const inp = FC.MIXER_INPUTS?.[MIXER_INPUT_TAIL_INDEX];
+    if (!inp || typeof inp.min !== 'number') {
+        return;
+    }
+    const motor = FC.MIXER_CONFIG?.tail_rotor_mode > 0;
+    const deltaSign = increase ? 1 : -1;
+    const step = WIZARD_TAIL_TRAVEL_STEP_DISP;
+    let nextMin;
+
+    if (motor) {
+        let d = -inp.min * 0.1;
+        d += deltaSign * step;
+        d = Math.max(0, Math.min(200, d));
+        nextMin = Math.round(-d * 10);
+    } else {
+        let d = (-inp.min * 24) / 1000;
+        d += deltaSign * step;
+        d = Math.max(0, Math.min(60, d));
+        nextMin = Math.round(-d * (1000 / 24));
+    }
+    if (nextMin === inp.min) {
+        return;
+    }
+    inp.min = nextMin;
+    wizardTailMixerSaveInProgress = true;
+    wizardSendMixerInput3ThenEeprom(function () {
+        wizardTailMixerSaveInProgress = false;
+        updateWizardScreen10Live();
+    });
+}
+
+/**
+ * 第 10 页第 3 块：顺时针/右侧行程极限（`INPUTS[3].max`）。
+ */
+function applyWizardTailTravelMaxAdjust(increase) {
+    if (wizardTailMixerSaveInProgress) {
+        return;
+    }
+    const inp = FC.MIXER_INPUTS?.[MIXER_INPUT_TAIL_INDEX];
+    if (!inp || typeof inp.max !== 'number') {
+        return;
+    }
+    const motor = FC.MIXER_CONFIG?.tail_rotor_mode > 0;
+    const deltaSign = increase ? 1 : -1;
+    const step = WIZARD_TAIL_TRAVEL_STEP_DISP;
+    let nextMax;
+
+    if (motor) {
+        let d = inp.max * 0.1;
+        d += deltaSign * step;
+        d = Math.max(0, Math.min(200, d));
+        nextMax = Math.round(d * 10);
+    } else {
+        let d = (inp.max * 24) / 1000;
+        d += deltaSign * step;
+        d = Math.max(0, Math.min(60, d));
+        nextMax = Math.round(d * (1000 / 24));
+    }
+    if (nextMax === inp.max) {
+        return;
+    }
+    inp.max = nextMax;
+    wizardTailMixerSaveInProgress = true;
+    wizardSendMixerInput3ThenEeprom(function () {
+        wizardTailMixerSaveInProgress = false;
+        updateWizardScreen10Live();
+    });
+}
+
 function applyWizardSwashTrimDelta(trimIndex, delta) {
     if (!FC.MIXER_CONFIG?.swash_trim || wizardSwashTrimSaveInProgress) {
         return;
@@ -1468,15 +1903,32 @@ function applyWizardSwashTrimDelta(trimIndex, delta) {
     MSP.send_message(MSPCodes.MSP_SET_MIXER_CONFIG, mspHelper.crunch(MSPCodes.MSP_SET_MIXER_CONFIG), false, function () {
         MSP.send_message(MSPCodes.MSP_EEPROM_WRITE, false, false, function () {
             wizardSwashTrimSaveInProgress = false;
+            updateWizardScreen6Live();
+            updateWizardScreen7Live();
         });
     });
 }
 
-/** Refresh mixer config + inputs when entering zero-pitch / swash-level screens (best-effort). */
-function refreshWizardMixerDataForSwashTrim() {
-    MSP.promise(MSPCodes.MSP_MIXER_CONFIG)
+/** Refresh mixer config + inputs for wizard screens 6–10 (best-effort). */
+function refreshWizardMixerData() {
+    return MSP.promise(MSPCodes.MSP_MIXER_CONFIG)
         .then(() => MSP.promise(MSPCodes.MSP_MIXER_INPUTS))
         .catch(() => {});
+}
+
+/**
+ * 进入「更多设置」前拉取最新混控配置，再按飞控实际值预选（顺时针/逆时针、正向/反向集体螺距）。
+ * 避免内存中的 FC 与飞控不一致导致选错；拉取失败时仍用当前内存 best-effort 同步 UI。
+ */
+function refreshMixerConfigForMoreSettingsThenApply() {
+    return MSP.promise(MSPCodes.MSP_MIXER_CONFIG)
+        .then(() => MSP.promise(MSPCodes.MSP_MIXER_INPUTS))
+        .then(() => {
+            applyMoreSettingsUIFromFC();
+        })
+        .catch(() => {
+            applyMoreSettingsUIFromFC();
+        });
 }
 
 function goToScreen(index) {
@@ -1496,15 +1948,19 @@ function goToScreen(index) {
         patchServoDirIndexFromFC();
     }
     if (i === 3 && !wizardMoreSettingsSaveInProgress) {
+        // 先用当前内存中的 FC 立即预选，避免短暂显示 HTML 默认项；再拉 MSP 与飞控对齐。
         applyMoreSettingsUIFromFC();
+        refreshMixerConfigForMoreSettingsThenApply();
     }
     if (i === 4) {
         startWizardReceiverPolling();
     } else {
         stopWizardReceiverPolling();
     }
-    if (i === 6 || i === 7) {
-        refreshWizardMixerDataForSwashTrim();
+    if (i >= 6 && i <= 10) {
+        refreshWizardMixerData().then(() => {
+            updateWizardMixerLiveForScreen(i);
+        });
     }
     resetPitchCalibScreenUI();
     resetTailZeroCalibUI();
@@ -1896,6 +2352,12 @@ let wizardMoreSettingsSaveInProgress = false;
 /** True while MSP_SET_MIXER_CONFIG + EEPROM for swash trim from wizard screens 6/7 is in flight. */
 let wizardSwashTrimSaveInProgress = false;
 
+/** True while MSP_SET_MIXER_INPUT + EEPROM for screen 8 pitch calibration adjust is in flight. */
+let wizardPitchCalibSaveInProgress = false;
+
+/** True while tail trim / mixer input 3 adjust from screens 9–10 is in flight. */
+let wizardTailMixerSaveInProgress = false;
+
 let wizardBaseSaveInProgress = false;
 let wizardBaseDirty = false;
 let wizardBaseBaseline = { swash: '', install: '' };
@@ -1918,13 +2380,15 @@ function applyMoreSettingsUIFromFC() {
 
     wizardMoreSettingsApplying = true;
     try {
-        const rotorDir = FC?.MIXER_CONFIG?.main_rotor_dir;
+        // 与 `mixer.html` #mixerMainRotorDirection 一致：0 顺时针，1 逆时针（勿用 === 1，固件可能给字符串）
+        const rotorDir = parseInt(FC?.MIXER_CONFIG?.main_rotor_dir, 10);
         const rotVal = rotorDir === 1 ? '1' : '0';
         $screen.find(`input[name="more_rotation_dir"][value="${rotVal}"]`).prop('checked', true);
 
-        const collRate = FC?.MIXER_INPUTS?.[MIXER_INPUT_COLLECTIVE_INDEX]?.rate;
-        const pitchVal =
-            typeof collRate === 'number' && collRate < 0 ? 'negative' : 'positive';
+        // 与混控页 #mixerCollectiveDirection 一致：集体输入 rate<0 为反向（向下），否则为正向（向上）
+        const collRaw = FC?.MIXER_INPUTS?.[MIXER_INPUT_COLLECTIVE_INDEX]?.rate;
+        const collRate = Number(collRaw);
+        const pitchVal = Number.isFinite(collRate) && collRate < 0 ? 'negative' : 'positive';
         $screen.find(`input[name="more_positive_pitch_dir"][value="${pitchVal}"]`).prop('checked', true);
     } catch {
         /* ignore */
@@ -2388,9 +2852,29 @@ function bindWizardEvents() {
         },
     );
 
+    $('.tab-setup-wizard').on('click', '.wizard-calib-pitch-zero-btn', function (e) {
+        e.preventDefault();
+        if ($(this).hasClass('disabled')) return;
+        const $screen8 = $('.tab-setup-wizard .wizard-screen[data-screen="8"]');
+        if ($screen8.hasClass('wizard-pitch-zero-test-mode')) {
+            exitPitchZeroTestMode();
+            return;
+        }
+        if (
+            $screen8.hasClass('wizard-pitch-test-mode-collective') ||
+            $screen8.hasClass('wizard-pitch-test-mode-cyclic')
+        ) {
+            return;
+        }
+        applyPitchZeroTestModeActive();
+    });
+
     $('.tab-setup-wizard').on('click', '.wizard-calib-pitch-test-btn', function (e) {
         e.preventDefault();
         const $screen8 = $('.tab-setup-wizard .wizard-screen[data-screen="8"]');
+        if ($screen8.hasClass('wizard-pitch-zero-test-mode')) {
+            return;
+        }
         const collective = $(this).closest('.wizard-calib-block').hasClass('wizard-calib-block--pitch-collective');
         const modeClass = collective ? 'wizard-pitch-test-mode-collective' : 'wizard-pitch-test-mode-cyclic';
         if ($screen8.hasClass(modeClass)) {
@@ -2410,7 +2894,10 @@ function bindWizardEvents() {
     $('.tab-setup-wizard').on('click', '.wizard-calib-pitch-adjust-btn', function (e) {
         e.preventDefault();
         if ($(this).hasClass('disabled')) return;
-        GUI.log(i18n.getMessage('setupWizardDemoAdjust'));
+        const $adj = $(this).closest('.wizard-calib-adjust');
+        const increase = $adj.find('.wizard-calib-pitch-adjust-btn').index($(this)) === 0;
+        const collective = $(this).closest('.wizard-calib-block').hasClass('wizard-calib-block--pitch-collective');
+        applyWizardPitchCalibrationAdjust(collective, increase);
     });
 
     $('.tab-setup-wizard').on('click', '.wizard-calib-tail-zero-test-btn', function (e) {
@@ -2427,7 +2914,9 @@ function bindWizardEvents() {
     $('.tab-setup-wizard').on('click', '.wizard-calib-tail-zero-adjust-btn', function (e) {
         e.preventDefault();
         if ($(this).hasClass('disabled')) return;
-        GUI.log(i18n.getMessage('setupWizardDemoAdjust'));
+        const isRight =
+            $(this).closest('.wizard-calib-adjust').find('.wizard-calib-tail-zero-adjust-btn').index($(this)) === 1;
+        applyWizardTailCenterTrimAdjust(isRight);
     });
 
     $('.tab-setup-wizard').on(
@@ -2445,14 +2934,26 @@ function bindWizardEvents() {
         function (e) {
             e.preventDefault();
             if ($(this).hasClass('disabled')) return;
-            GUI.log(i18n.getMessage('setupWizardDemoAdjust'));
+            const $adj = $(this).closest('.wizard-calib-adjust');
+            const increase = $adj.find('a.regular-button').index($(this)) === 0;
+            if ($(this).hasClass('wizard-calib-tail-pitch22-adjust-btn')) {
+                applyWizardTailYawCalibrationAdjust(increase);
+            } else if ($(this).hasClass('wizard-calib-tail-travel-left-adjust-btn')) {
+                applyWizardTailTravelMinAdjust(increase);
+            } else if ($(this).hasClass('wizard-calib-tail-travel-right-adjust-btn')) {
+                applyWizardTailTravelMaxAdjust(increase);
+            }
         },
     );
 
-    $('.tab-setup-wizard').on('click', '.wizard-calib-side-btn:not(.wizard-calib-pitch-test-btn)', function (e) {
-        e.preventDefault();
-        GUI.log(i18n.getMessage('setupWizardDemoCalibBtn'));
-    });
+    $('.tab-setup-wizard').on(
+        'click',
+        '.wizard-calib-side-btn:not(.wizard-calib-pitch-test-btn):not(.wizard-calib-pitch-zero-btn)',
+        function (e) {
+            e.preventDefault();
+            GUI.log(i18n.getMessage('setupWizardDemoCalibBtn'));
+        },
+    );
 
     $('.tab-setup-wizard').on('click', '.wizard-calc-btn', function (e) {
         e.preventDefault();
@@ -2486,7 +2987,12 @@ tab.onReconnect = function () {
     wizardMoreSettingsSaveInProgress = false;
     setMoreSettingsSavingUI(false);
     wizardSwashTrimSaveInProgress = false;
-    applyMoreSettingsUIFromFC();
+    wizardPitchCalibSaveInProgress = false;
+    wizardTailMixerSaveInProgress = false;
+    MSP.promise(MSPCodes.MSP_MIXER_CONFIG)
+        .then(() => MSP.promise(MSPCodes.MSP_MIXER_INPUTS))
+        .then(() => applyMoreSettingsUIFromFC())
+        .catch(() => applyMoreSettingsUIFromFC());
     wizardBaseSaveInProgress = false;
     setBaseScreenSavingUI(false);
     syncWizardBaseBaselineFromUI();
@@ -2533,6 +3039,12 @@ tab.initialize = function (callback) {
 tab.cleanup = function (callback) {
     stopWizardReceiverPolling();
     $('.tab-setup-wizard').off();
+    // Forced disconnect (FC reboot / device_lost): serial is already dead; MSP callbacks never fire and
+    // `handleConnectClick` would await forever before `finishClose`.
+    if (!serial.connected || GUI.setupWizardDisconnectPending || GUI.reboot_in_progress) {
+        callback?.();
+        return;
+    }
     mspHelper.resetMixerOverrides(callback);
 };
 

@@ -963,13 +963,16 @@ html[data-theme="dark"] .tab-setup-wizard .wizard-bar--signed .wizard-bar-center
     justify-content: space-between;
 }
 
-.tab-setup-wizard .wizard-zero-pitch-right > p {
-    margin: 0 0 0.25em;
+.tab-setup-wizard .wizard-zero-pitch-right--compact > p:not(.wizard-zero-pitch-live) {
+    margin: 0 0 0.125em;
     line-height: 1.35;
 }
 
-.tab-setup-wizard .wizard-zero-pitch-right > p:last-of-type {
-    margin-bottom: 0;
+.tab-setup-wizard .wizard-zero-pitch-live {
+    margin: 8px 0 0;
+    font-size: 0.88rem;
+    line-height: 1.35;
+    color: var(--subtleAccent);
 }
 
 .tab-setup-wizard .wizard-zero-pitch-figures img {
@@ -1002,6 +1005,57 @@ html[data-theme="dark"] .tab-setup-wizard .wizard-bar--signed .wizard-bar-center
     .tab-setup-wizard .wizard-zero-pitch-right,
     .tab-setup-wizard .wizard-zero-pitch-actions.wizard-stack-btns {
         flex: 1 1 auto;
+    }
+}
+
+/* Screen 7: swash level — copy left, d-pad right */
+.tab-setup-wizard .wizard-swash-level-row {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    margin: 16px 0;
+    min-width: 0;
+}
+
+.tab-setup-wizard .wizard-swash-level-copy {
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+.tab-setup-wizard .wizard-swash-level-copy > p:first-child {
+    margin: 0 0 0.5em;
+    line-height: 1.45;
+}
+
+.tab-setup-wizard .wizard-swash-level-live {
+    margin: 0;
+    font-size: 0.88rem;
+    line-height: 1.4;
+    color: var(--subtleAccent);
+}
+
+.tab-setup-wizard .wizard-swash-level-dpad {
+    flex: 0 0 auto;
+}
+
+.tab-setup-wizard .wizard-swash-level-dpad .wizard-dpad {
+    margin: 0;
+}
+
+@media (max-width: 560px) {
+    .tab-setup-wizard .wizard-swash-level-row {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .tab-setup-wizard .wizard-swash-level-copy {
+        width: 100%;
+    }
+
+    .tab-setup-wizard .wizard-swash-level-dpad {
+        align-self: center;
     }
 }
 
@@ -1071,6 +1125,36 @@ html[data-theme="dark"] .tab-setup-wizard .wizard-bar--signed .wizard-bar-center
     margin-bottom: 0;
 }
 
+/* Screen 8: 螺距校正 — 左 80% 三块 + 右 20% 螺距尺图，图高度与左侧总高度一致 */
+.tab-setup-wizard .wizard-body--pitch-calib-page8 .wizard-pitch-calib-row {
+    display: grid;
+    grid-template-columns: 80% 20%;
+    gap: 12px;
+    align-items: stretch;
+    min-width: 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.tab-setup-wizard .wizard-body--pitch-calib-page8 .wizard-pitch-calib-main {
+    min-width: 0;
+}
+
+.tab-setup-wizard .wizard-body--pitch-calib-page8 .wizard-pitch-calib-gauge {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    min-width: 0;
+    min-height: 0;
+}
+
+.tab-setup-wizard .wizard-body--pitch-calib-page8 .wizard-pitch-calib-gauge img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
 .tab-setup-wizard .wizard-calib-step-num {
     grid-column: 1;
     width: 28px;
@@ -1101,11 +1185,26 @@ html[data-theme="dark"] .tab-setup-wizard .wizard-bar--signed .wizard-bar-center
 }
 
 .tab-setup-wizard .wizard-calib-text {
-    grid-column: 2;
     margin: 0;
     font-size: 0.95rem;
     line-height: 1.4;
     color: var(--defaultText);
+}
+
+.tab-setup-wizard .wizard-calib-block > .wizard-calib-text {
+    grid-column: 2;
+}
+
+.tab-setup-wizard .wizard-calib-copy {
+    grid-column: 2;
+    min-width: 0;
+}
+
+.tab-setup-wizard .wizard-calib-live {
+    margin: 5px 0 0;
+    font-size: 0.85rem;
+    line-height: 1.35;
+    color: var(--subtleAccent);
 }
 
 .tab-setup-wizard .wizard-calib-actions {
@@ -1173,7 +1272,12 @@ html[data-theme="dark"] .tab-setup-wizard .wizard-bar--signed .wizard-bar-center
         align-self: start;
     }
 
-    .tab-setup-wizard .wizard-calib-text {
+    .tab-setup-wizard .wizard-calib-block > .wizard-calib-text {
+        grid-column: 2;
+        grid-row: 1;
+    }
+
+    .tab-setup-wizard .wizard-calib-copy {
         grid-column: 2;
         grid-row: 1;
     }
@@ -1192,6 +1296,15 @@ html[data-theme="dark"] .tab-setup-wizard .wizard-bar--signed .wizard-bar-center
     .tab-setup-wizard .wizard-calib-actions .wizard-calib-adjust {
         width: auto;
         justify-content: flex-start;
+    }
+
+    .tab-setup-wizard .wizard-body--pitch-calib-page8 .wizard-pitch-calib-row {
+        grid-template-columns: 1fr;
+    }
+
+    .tab-setup-wizard .wizard-body--pitch-calib-page8 .wizard-pitch-calib-gauge img {
+        height: auto;
+        max-height: min(50vh, 320px);
     }
 }
 

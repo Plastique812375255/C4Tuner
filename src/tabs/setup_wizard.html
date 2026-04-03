@@ -361,10 +361,11 @@
                         <img src="/images/setup_wizard/png/uplook.png" alt="" />
                         <img src="/images/setup_wizard/png/zeroPitch.png" alt="" />
                     </div>
-                    <div class="wizard-zero-pitch-right">
+                    <div class="wizard-zero-pitch-right wizard-zero-pitch-right--compact">
                         <p i18n="setupWizardZeroPitchWarn"></p>
                         <p i18n="setupWizardZeroPitchLine2"></p>
                         <p i18n="setupWizardZeroPitchLine3"></p>
+                        <p class="wizard-zero-pitch-live" aria-live="polite"></p>
                         <div class="wizard-stack-btns wizard-zero-pitch-actions">
                             <a href="#" class="regular-button wizard-zero-pitch-trim" data-zero-trim="increase" i18n="setupWizardIncrease"></a>
                             <a href="#" class="regular-button wizard-zero-pitch-trim" data-zero-trim="decrease" i18n="setupWizardDecrease"></a>
@@ -388,12 +389,19 @@
                 <a href="#" class="regular-button wizard-btn-help" i18n="setupWizardHelp"></a>
             </header>
             <div class="wizard-body">
-                <p i18n="setupWizardSwashLevelHint"></p>
-                <div class="wizard-dpad">
-                    <a href="#" class="wizard-dpad-btn wizard-dpad-front" data-dir="front" i18n="setupWizardSwashFront"></a>
-                    <a href="#" class="wizard-dpad-btn wizard-dpad-back" data-dir="back" i18n="setupWizardSwashBack"></a>
-                    <a href="#" class="wizard-dpad-btn wizard-dpad-left" data-dir="left" i18n="setupWizardSwashLeft"></a>
-                    <a href="#" class="wizard-dpad-btn wizard-dpad-right" data-dir="right" i18n="setupWizardSwashRight"></a>
+                <div class="wizard-swash-level-row">
+                    <div class="wizard-swash-level-copy">
+                        <p i18n="setupWizardSwashLevelHint"></p>
+                        <p class="wizard-swash-level-live" aria-live="polite"></p>
+                    </div>
+                    <div class="wizard-swash-level-dpad">
+                        <div class="wizard-dpad">
+                            <a href="#" class="wizard-dpad-btn wizard-dpad-front" data-dir="front" i18n="setupWizardSwashFront"></a>
+                            <a href="#" class="wizard-dpad-btn wizard-dpad-back" data-dir="back" i18n="setupWizardSwashBack"></a>
+                            <a href="#" class="wizard-dpad-btn wizard-dpad-left" data-dir="left" i18n="setupWizardSwashLeft"></a>
+                            <a href="#" class="wizard-dpad-btn wizard-dpad-right" data-dir="right" i18n="setupWizardSwashRight"></a>
+                        </div>
+                    </div>
                 </div>
             </div>
             <footer class="wizard-footer">
@@ -411,34 +419,47 @@
                 <h2 class="wizard-title" i18n="setupWizardTitlePitchCalib"></h2>
                 <a href="#" class="regular-button wizard-btn-help" i18n="setupWizardHelp"></a>
             </header>
-            <div class="wizard-body wizard-body--pitch-calib">
-                <div class="wizard-calib-block">
-                    <span class="wizard-calib-step-num" aria-hidden="true">1</span>
-                    <p class="wizard-calib-text" i18n="setupWizardPitchStep1"></p>
-                    <div class="wizard-calib-actions">
-                        <a href="#" class="regular-button wizard-calib-side-btn" i18n="setupWizardZeroBtn"></a>
-                    </div>
-                </div>
-                <div class="wizard-calib-block wizard-calib-block--pitch-collective">
-                    <span class="wizard-calib-step-num" aria-hidden="true">2</span>
-                    <p class="wizard-calib-text" i18n="setupWizardPitchStep2"></p>
-                    <div class="wizard-calib-actions">
-                        <a href="#" class="regular-button wizard-calib-side-btn wizard-calib-pitch-test-btn" i18n="setupWizardTestBtn"></a>
-                        <div class="wizard-calib-adjust">
-                            <a href="#" class="regular-button wizard-calib-pitch-adjust-btn" i18n="setupWizardIncrease"></a>
-                            <a href="#" class="regular-button wizard-calib-pitch-adjust-btn" i18n="setupWizardDecrease"></a>
+            <div class="wizard-body wizard-body--pitch-calib wizard-body--pitch-calib-page8">
+                <div class="wizard-pitch-calib-row">
+                    <div class="wizard-pitch-calib-main">
+                        <div class="wizard-calib-block">
+                            <span class="wizard-calib-step-num" aria-hidden="true">1</span>
+                            <p class="wizard-calib-text" i18n="setupWizardPitchStep1"></p>
+                            <div class="wizard-calib-actions">
+                                <a href="#" class="regular-button wizard-calib-side-btn wizard-calib-pitch-zero-btn" i18n="setupWizardZeroBtn"></a>
+                            </div>
+                        </div>
+                        <div class="wizard-calib-block wizard-calib-block--pitch-collective">
+                            <span class="wizard-calib-step-num" aria-hidden="true">2</span>
+                            <div class="wizard-calib-copy">
+                                <p class="wizard-calib-text" i18n="setupWizardPitchStep2"></p>
+                                <p class="wizard-calib-live" aria-live="polite"></p>
+                            </div>
+                            <div class="wizard-calib-actions">
+                                <a href="#" class="regular-button wizard-calib-side-btn wizard-calib-pitch-test-btn" i18n="setupWizardTestBtn"></a>
+                                <div class="wizard-calib-adjust">
+                                    <a href="#" class="regular-button wizard-calib-pitch-adjust-btn" i18n="setupWizardIncrease"></a>
+                                    <a href="#" class="regular-button wizard-calib-pitch-adjust-btn" i18n="setupWizardDecrease"></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="wizard-calib-block wizard-calib-block--pitch-cyclic">
+                            <span class="wizard-calib-step-num" aria-hidden="true">3</span>
+                            <div class="wizard-calib-copy">
+                                <p class="wizard-calib-text" i18n="setupWizardPitchStep3"></p>
+                                <p class="wizard-calib-live" aria-live="polite"></p>
+                            </div>
+                            <div class="wizard-calib-actions">
+                                <a href="#" class="regular-button wizard-calib-side-btn wizard-calib-pitch-test-btn" i18n="setupWizardTestBtn"></a>
+                                <div class="wizard-calib-adjust">
+                                    <a href="#" class="regular-button wizard-calib-pitch-adjust-btn" i18n="setupWizardIncrease"></a>
+                                    <a href="#" class="regular-button wizard-calib-pitch-adjust-btn" i18n="setupWizardDecrease"></a>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="wizard-calib-block wizard-calib-block--pitch-cyclic">
-                    <span class="wizard-calib-step-num" aria-hidden="true">3</span>
-                    <p class="wizard-calib-text" i18n="setupWizardPitchStep3"></p>
-                    <div class="wizard-calib-actions">
-                        <a href="#" class="regular-button wizard-calib-side-btn wizard-calib-pitch-test-btn" i18n="setupWizardTestBtn"></a>
-                        <div class="wizard-calib-adjust">
-                            <a href="#" class="regular-button wizard-calib-pitch-adjust-btn" i18n="setupWizardIncrease"></a>
-                            <a href="#" class="regular-button wizard-calib-pitch-adjust-btn" i18n="setupWizardDecrease"></a>
-                        </div>
+                    <div class="wizard-pitch-calib-gauge" aria-hidden="true">
+                        <img src="/images/setup_wizard/png/gauge.png" alt="" />
                     </div>
                 </div>
             </div>
@@ -468,7 +489,10 @@
                 <div class="wizard-body--pitch-calib wizard-body--tail-zero">
                     <div class="wizard-calib-block wizard-calib-block--tail-zero">
                         <span class="wizard-calib-accent-bar" aria-hidden="true"></span>
-                        <p class="wizard-calib-text" i18n="setupWizardTailZeroStep"></p>
+                        <div class="wizard-calib-copy">
+                            <p class="wizard-calib-text" i18n="setupWizardTailZeroStep"></p>
+                            <p class="wizard-calib-live" aria-live="polite"></p>
+                        </div>
                         <div class="wizard-calib-actions">
                             <a href="#" class="regular-button wizard-calib-tail-zero-test-btn" i18n="setupWizardTestBtn"></a>
                             <div class="wizard-calib-adjust">
@@ -495,20 +519,12 @@
                 <a href="#" class="regular-button wizard-btn-help" i18n="setupWizardHelp"></a>
             </header>
             <div class="wizard-body wizard-body--pitch-calib wizard-body--tail-pitch-screen">
-                <div class="wizard-calib-block wizard-calib-block--tail-pitch22">
-                    <span class="wizard-calib-step-num" aria-hidden="true">1</span>
-                    <p class="wizard-calib-text" i18n="setupWizardTailPitch22Step"></p>
-                    <div class="wizard-calib-actions">
-                        <a href="#" class="regular-button wizard-calib-tail-pitch22-test-btn" i18n="setupWizardTestBtn"></a>
-                        <div class="wizard-calib-adjust">
-                            <a href="#" class="regular-button wizard-calib-tail-pitch22-adjust-btn" i18n="setupWizardIncrease"></a>
-                            <a href="#" class="regular-button wizard-calib-tail-pitch22-adjust-btn" i18n="setupWizardDecrease"></a>
-                        </div>
-                    </div>
-                </div>
                 <div class="wizard-calib-block wizard-calib-block--tail-travel-left">
-                    <span class="wizard-calib-step-num" aria-hidden="true">2</span>
-                    <p class="wizard-calib-text" i18n="setupWizardTailTravelLeftStep"></p>
+                    <span class="wizard-calib-step-num" aria-hidden="true">1</span>
+                    <div class="wizard-calib-copy">
+                        <p class="wizard-calib-text" i18n="setupWizardTailTravelLeftStep"></p>
+                        <p class="wizard-calib-live" aria-live="polite"></p>
+                    </div>
                     <div class="wizard-calib-actions">
                         <a href="#" class="regular-button wizard-calib-tail-travel-left-test-btn" i18n="setupWizardTestBtn"></a>
                         <div class="wizard-calib-adjust">
@@ -518,13 +534,30 @@
                     </div>
                 </div>
                 <div class="wizard-calib-block wizard-calib-block--tail-travel-right">
-                    <span class="wizard-calib-step-num" aria-hidden="true">3</span>
-                    <p class="wizard-calib-text" i18n="setupWizardTailTravelRightStep"></p>
+                    <span class="wizard-calib-step-num" aria-hidden="true">2</span>
+                    <div class="wizard-calib-copy">
+                        <p class="wizard-calib-text" i18n="setupWizardTailTravelRightStep"></p>
+                        <p class="wizard-calib-live" aria-live="polite"></p>
+                    </div>
                     <div class="wizard-calib-actions">
                         <a href="#" class="regular-button wizard-calib-tail-travel-right-test-btn" i18n="setupWizardTestBtn"></a>
                         <div class="wizard-calib-adjust">
                             <a href="#" class="regular-button wizard-calib-tail-travel-right-adjust-btn" i18n="setupWizardIncrease"></a>
                             <a href="#" class="regular-button wizard-calib-tail-travel-right-adjust-btn" i18n="setupWizardDecrease"></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="wizard-calib-block wizard-calib-block--tail-pitch22">
+                    <span class="wizard-calib-step-num" aria-hidden="true">3</span>
+                    <div class="wizard-calib-copy">
+                        <p class="wizard-calib-text" i18n="setupWizardTailPitch22Step"></p>
+                        <p class="wizard-calib-live" aria-live="polite"></p>
+                    </div>
+                    <div class="wizard-calib-actions">
+                        <a href="#" class="regular-button wizard-calib-tail-pitch22-test-btn" i18n="setupWizardTestBtn"></a>
+                        <div class="wizard-calib-adjust">
+                            <a href="#" class="regular-button wizard-calib-tail-pitch22-adjust-btn" i18n="setupWizardIncrease"></a>
+                            <a href="#" class="regular-button wizard-calib-tail-pitch22-adjust-btn" i18n="setupWizardDecrease"></a>
                         </div>
                     </div>
                 </div>

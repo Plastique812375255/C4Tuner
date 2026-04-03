@@ -2,6 +2,7 @@ import semver from "semver";
 
 import * as config from "@/js/config.js";
 import { portUsage } from "@/js/port_usage.svelte.js";
+import { serial } from "@/js/serial.js";
 import { applyVirtualConfig } from "@/js/virtual_fc.js";
 
 export async function handleConnectClick() {
@@ -56,7 +57,15 @@ export async function handleConnectClick() {
                 await new Promise((resolve) => GUI.tab_switch_cleanup(resolve));
                 GUI.tab_switch_in_progress = false;
 
-                await new Promise((resolve) => globalThis.mspHelper.setArmingEnabled(true, resolve));
+                // After FC reboot / cable loss, `serial.connected` is already false but MSP cleanup may have
+                // been skipped; sending MSP_ARMING_DISABLE here never completes and blocks `finishClose` forever.
+                const canSendMsp =
+                    serial.connected &&
+                    !GUI.setupWizardDisconnectPending &&
+                    !GUI.reboot_in_progress;
+                if (canSendMsp) {
+                    await new Promise((resolve) => globalThis.mspHelper.setArmingEnabled(true, resolve));
+                }
 
                 finishClose();
             }
@@ -244,6 +253,12 @@ function finishClose() {
     }
 
     GUI.log(`[SetupWizard] finishClose: after flags pendingOut=${GUI.setupWizardDisconnectPending}`);
+
+    if (keepWizardDom) {
+        // Incomplete tab switch can leave `.data-loading` on top of #content; keepWizardDom skips empty().
+        $('#content .data-loading').remove();
+        GUI.tab_switch_in_progress = false;
+    }
 
     if (wasConnected && !keepWizardDom) {
         // detach listeners and remove element data
@@ -508,6 +523,7 @@ function finishOpen() {
     console.log('[SetupWizard] finishOpen before selectDefaultTabWhenConnected', {
         setupWizardDisconnectPending: GUI.setupWizardDisconnectPending,
     });
+    $('#content .data-loading').remove();
     GUI.selectDefaultTabWhenConnected();
 }
 

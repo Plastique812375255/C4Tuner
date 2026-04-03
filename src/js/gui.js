@@ -461,6 +461,9 @@ GuiControl.prototype.activateSetupWizardAfterReconnect = function () {
     $('li', ui_tabs).removeClass('active');
     $('#tabs ul.mode-connected .tab_setup_wizard').addClass('active');
 
+    // Stale tab-switch loading layer can block the whole UI (pointer hit-testing over #content).
+    $('#content .data-loading').remove();
+
     this.active_tab = 'setup_wizard';
     this.current_tab = tabObj;
     this.tab_switch_in_progress = false;

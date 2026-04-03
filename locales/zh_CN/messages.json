@@ -756,6 +756,30 @@
     "setupWizardZeroPitchLine3": {
         "message": "调整完毕后将大桨展开。"
     },
+    "setupWizardLiveCollectiveTrim": {
+        "message": "当前螺距微调：{{value}}%"
+    },
+    "setupWizardLiveSwashAdjust": {
+        "message": "当前调整：{{rollDir}} {{rollVal}}%，{{pitchDir}} {{pitchVal}}%"
+    },
+    "setupWizardLiveCollectiveCalib": {
+        "message": "当前集体螺距校准：{{value}}%"
+    },
+    "setupWizardLiveCyclicCalib": {
+        "message": "当前循环螺距校准：{{value}}%"
+    },
+    "setupWizardLiveTailTrim": {
+        "message": "当前尾旋翼微调：{{value}}"
+    },
+    "setupWizardLiveTailYawCalib": {
+        "message": "当前航向校准：{{value}}%"
+    },
+    "setupWizardLiveTailYawLimitCCW": {
+        "message": "当前逆时针角度极限：{{value}}度"
+    },
+    "setupWizardLiveTailYawLimitCW": {
+        "message": "当前顺时针角度极限：{{value}}度"
+    },
     "setupWizardPitchUp": {
         "message": "Pitch Up"
     },
@@ -779,6 +803,9 @@
     },
     "setupWizardSwashRight": {
         "message": "右"
+    },
+    "setupWizardSwashTrimCenter": {
+        "message": "中"
     },
     "setupWizardTitlePitchCalib": {
         "message": "螺距校正"

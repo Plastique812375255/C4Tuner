@@ -770,6 +770,30 @@
     "setupWizardZeroPitchLine3": {
         "message": "Unfold the blades when done."
     },
+    "setupWizardLiveCollectiveTrim": {
+        "message": "Collective pitch trim: {{value}}%"
+    },
+    "setupWizardLiveSwashAdjust": {
+        "message": "Current trim: {{rollDir}} {{rollVal}}%, {{pitchDir}} {{pitchVal}}%"
+    },
+    "setupWizardLiveCollectiveCalib": {
+        "message": "Collective pitch calibration: {{value}}%"
+    },
+    "setupWizardLiveCyclicCalib": {
+        "message": "Cyclic pitch calibration: {{value}}%"
+    },
+    "setupWizardLiveTailTrim": {
+        "message": "Tail trim: {{value}}"
+    },
+    "setupWizardLiveTailYawCalib": {
+        "message": "Yaw calibration: {{value}}%"
+    },
+    "setupWizardLiveTailYawLimitCCW": {
+        "message": "CCW travel limit: {{value}}°"
+    },
+    "setupWizardLiveTailYawLimitCW": {
+        "message": "CW travel limit: {{value}}°"
+    },
     "setupWizardPitchUp": {
         "message": "Pitch Up"
     },
@@ -793,6 +817,9 @@
     },
     "setupWizardSwashRight": {
         "message": "Right"
+    },
+    "setupWizardSwashTrimCenter": {
+        "message": "Center"
     },
     "setupWizardTitlePitchCalib": {
         "message": "Pitch Calibration"
