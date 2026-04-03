@@ -1,14 +1,20 @@
-# Build Windows installer (.exe) + zip on GitHub-hosted Windows (Inno Setup).
-# Use this when you do not have a local Windows machine.
-name: Windows redist
+# Cloud-build Windows x64: Inno Setup installer (.exe) + portable zip.
+# Actions → this workflow → Run workflow → (optional) set semver → Run.
+# Artifacts: download the uploaded zip; inside you get redist/*.exe and redist/*.zip.
+name: Windows redist (cloud)
+
+permissions:
+  contents: read
 
 on:
   workflow_dispatch:
     inputs:
       semver:
-        description: "Optional: set package.json version before build (e.g. 2.4.0). Leave empty to use current package.json version."
+        description: "Optional version for package.json (e.g. 2.4.0.1). Empty = use repo package.json version."
         required: false
         default: ""
+
+run-name: Windows redist (${{ inputs.semver != '' && inputs.semver || 'package.json version' }})
 
 jobs:
   win64:
@@ -65,5 +71,5 @@ jobs:
       - name: Upload redist artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: rotorflight-configurator-win64-${{ env.BUILD_VER }}
+          name: rf-configurator-c4-win64-${{ env.BUILD_VER }}
           path: redist/*

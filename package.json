@@ -1,8 +1,8 @@
 {
-  "name": "rotorflight-configurator",
-  "productName": "Rotorflight Configurator",
+  "name": "rf-configurator-c4",
+  "productName": "Rotorflight Configurator C4Master Edition",
   "description": "Crossplatform configuration tool for Rotorflight flight control system.",
-  "version": "2.4.0",
+  "version": "2.4.0.1",
   "main": "http://localhost:5077/src/main.html",
   "node-remote": "http://localhost:*",
   "scripts": {
@@ -16,7 +16,7 @@
     "id": "main-window",
     "min_width": 1024,
     "min_height": 550,
-    "title": "Rotorflight Configurator"
+    "title": "Rotorflight Configurator C4Master Edition"
   },
   "repository": {
     "type": "git",

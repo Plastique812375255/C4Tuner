@@ -1,5 +1,5 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: Rotorflight Configurator
+Upstream-Name: Rotorflight Configurator C4Master Edition
 Source: https://github.com/rotorflight/rotorflight-configurator
 
 Files: *

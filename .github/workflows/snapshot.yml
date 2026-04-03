@@ -60,7 +60,7 @@ jobs:
     - name: Upload Artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: rotorflight-configurator-linux-snapshot-${{ env.GIT_VER }}
+        name: rf-configurator-c4-linux-snapshot-${{ env.GIT_VER }}
         path: redist/*
 
 
@@ -117,7 +117,7 @@ jobs:
     - name: Upload Artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: rotorflight-configurator-macos-x86_64-snapshot-${{ env.GIT_VER }}
+        name: rf-configurator-c4-macos-x86_64-snapshot-${{ env.GIT_VER }}
         path: redist/*
 
 
@@ -174,7 +174,7 @@ jobs:
     - name: Upload Artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: rotorflight-configurator-macos-arm64-snapshot-${{ env.GIT_VER }}
+        name: rf-configurator-c4-macos-arm64-snapshot-${{ env.GIT_VER }}
         path: redist/*
 
 
@@ -231,7 +231,7 @@ jobs:
     - name: Upload Artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: rotorflight-configurator-win64-snapshot-${{ env.GIT_VER }}
+        name: rf-configurator-c4-win64-snapshot-${{ env.GIT_VER }}
         path: redist/*
 
 
@@ -288,7 +288,7 @@ jobs:
     - name: Upload Artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: rotorflight-configurator-win32-snapshot-${{ env.GIT_VER }}
+        name: rf-configurator-c4-win32-snapshot-${{ env.GIT_VER }}
         path: redist/*
 
 
@@ -367,7 +367,7 @@ jobs:
     - name: Upload Artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: rotorflight-configurator-android-snapshot-${{ env.GIT_VER }}
+        name: rf-configurator-c4-android-snapshot-${{ env.GIT_VER }}
         path: redist/*
 
 
@@ -390,13 +390,13 @@ jobs:
     - name: Download Artifacts
       uses: actions/download-artifact@v4
       with:
-        pattern: rotorflight-configurator-*-${{ env.GIT_VER }}
+        pattern: rf-configurator-c4-*-${{ env.GIT_VER }}
         merge-multiple: true
 
     - name: Create Snapshot
       run: |
         .github/scripts/extract-release-notes.py "${{ env.GIT_VER }}" Releases.md > Notes.md
-        gh release create ${{ env.GIT_TAG }} --prerelease --notes-file Notes.md --title "Rotorflight Configurator Snapshot ${{ env.GIT_VER }}" rotorflight-configurator*
+        gh release create ${{ env.GIT_TAG }} --prerelease --notes-file Notes.md --title "Rotorflight Configurator Snapshot ${{ env.GIT_VER }}" rf-configurator-c4*
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
