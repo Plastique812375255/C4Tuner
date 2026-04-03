@@ -3,25 +3,14 @@ import semver from "semver";
 
 import * as config from '@/js/config.js';
 import { readTextFile, writeTextFile } from '@/js/filesystem.js';
-import * as github from '@/js/GitHubApi.js';
+import { GitHubApi } from '@/js/GitHubApi.js';
 import { ReleaseChecker } from '@/js/release_checker.js';
-import { manufacturers } from "@/js/manufacturers.js";
-
-async function getCachedUnifiedTargets() {
-  const { unifiedSourceCache } = await new Promise((resolve) => chrome.storage.local.get("unifiedSourceCache", resolve));
-
-  if (!unifiedSourceCache?.supportedTargets && !unifiedSourceCache?.legacyTargets) {
-    // ignore old data format
-    return;
-  }
-
-  return unifiedSourceCache;
-}
 
 const tab = {
     tabName: 'firmware_flasher',
     releases: null,
     releaseChecker: new ReleaseChecker('firmware', 'https://api.github.com/repos/rotorflight/rotorflight-firmware/releases'),
+    gitHubApi: new GitHubApi(),
     localFirmwareLoaded: false,
     selectedBoard: undefined,
     intel_hex: undefined, // standard intel hex in string format
@@ -40,6 +29,7 @@ tab.initialize = function (callback) {
     self.intel_hex = undefined;
     self.parsed_hex = undefined;
 
+    var unifiedSource = 'https://api.github.com/repos/rotorflight/rotorflight-targets/contents/configs';
 
     function onFirmwareCacheUpdate(release) {
         $('select[name="firmware_version"] option').each(function () {
@@ -173,7 +163,6 @@ tab.initialize = function (callback) {
 
             if (config.get('rememberLastSelectedBoard')) {
                 const selected_board = config.get('selected_board');
-                console.log("selected_board foo", selected_board);
                 const boardBuilds = builds[selected_board];
                 $('select[name="board"]').val(boardBuilds ? selected_board : 0).trigger('change');
             }
@@ -228,136 +217,88 @@ tab.initialize = function (callback) {
             });
         }
 
-        async function loadUnifiedBuilds(builds) {
+        function loadUnifiedBuilds(builds) {
+            var expirationPeriod = 3600 * 2; // Two of your earth hours.
+            var checkTime = Math.floor(Date.now() / 1000); // Lets deal in seconds.
             if (builds && hasUnifiedTargetBuild(builds)) {
-                // track cache expiration with seconds
-                const expirationPeriod = 3600 * 2;
-                const now = Math.floor(Date.now() / 1000);
+                console.log('loaded some builds for later');
+                const storageTag = 'unifiedSourceCache';
+                chrome.storage.local.get(storageTag, function (result) {
+                    let storageObj = result[storageTag];
+                    if(!storageObj || !storageObj.lastUpdate || checkTime - storageObj.lastUpdate > expirationPeriod) {
+                        console.log('go get', unifiedSource);
+                        $.get(unifiedSource, function(data) {
+                            // Cache the information for later use.
+                            let newStorageObj = {};
+                            let newDataObj = {};
+                            newDataObj.lastUpdate = checkTime;
+                            newDataObj.data = data;
+                            newStorageObj[storageTag] = newDataObj;
+                            chrome.storage.local.set(newStorageObj);
 
-                const cache = await getCachedUnifiedTargets();
-                const cacheAge = now - (cache?.lastUpdate ?? 0);
-                if (cache) {
-                    console.log(`Loaded cached unified targets: ${Math.floor(cacheAge / 60)} minutes old`);
-                }
-
-                let supportedTargets = cache?.supportedTargets;
-                let legacyTargets = cache?.legacyTargets;
-
-                if (cacheAge > expirationPeriod) {
-                    console.log("Fetching unified targets");
-                    try {
-                        supportedTargets = await github.getContents("rotorflight/rotorflight-targets", "rotorflight", "configs");
-                        legacyTargets = await github.getContents("rotorflight/rotorflight-targets", "rotorflight", "legacy");
-
-                        await new Promise((resolve) => chrome.storage.local.set(
-                            { unifiedSourceCache: { lastUpdate: now, supportedTargets, legacyTargets } },
-                            resolve,
-                        ));
-                    } catch (err) {
-                        console.log("Fetching unified targets failed", err);
+                            parseUnifiedBuilds(data, builds);
+                        }).fail(() => {
+                            console.log('failed to get new', unifiedSource, 'cached data', Math.floor((checkTime - storageObj.lastUpdate) / 60), 'mins old');
+                            parseUnifiedBuilds(storageObj.data, builds);
+                        });
+                    } else {
+                      // In the event that the cache is okay
+                      console.log('unified config cached data', Math.floor((checkTime - storageObj.lastUpdate)/60), 'mins old');
+                      parseUnifiedBuilds(storageObj.data, builds);
                     }
-                }
-
-                if (!supportedTargets || !legacyTargets) {
-                    console.log(`Failed to load unified targets`);
-                    return;
-                }
-
-                const targets = [
-                    ...supportedTargets.map((x) => {
-                        x.supported = true;
-                        return x;
-                    }),
-                    ...legacyTargets.map((x) => {
-                        x.supported = false;
-                        return x;
-                    }),
-                ];
-
-                parseUnifiedTargets(targets, builds);
+                });
             } else {
                 populateBoardOptions(builds);
             }
         }
 
-        function parseUnifiedTargets(targets, builds) {
-            const releases = {};
-            const unifiedConfigs = {};
-
-             // Get the legacy builds
-             Object.keys(builds).forEach(function (targetName) {
-                 releases[targetName] = builds[targetName];
-             });
-
-            for (const target of targets) {
+        function parseUnifiedBuilds(data, builds) {
+            if (!data) {
+                return;
+            }
+            let releases = {};
+            let unifiedConfigs = {};
+            let items = {};
+            // Get the legacy builds
+            Object.keys(builds).forEach(function (targetName) {
+                items[targetName] = { };
+                releases[targetName] = builds[targetName];
+            });
+            // Get the Unified Target configurations
+            data.forEach(function(target) {
                 const TARGET_REGEXP = /^([^-]{1,4})-(.*).config$/;
-                const targetParts = target.name.match(TARGET_REGEXP);
+                let targetParts = target.name.match(TARGET_REGEXP);
                 if (!targetParts) {
-                    continue;
+                    return;
                 }
-
-                target.board = targetParts[2];
-                target.manufacturer = targetParts[1];
-                target.target = `${target.manufacturer}-${target.board}`;
-
-                unifiedConfigs[target.target] = target;
-            }
-
-            tab.releases = releases;
-            tab.unifiedConfigs = unifiedConfigs;
-
-            const versions_e = $('select[name="firmware_version"]');
-            versions_e.empty()
-                .append($(`<option value='0'>${i18n.getMessage("firmwareFlasherOptionLabelSelectFirmwareVersion")}</option>`));
-
-            let selectedBoard = undefined;
-            if (config.get('rememberLastSelectedBoard')) {
-                selectedBoard = config.get('selected_board');
-            }
-
-            updateBoardSelect(selectedBoard);
-        }
-
-        function updateBoardSelect(selected) {
-            const showLegacy = config.get("showLegacyTargets") ?? false;
-
-            const boards_e = $('select[name="board"]');
+                const targetName = targetParts[2];
+                const manufacturerId = targetParts[1];
+                items[targetName] = { };
+                unifiedConfigs[targetName] = (unifiedConfigs[targetName] || {});
+                unifiedConfigs[targetName][manufacturerId] = target;
+            });
+            var boards_e = $('select[name="board"]');
+            var versions_e = $('select[name="firmware_version"]');
             boards_e.empty()
                 .append($(`<option value='0'>${i18n.getMessage("firmwareFlasherOptionLabelSelectBoard")}</option>`));
 
-            const targetsByManufacturer = Object.values(tab.unifiedConfigs).reduce((acc, target) => {
-                if (!acc[target.manufacturer]) {
-                    acc[target.manufacturer] = [];
-                }
+            versions_e.empty()
+                .append($(`<option value='0'>${i18n.getMessage("firmwareFlasherOptionLabelSelectFirmwareVersion")}</option>`));
+            Object.keys(items)
+                .sort()
+                .forEach(function(target) {
+                    const select_e = $(`<option value='${target}'>${target}</option>"`);
+                    boards_e.append(select_e);
+                });
+            tab.releases = releases;
+            tab.unifiedConfigs = unifiedConfigs;
 
-                acc[target.manufacturer].push(target);
-                return acc;
-            }, {});
-
-            const manufacturerIds = Object.keys(targetsByManufacturer).sort();
-            for (const manufacturer of manufacturerIds) {
-                const boards = targetsByManufacturer[manufacturer]
-                    .filter((x) => x.supported || showLegacy || (x.target === selected))
-                    .sort((a, b) => {
-                        if (a.board < b.board) return -1;
-                        if (a.board > b.board) return 1;
-                        return 0;
-                    });
-                if (boards.length === 0) {
-                    continue;
+            if (config.get('rememberLastSelectedBoard')) {
+                const selected_board = config.get('selected_board');
+                if (selected_board) {
+                    const boardReleases = tab.unifiedConfigs[selected_board] || tab.releases[selected_board];
+                    $('select[name="board"]').val(boardReleases ? selected_board : 0).trigger('change');
                 }
-                const optgroup_e = $(`<optgroup label="${manufacturers[manufacturer]?.name ?? manufacturer}"></optgroup>`);
-                for (const board of boards) {
-                      const option_e = $(`<option value='${board.target}'>${board.board}</option>"`);
-                      optgroup_e.append(option_e);
-                }
-                boards_e.append(optgroup_e);
-            }
-
-            const current = boards_e.val();
-            if (selected && current !== selected) {
-                const exists = boards_e.find(`option[value="${selected}"]`).length > 0;
-                boards_e.val(exists ? selected : 0).trigger("change");
             }
         }
 
@@ -412,7 +353,7 @@ tab.initialize = function (callback) {
             chrome.storage.local.set({'selected_build_type': build_type});
         });
 
-        function populateBuilds(builds, manufacturerId, targetVersions) {
+        function populateBuilds(builds, target, manufacturerId, duplicateName, targetVersions, callback) {
             if (targetVersions) {
                 targetVersions.forEach(function(descriptor) {
                     let version = descriptor.version;
@@ -422,6 +363,7 @@ tab.initialize = function (callback) {
                             return;
                         }
                         build.manufacturerId = manufacturerId;
+                        build.duplicateName = duplicateName;
                     } else {
                         version = `${version}-legacy`;
                         build.isLegacy = true;
@@ -429,6 +371,8 @@ tab.initialize = function (callback) {
                     builds[version] = build;
                 });
             }
+
+            callback?.();
         }
 
         function populateVersions(versions_element, builds, target) {
@@ -531,7 +475,7 @@ tab.initialize = function (callback) {
 
         $('select[name="board"]').select2();
 
-        $('select[name="board"]').on("change", async function() {
+        $('select[name="board"]').change(function() {
             $("a.load_remote_file").addClass('disabled');
             var target = $(this).val();
 
@@ -590,72 +534,93 @@ tab.initialize = function (callback) {
                     const finishPopulatingBuilds = function () {
                         if (tab.releases[target]) {
                             tab.bareBoard = target;
-                            populateBuilds(builds, undefined, tab.releases[target]);
+                            populateBuilds(builds, target, undefined, false, tab.releases[target]);
                         }
 
                         populateVersions(versions_e, builds, target);
                     };
 
                     if (tab.unifiedConfigs[target]) {
-                        const targetSpec = tab.unifiedConfigs[target];
+                        const storageTag = 'unifiedConfigLast';
+                        var expirationPeriod = 3600; // One of your earth hours.
+                        var checkTime = Math.floor(Date.now() / 1000); // Lets deal in seconds.
+                        chrome.storage.local.get(storageTag, function (result) {
+                            let storageObj = result[storageTag];
+                            const unifiedConfigList = tab.unifiedConfigs[target];
+                            const manufacturerIds = Object.keys(unifiedConfigList);
+                            const duplicateName = manufacturerIds.length > 1;
 
-                        // track cache expiration with seconds
-                        const expirationPeriod = 3600 * 2;
-                        const now = Math.floor(Date.now() / 1000);
+                            const processManufacturer = function(index) {
+                                const processNext = function () {
+                                    if (index < manufacturerIds.length - 1) {
+                                        processManufacturer(index + 1);
+                                    } else {
+                                        finishPopulatingBuilds();
+                                    }
+                                };
 
-                        let { unifiedConfigLast } = await new Promise((resolve) => chrome.storage.local.get("unifiedConfigLast", resolve));
-                        const cacheAge = now - (unifiedConfigLast?.lastUpdate ?? 0);
+                                const manufacturerId = manufacturerIds[index];
+                                const targetId = `${target}+${manufacturerId}`;
+                                // Check to see if the cached configuration is the one we want.
+                                if (!storageObj || !storageObj.targetId || storageObj.targetId !== targetId
+                                    || !storageObj.lastUpdate || checkTime - storageObj.lastUpdate > expirationPeriod
+                                    || !storageObj.unifiedTarget) {
+                                    const unifiedConfig = unifiedConfigList[manufacturerId];
+                                    // Have to go and try and get the unified config, and then do stuff
+                                    $.get(unifiedConfig.download_url, function(targetConfig) {
+                                        console.log('got unified config');
 
-                        if (unifiedConfigLast.targetId !== targetSpec.target || cacheAge > expirationPeriod) {
-                            try {
-                                console.log(`Fetching ${targetSpec.download_url}`);
-                                const res = await fetch(targetSpec.download_url);
-                                if (!res.ok) {
-                                  throw new Error(`HTTP ${r.status}`);
+                                        let config = cleanUnifiedConfigFile(targetConfig);
+                                        if (config !== null) {
+                                            const bareBoard = grabBuildNameFromConfig(config);
+                                            tab.bareBoard = bareBoard;
+
+                                            self.gitHubApi.getFileLastCommitInfo('rotorflight/rotorflight-targets', 'master', unifiedConfig.path, function (commitInfo) {
+                                                config = self.injectDefaultDesign(config, 'BTFL');
+                                                config = self.injectTargetInfo(config, unifiedConfig.name, target, manufacturerId, commitInfo);
+
+                                                setUnifiedConfig(target, bareBoard, config, manufacturerId, unifiedConfig.name, unifiedConfig.download_url, commitInfo.date);
+
+                                                // cache it for later
+                                                let newStorageObj = {};
+                                                newStorageObj[storageTag] = {
+                                                    unifiedTarget: self.unifiedTarget,
+                                                    targetId: targetId,
+                                                    lastUpdate: checkTime,
+                                                };
+                                                chrome.storage.local.set(newStorageObj);
+
+                                                populateBuilds(builds, target, manufacturerId, duplicateName, tab.releases[bareBoard], processNext);
+                                            });
+                                        } else {
+                                            failLoading(unifiedConfig.download_url);
+                                        }
+                                    }).fail(() => {
+                                        failLoading(unifiedConfig.download_url);
+                                    });
+                                } else {
+                                    console.log('We have the config cached for', targetId);
+                                    const unifiedTarget = storageObj.unifiedTarget;
+
+                                    const bareBoard = grabBuildNameFromConfig(unifiedTarget.config);
+                                    tab.bareBoard = bareBoard;
+
+                                    if (target === bareBoard) {
+                                        self.unifiedTarget = {};
+                                    } else {
+                                        self.unifiedTarget = unifiedTarget;
+                                    }
+
+                                    populateBuilds(builds, target, manufacturerId, duplicateName, tab.releases[bareBoard], processNext);
                                 }
-                                let config = await res.text();
+                            };
 
-                                config = cleanUnifiedConfigFile(config);
-                                if (!config) {
-                                  throw new Error("Invalid config");
-                                }
-
-                                const bareBoard = grabBuildNameFromConfig(config);
-                                tab.bareBoard = bareBoard;
-
-                                const commit = await github.getFileLastCommitInfo("rotorflight/rotorflight-targets", "rotorflight", targetSpec.path);
-                                config = self.injectDefaultDesign(config, "BTFL");
-                                config = self.injectTargetInfo(config, targetSpec.name, target, targetSpec.manufacturer, commit);
-
-                                setUnifiedConfig(target, bareBoard, config, targetSpec.manufacturer, targetSpec.name, targetSpec.download_url, commit.date);
-                                await new Promise((resolve) => chrome.storage.local.set(
-                                    { unifiedConfigLast: { unifiedTarget: self.unifiedTarget, targetId: targetSpec.target, lastUpdate: now } },
-                                    resolve,
-                                ));
-                            } catch (err) {
-                                console.log("Failed to fetch target config", err);
-                                failLoading(targetSpec.download_url);
-                            }
-                        } else {
-                            console.log(`Using cached target config for ${targetSpec.target}: ${Math.floor(cacheAge / 60)} minutes old`);
-                            const unifiedTarget = unifiedConfigLast.unifiedTarget;
-
-                            const bareBoard = grabBuildNameFromConfig(unifiedTarget.config);
-                            tab.bareBoard = bareBoard;
-
-                            if (target === bareBoard) {
-                                self.unifiedTarget = {};
-                            } else {
-                                self.unifiedTarget = unifiedTarget;
-                            }
-                        }
-
-                        populateBuilds(builds, targetSpec.manufacturer, tab.releases[tab.bareBoard]);
+                            processManufacturer(0);
+                        });
                     } else {
                         self.unifiedTarget = {};
+                        finishPopulatingBuilds();
                     }
-
-                    finishPopulatingBuilds();
                 }
             }
         });
@@ -733,16 +698,28 @@ tab.initialize = function (callback) {
 
         const portPickerElement = $('div#port-picker #port');
         function flashFirmware(firmware) {
-            const options = {
-                no_reboot: false,
-                erase_chip: $('input.erase_chip').is(':checked'),
-                baud: getIntegerValue('select#baud') ?? 115200,
-            };
+            var options = {};
+
+            if ($('input.erase_chip').is(':checked')) {
+                options.erase_chip = true;
+            }
 
             if (!$('option:selected', portPickerElement).data().isDFU) {
                 if (String(portPickerElement.val()) !== '0') {
                     const port = String(portPickerElement.val());
-                    STM32.connect(port, options.baud, firmware, options);
+
+                    if ($('input.updating').is(':checked')) {
+                        options.no_reboot = true;
+                    } else {
+                        options.reboot_baud = parseInt($('div#port-picker #baud').val());
+                    }
+
+                    let baud = 115200;
+                    if ($('input.flash_manual_baud').is(':checked')) {
+                        baud = parseInt($('#flash_manual_baud_rate').val());
+                    }
+
+                    STM32.connect(port, baud, firmware, options);
                 } else {
                     console.log('Please select valid serial port');
                     GUI.log(i18n.getMessage('firmwareFlasherNoValidPort'));
@@ -752,29 +729,57 @@ tab.initialize = function (callback) {
             }
         }
 
-        const showAdvancedOpts = config.get('showAdvancedFirmwareOpts') ?? false;
-
         $('input.erase_chip')
-            .prop('checked', showAdvancedOpts ? config.get('erase_chip') ?? true : true)
-            .on('change', function () {
-                config.set({ 'erase_chip': $(this).is(':checked') });
-            })
-            .closest('.field')
-            .toggle(showAdvancedOpts);
+            .prop('checked', !!config.get('erase_chip'))
+            .change(function () {
+                config.set({'erase_chip': $(this).is(':checked')});
+            }).change();
 
-        $('#show-legacy-targets')
-            .prop('checked', showAdvancedOpts ? config.get('showLegacyTargets') ?? false : false)
-            .on('change', function () {
-                  config.set({ showLegacyTargets: $(this).is(':checked') });
-                  updateBoardSelect($('select[name="board"]').val());
-            })
-            .closest('.field')
-            .toggle(showAdvancedOpts);
 
         chrome.storage.local.get('selected_build_type', function (result) {
             // ensure default build type is selected
             buildType_e.val(result.selected_build_type || 0).trigger('change');
         });
+
+
+        if (config.get('no_reboot_sequence')) {
+            $('input.updating').prop('checked', true);
+            $('.flash_on_connect_wrapper').show();
+        } else {
+            $('input.updating').prop('checked', false);
+        }
+
+        // bind UI hook so the status is saved on change
+        $('input.updating').change(function() {
+            var status = $(this).is(':checked');
+
+            if (status) {
+                $('.flash_on_connect_wrapper').show();
+            } else {
+                $('input.flash_on_connect').prop('checked', false).change();
+                $('.flash_on_connect_wrapper').hide();
+            }
+
+            config.set({'no_reboot_sequence': status});
+        });
+
+        $('input.updating').trigger('change');
+
+        $('input.flash_manual_baud')
+            .prop('checked', !!config.get('flash_manual_baud'))
+            .on('change', function() {
+                var status = $(this).is(':checked');
+                config.set({'flash_manual_baud': status});
+            })
+            .trigger('change');
+
+        $('#flash_manual_baud_rate')
+            .val(config.get('flash_manual_baud_rate'))
+            .on('change', function() {
+                var baud = parseInt($(this).val());
+                config.set({'flash_manual_baud_rate': baud});
+            })
+            .trigger('change');
 
         // UI Hooks
         $('a.load_file').on('click', async function () {
@@ -979,8 +984,18 @@ tab.initialize = function (callback) {
                         board = newBoardName;
                     }
 
-                    updateBoardSelect(`${FC.CONFIG.manufacturerId}-${board}`);
+                    const boardSelect = $('select[name="board"]');
+                    const boardSelectOptions = $('select[name="board"] option');
+                    const target = boardSelect.val();
 
+                    boardSelectOptions.each((_, e) => {
+                        if ($(e).text() === board) {
+                            targetAvailable = true;
+                        }
+                    });
+                    if (targetAvailable && board !== target) {
+                        boardSelect.val(board).trigger('change');
+                    }
                     GUI.log(i18n.getMessage(targetAvailable ? 'firmwareFlasherBoardDetectionSucceeded' : 'firmwareFlasherBoardDetectionBoardNotFound', { boardName: board }));
                     disconnect();
                 }
@@ -1043,7 +1058,10 @@ tab.initialize = function (callback) {
                 if (!$('option:selected', portPickerElement).data().isDFU) {
                     if (String(portPickerElement.val()) !== '0') {
                         const port = String(portPickerElement.val());
-                        const baud = getIntegerValue('select#baud') ?? 115200;
+                        let baud = 115200;
+                        if ($('input.flash_manual_baud').is(':checked')) {
+                            baud = parseInt($('#flash_manual_baud_rate').val());
+                        }
                         board_auto_detect.detect(port, baud);
                     } else {
                         GUI.log(i18n.getMessage('firmwareFlasher'));
@@ -1091,6 +1109,37 @@ tab.initialize = function (callback) {
                 }
             }
         }
+
+        $('input.flash_on_connect').change(function () {
+            var status = $(this).is(':checked');
+
+            if (status) {
+                var catch_new_port = function () {
+                    PortHandler.port_detected('flash_detected_device', function (result) {
+                        var port = result[0];
+
+                        if (!GUI.connect_lock) {
+                            GUI.log(i18n.getMessage('firmwareFlasherFlashTrigger', [port]));
+                            console.log('Detected: ' + port + ' - triggering flash on connect');
+
+                            // Trigger regular Flashing sequence
+                            GUI.timeout_add('initialization_timeout', function () {
+                                $('a.flash_firmware').click();
+                            }, 100); // timeout so bus have time to initialize after being detected by the system
+                        } else {
+                            GUI.log(i18n.getMessage('firmwareFlasherPreviousDevice', [port]));
+                        }
+
+                        // Since current port_detected request was consumed, create new one
+                        catch_new_port();
+                    }, false, true);
+                };
+
+                catch_new_port();
+            } else {
+                PortHandler.flush_callbacks();
+            }
+        }).change();
 
         $(document).keypress(function (e) {
             if (e.which == 13) { // enter

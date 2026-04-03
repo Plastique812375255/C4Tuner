@@ -80,6 +80,9 @@ MspHelper.prototype.process_data = function(dataHandler) {
     const data = dataHandler.dataView; // DataView (allowing us to view arrayBuffer as struct/union)
     const code = dataHandler.code;
     const crcError = dataHandler.crcError;
+    let buff = [];
+    let char = '';
+    let flags = 0;
 
     if (!crcError) {
         if (!dataHandler.unsupported) switch (code) {
@@ -274,9 +277,6 @@ MspHelper.prototype.process_data = function(dataHandler) {
                 FC.BATTERY_STATE.voltage = data.readU16() / 100;    // V
                 FC.BATTERY_STATE.amperage = data.readU16() / 100;   // A
                 FC.BATTERY_STATE.chargeLevel = data.readU8();
-                if (semver.gte(FC.CONFIG.apiVersion, API_VERSION_12_9)) {
-                    FC.BATTERY_STATE.batteryProfile = data.readU8();
-                }
                 break;
             }
 
@@ -338,23 +338,11 @@ MspHelper.prototype.process_data = function(dataHandler) {
                 FC.BATTERY_CONFIG.vbatwarningcellvoltage = data.readU16() / 100;
                 FC.BATTERY_CONFIG.lvcPercentage = data.readU8();
                 FC.BATTERY_CONFIG.mahWarningPercentage = data.readU8();
-                if (semver.gte(FC.CONFIG.apiVersion, API_VERSION_12_9)) {
-                    const capacities = [];
-                    for (let i = 0; i < 6; i++) {
-                        capacities.push(data.readU16());
-                    }
-                    FC.BATTERY_CONFIG.capacities = capacities;
-                }
                 break;
             }
 
             case MSPCodes.MSP_SET_BATTERY_CONFIG: {
                 console.log('Battery configuration saved');
-                break;
-            }
-
-            case MSPCodes.MSP_SET_BATTERY_PROFILE: {
-                console.log('Battery profile set');
                 break;
             }
 
@@ -399,7 +387,6 @@ MspHelper.prototype.process_data = function(dataHandler) {
 
                 if (semver.gte(FC.CONFIG.apiVersion, API_VERSION_12_9)) {
                     FC.RC_TUNING.cyclic_ring = data.readU8();
-                    FC.RC_TUNING.cyclic_polar = Boolean(data.readU8());
                 }
 
                 break;
@@ -487,9 +474,9 @@ MspHelper.prototype.process_data = function(dataHandler) {
             case MSPCodes.MSP_BOXNAMES: {
                 FC.AUX_CONFIG = []; // empty the array as new data is coming in
 
-                let buff = [];
+                buff = [];
                 for (let i = 0; i < data.byteLength; i++) {
-                    const char = data.readU8();
+                    char = data.readU8();
                     if (char == 0x3B) { // ; (delimeter char)
                         FC.AUX_CONFIG.push(String.fromCharCode.apply(null, buff)); // convert bytes into ASCII and save as strings
 
@@ -498,6 +485,13 @@ MspHelper.prototype.process_data = function(dataHandler) {
                     } else {
                         buff.push(char);
                     }
+                }
+                break;
+            }
+
+            case MSPCodes.MSP_PIDNAMES: {
+                for (let i = 0; i < data.byteLength; i++) {
+                    char = data.readU8();
                 }
                 break;
             }
@@ -528,15 +522,6 @@ MspHelper.prototype.process_data = function(dataHandler) {
                         };
                         FC.SERVO_CONFIG.push(arr);
                     }
-                }
-                break;
-            }
-
-            case MSPCodes.MSP_BUS_SERVO_CONFIG: {
-                FC.BUS_SERVO_CONFIG = [];
-                const BUS_SERVO_CHANNELS = 18;
-                for (let i = 0; i < BUS_SERVO_CHANNELS; i++) {
-                    FC.BUS_SERVO_CONFIG.push(data.readU8());
                 }
                 break;
             }
@@ -883,23 +868,8 @@ MspHelper.prototype.process_data = function(dataHandler) {
 
             case MSPCodes.MSP_NAME: {
                 FC.CONFIG.name = '';
-                let char;
                 while ((char = data.readU8()) !== null) {
                     FC.CONFIG.name += String.fromCharCode(char);
-                }
-                break;
-            }
-
-            case MSPCodes.MSP_PILOT_CONFIG: {
-                FC.PILOT_CONFIG.model_id = data.readU8();
-                FC.PILOT_CONFIG.model_param1_type = data.readU8();
-                FC.PILOT_CONFIG.model_param1_value = data.readU16();
-                FC.PILOT_CONFIG.model_param2_type = data.readU8();
-                FC.PILOT_CONFIG.model_param2_value = data.readU16();
-                FC.PILOT_CONFIG.model_param3_type = data.readU8();
-                FC.PILOT_CONFIG.model_param3_value = data.readU16();
-                if (semver.gte(FC.CONFIG.apiVersion, API_VERSION_12_9)) {
-                    FC.PILOT_CONFIG.model_flags = data.readU32();
                 }
                 break;
             }
@@ -908,7 +878,7 @@ MspHelper.prototype.process_data = function(dataHandler) {
                 FC.FLIGHT_STATS.stats_total_flights = data.readU32();
                 FC.FLIGHT_STATS.stats_total_time_s = data.readU32();
                 FC.FLIGHT_STATS.stats_total_dist_m = data.readU32();
-                FC.FLIGHT_STATS.stats_min_armed_time_s = data.read8();
+                FC.FLIGHT_STATS.stats_min_armed_time_s = data.readU8();
                 break;
             }
 
@@ -1463,7 +1433,7 @@ MspHelper.prototype.process_data = function(dataHandler) {
 
             case MSPCodes.MSP_DATAFLASH_SUMMARY: {
                 if (data.byteLength >= 13) {
-                    const flags = data.readU8();
+                    flags = data.readU8();
                     FC.DATAFLASH.ready = (flags & 1) != 0;
                     FC.DATAFLASH.supported = (flags & 2) != 0;
                     FC.DATAFLASH.sectors = data.readU32();
@@ -1492,7 +1462,7 @@ MspHelper.prototype.process_data = function(dataHandler) {
             }
 
             case MSPCodes.MSP_SDCARD_SUMMARY: {
-                const flags = data.readU8();
+                flags = data.readU8();
                 FC.SDCARD.supported = (flags & 0x01) != 0;
                 FC.SDCARD.state = data.readU8();
                 FC.SDCARD.filesystemLastError = data.readU8();
@@ -1882,8 +1852,7 @@ MspHelper.prototype.crunch = function(code) {
             }
 
             if (semver.gte(FC.CONFIG.apiVersion, API_VERSION_12_9)) {
-                buffer.push8(FC.RC_TUNING.cyclic_ring)
-                      .push8(Number(FC.RC_TUNING.cyclic_polar));
+                buffer.push8(FC.RC_TUNING.cyclic_ring);
             }
 
             break;
@@ -1969,12 +1938,8 @@ MspHelper.prototype.crunch = function(code) {
         }
 
         case MSPCodes.MSP_SET_BATTERY_CONFIG: {
-            if (semver.gte(FC.CONFIG.apiVersion, API_VERSION_12_9)) {
-                buffer.push16(FC.BATTERY_CONFIG.capacities[0]);
-            } else {
-                buffer.push16(FC.BATTERY_CONFIG.capacity);
-            }
-            buffer.push8(FC.BATTERY_CONFIG.cellCount)
+            buffer.push16(FC.BATTERY_CONFIG.capacity)
+                  .push8(FC.BATTERY_CONFIG.cellCount)
                   .push8(FC.BATTERY_CONFIG.voltageMeterSource)
                   .push8(FC.BATTERY_CONFIG.currentMeterSource)
                   .push16(Math.round(FC.BATTERY_CONFIG.vbatmincellvoltage * 100))
@@ -1983,11 +1948,6 @@ MspHelper.prototype.crunch = function(code) {
                   .push16(Math.round(FC.BATTERY_CONFIG.vbatwarningcellvoltage * 100))
                   .push8(FC.BATTERY_CONFIG.lvcPercentage)
                   .push8(FC.BATTERY_CONFIG.mahWarningPercentage);
-            if (semver.gte(FC.CONFIG.apiVersion, API_VERSION_12_9)) {
-                for (let i = 0; i < 6; i++) {
-                    buffer.push16(FC.BATTERY_CONFIG.capacities[i]);
-                }
-            }
             break;
         }
 
@@ -2307,20 +2267,6 @@ MspHelper.prototype.crunch = function(code) {
             break;
         }
 
-        case MSPCodes.MSP_SET_PILOT_CONFIG: {
-            buffer.push8(FC.PILOT_CONFIG.model_id)
-                  .push8(FC.PILOT_CONFIG.model_param1_type)
-                  .push16(FC.PILOT_CONFIG.model_param1_value)
-                  .push8(FC.PILOT_CONFIG.model_param2_type)
-                  .push16(FC.PILOT_CONFIG.model_param2_value)
-                  .push8(FC.PILOT_CONFIG.model_param3_type)
-                  .push16(FC.PILOT_CONFIG.model_param3_value);
-            if (semver.gte(FC.CONFIG.apiVersion, API_VERSION_12_9)) {
-                buffer.push32(FC.PILOT_CONFIG.model_flags);
-            }
-            break;
-        }
-
         case MSPCodes.MSP_SET_FLIGHT_STATS: {
             buffer.push32(FC.FLIGHT_STATS.stats_total_flights)
                   .push32(FC.FLIGHT_STATS.stats_total_time_s)
@@ -2428,9 +2374,11 @@ MspHelper.prototype.dataflashRead = function(address, blockSize, onDataCallback)
         if (!response.crcError) {
             const chunkAddress = response.data.readU32();
             let headerSize = 4;
+            let dataSize = response.data.buffer.byteLength - headerSize;
+            let dataCompressionType = 0;
             headerSize = headerSize + 3;
-            const dataSize = response.data.readU16();
-            const dataCompressionType = response.data.readU8();
+            dataSize = response.data.readU16();
+            dataCompressionType = response.data.readU8();
 
             // Verify that the address of the memory returned matches what the caller asked for and there was not a CRC error
             if (chunkAddress == address) {
@@ -3012,14 +2960,4 @@ MspHelper.prototype.requestRpmFilterBanks = async function()
     }
 
     FC.RPM_FILTER_CONFIG_V2 = banks;
-};
-
-MspHelper.prototype.setBatteryProfile = async function(index)
-{
-    if (CONFIGURATOR.virtualMode) {
-        FC.BATTERY_STATE.batteryProfile = index;
-    } else {
-        const buffer = [index];
-        await MSP.promise(MSPCodes.MSP_SET_BATTERY_PROFILE, buffer);
-    }
 };

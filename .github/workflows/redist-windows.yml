@@ -1,0 +1,76 @@
+# Cloud-build Windows x64: Inno Setup installer (.exe) + portable zip.
+# Actions → this workflow → Run workflow → (optional) set semver → Run.
+# Artifacts: download the uploaded zip; inside you get redist/*.exe and redist/*.zip.
+name: Windows redist (cloud)
+
+permissions:
+  contents: read
+
+on:
+  workflow_dispatch:
+    inputs:
+      semver:
+        description: "Optional version for package.json (e.g. 2.4.0.1). Empty = use repo package.json version."
+        required: false
+        default: ""
+
+# Avoid complex expressions in run-name (can prevent workflow from loading on GitHub).
+run-name: Windows redist cloud
+
+jobs:
+  win64:
+    runs-on: windows-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+          run_install: false
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: echo "PNPM_STORE_PATH=$(pnpm store path --silent)" >> "$GITHUB_ENV"
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.PNPM_STORE_PATH }}
+          key: ${{ github.job }}-pnpm-store-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ github.job }}-pnpm-store-
+
+      - name: Optional version override
+        if: inputs.semver != ''
+        shell: bash
+        run: make version SEMVER="${{ inputs.semver }}"
+
+      - name: Export build version for artifact name
+        shell: bash
+        run: |
+          echo "BUILD_VER=$(node -p \"require('./package.json').version\")" >> "$GITHUB_ENV"
+
+      - name: Initialise build environment
+        run: make init
+
+      - name: Build Windows x64 redist (exe + zip)
+        run: pnpm gulp redist --platform win --arch x86_64
+
+      - name: Upload redist artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: rf-configurator-c4-win64-${{ env.BUILD_VER }}
+          path: redist/*

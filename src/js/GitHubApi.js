@@ -1,28 +1,31 @@
-const GITHUB_API_URL = "https://api.github.com";
+export const GitHubApi = function () {
+  const self = this;
 
-export async function getFileLastCommitInfo(project, branch, filename) {
-  const url = `${GITHUB_API_URL}/repos/${encodeURI(project)}/commits?sha=${encodeURIComponent(branch)}&path=${encodeURIComponent(filename)}`;
-  const res = await fetch(url);
-  if (!res.ok) {
-    throw new Error(`HTTP ${r.status}`);
-  }
-  const commits = await res.json();
+  self.GITHUB_API_URL = "https://api.github.com/";
+};
 
-  try {
-    return {
-      commitHash: commits[0].sha.substring(0, 8),
-      date: commits[0].commit.author.date,
-    };
-  } catch (err) {
-    console.log(`Error while parsing commit: ${err}`);
-  }
-}
+GitHubApi.prototype.getFileLastCommitInfo = function (
+  project,
+  branch,
+  filename,
+  callback,
+) {
+  const self = this;
 
-export async function getContents(project, branch, path) {
-  const url = `${GITHUB_API_URL}/repos/${encodeURI(project)}/contents/${encodeURIComponent(path)}?ref=${encodeURIComponent(branch)}`;
-  const res = await fetch(url);
-  if (!res.ok) {
-    throw new Error(`HTTP ${r.status}`);
-  }
-  return await res.json();
-}
+  $.getJSON(
+    `${self.GITHUB_API_URL}repos/${encodeURI(project)}/commits?sha=${encodeURIComponent(branch)}&path=${encodeURIComponent(filename)}`,
+    function (commits) {
+      const result = {};
+      try {
+        result.commitHash = commits[0].sha.substring(0, 8);
+        result.date = commits[0].commit.author.date;
+      } catch (exception) {
+        console.log(`Error while parsing commit: ${exception}`);
+      }
+
+      console.log(`Found commit info for file ${filename}:`, result);
+
+      callback(result);
+    },
+  );
+};

@@ -9,18 +9,18 @@
 ; sourceFolder
 ; targetFolder
 
-#define ApplicationName "Rotorflight Configurator"
+#define ApplicationName "Rotorflight Configurator C4Master Edition"
 #define CompanyName "The Rotorflight open source project"
 #define CompanyUrl "https://github.com/rotorflight/"
-#define ExecutableFileName "rotorflight-configurator.exe"
+#define ExecutableFileName "rf-configurator-c4.exe"
 #define GroupName "Rotorflight"
-#define InstallerFileName "rotorflight-configurator-installer_" + version + "_" + archName
+#define InstallerFileName "rf-configurator-c4_" + version + "_" + archName
 #define SourcePath "..\..\" + sourceFolder
-#define TargetFolderName "Rotorflight-Configurator"
+#define TargetFolderName "RF-Configurator-C4E"
 #define UpdatesUrl "https://github.com/rotorflight/rotorflight-configurator/releases"
 
 [CustomMessages]
-AppName=rotorflight-configurator
+AppName=rf-configurator-c4
 LaunchProgram=Start {#ApplicationName}
 
 [Files]

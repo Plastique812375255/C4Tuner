@@ -2,6 +2,7 @@ import semver from "semver";
 
 import * as config from "@/js/config.js";
 import { portUsage } from "@/js/port_usage.svelte.js";
+import { serial } from "@/js/serial.js";
 import { applyVirtualConfig } from "@/js/virtual_fc.js";
 
 export async function handleConnectClick() {
@@ -56,7 +57,15 @@ export async function handleConnectClick() {
                 await new Promise((resolve) => GUI.tab_switch_cleanup(resolve));
                 GUI.tab_switch_in_progress = false;
 
-                await new Promise((resolve) => globalThis.mspHelper.setArmingEnabled(true, resolve));
+                // After FC reboot / cable loss, `serial.connected` is already false but MSP cleanup may have
+                // been skipped; sending MSP_ARMING_DISABLE here never completes and blocks `finishClose` forever.
+                const canSendMsp =
+                    serial.connected &&
+                    !GUI.setupWizardDisconnectPending &&
+                    !GUI.reboot_in_progress;
+                if (canSendMsp) {
+                    await new Promise((resolve) => globalThis.mspHelper.setArmingEnabled(true, resolve));
+                }
 
                 finishClose();
             }
@@ -193,6 +202,20 @@ function finishClose() {
     }
 
     const wasConnected = CONFIGURATOR.connectionValid;
+    const preserveSetupWizard = wasConnected && GUI.active_tab === 'setup_wizard';
+    /** 向导在发 MSP_SET_REBOOT 前可预置 `setupWizardDisconnectPending`，断线时 `active_tab` 可能已不是 setup_wizard，但仍需保留 #content。 */
+    const keepWizardDom = preserveSetupWizard || GUI.setupWizardDisconnectPending;
+
+    GUI.log(
+        `[SetupWizard] finishClose: wasConnected=${wasConnected} active_tab=${GUI.active_tab} preserve=${preserveSetupWizard} pendingIn=${GUI.setupWizardDisconnectPending} keepDom=${keepWizardDom}`,
+    );
+    console.log('[SetupWizard] finishClose', {
+        wasConnected,
+        active_tab: GUI.active_tab,
+        preserveSetupWizard,
+        setupWizardDisconnectPending: GUI.setupWizardDisconnectPending,
+        keepWizardDom,
+    });
 
     // close reset to custom defaults dialog
     $('#dialogResetToCustomDefaults')[0].close();
@@ -222,12 +245,29 @@ function finishClose() {
     // reset active sensor indicators
     sensor_status(0);
 
-    if (wasConnected) {
+    if (preserveSetupWizard) {
+        GUI.setupWizardDisconnectPending = true;
+        config.set({ lastTab: 'setup_wizard' });
+    } else if (!GUI.setupWizardDisconnectPending) {
+        GUI.setupWizardDisconnectPending = false;
+    }
+
+    GUI.log(`[SetupWizard] finishClose: after flags pendingOut=${GUI.setupWizardDisconnectPending}`);
+
+    if (keepWizardDom) {
+        // Incomplete tab switch can leave `.data-loading` on top of #content; keepWizardDom skips empty().
+        $('#content .data-loading').remove();
+        GUI.tab_switch_in_progress = false;
+    }
+
+    if (wasConnected && !keepWizardDom) {
         // detach listeners and remove element data
         $('#content').empty();
     }
 
-    $('#tabs .tab_landing a').trigger("click");
+    if (!keepWizardDom) {
+        $('#tabs .tab_landing a').trigger("click");
+    }
 }
 
 function setConnectionTimeout() {
@@ -477,6 +517,13 @@ function finishOpen() {
 
     onConnect();
 
+    GUI.log(
+        `[SetupWizard] finishOpen → selectDefaultTab: pending=${GUI.setupWizardDisconnectPending} reboot_in_progress was cleared`,
+    );
+    console.log('[SetupWizard] finishOpen before selectDefaultTabWhenConnected', {
+        setupWizardDisconnectPending: GUI.setupWizardDisconnectPending,
+    });
+    $('#content .data-loading').remove();
     GUI.selectDefaultTabWhenConnected();
 }
 

@@ -1,3 +1,4 @@
+
 #tab-configuration-templates {
     display: none;
 }
@@ -10,11 +11,15 @@
 .tab-configuration select {
     border: 1px solid var(--subtleAccent);
     height: 20px;
+    float: left;
+    margin-right: 15px;
     border-radius: 3px;
 }
 
 .tab-configuration table {
     margin-bottom: 0;
+    width: 100%;
+    float: left;
 }
 
 .tab-configuration table,
@@ -25,52 +30,13 @@
 }
 
 .tab-configuration table th {
-    padding: 0 3px;
-}
-
-.tab-configuration .flight-stats-display {
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    gap: 12px;
-}
-
-.tab-configuration .flight-stats-display {
-    padding-top: 4px;
-}
-
-.tab-configuration .flight-stats-display button {
-    margin: 4px;
-    font-size: 11px;
-
-    border-radius: 3px;
-    padding: 0 8px 0 8px;
-    line-height: 24px;
-    border: 1px solid var(--subtleAccent);
-    color: #000;
-    background-color: var(--button-background);
-}
-
-.tab-configuration .flight-stats-display button:hover {
-    background-color: #dedcdc;
-}
-
-.tab-configuration .flight-stats-display th {
-    width: 100px;
-    padding: 0;
-}
-
-.tab-configuration .flight-stats-display td {
-    padding: 0;
-    padding-left: 8px;
+    padding: 3px;
+    border-bottom: 1px dotted var(--superSubtleAccent);
 }
 
 .tab-configuration table td {
     padding: 5px 3px;
-}
-
-.tab-configuration table tr + tr {
-    border-top: 1px dotted var(--superSubtleAccent);
+    border-bottom: 1px dotted var(--superSubtleAccent);
 }
 
 .tab-configuration table tr td:first-child {
@@ -83,6 +49,8 @@
 
 .tab-configuration .featuresMultiple {
     border-collapse: collapse;
+    margin-bottom: 5px;
+    margin-top: -5px;
     padding: 0;
 }
 
@@ -131,13 +99,13 @@
 }
 
 .tab-configuration .number input {
-    box-sizing: border-box;
-    width: 100px;
+    width: 55px;
     padding-left: 3px;
-    height: 22px;
-    line-height: 22px;
+    height: 20px;
+    line-height: 20px;
     text-align: left;
     border-radius: 3px;
+    margin-right: 11px;
     font-size: 12px;
     font-weight: normal;
 }
@@ -152,7 +120,12 @@
     margin-left: 0;
 }
 
-.tab-configuration .board_align_inputs input {
+.tab-configuration .freelabel {
+    margin-left: 10px;
+    position: relative;
+}
+
+.tab-configuration input {
     float: left;
 }
 
@@ -161,33 +134,20 @@
 }
 
 .tab-configuration .spacer_box {
-    display: flex;
-    flex-direction: column;
+    padding-bottom: 10px;
+    float: left;
     width: calc(100% - 20px);
-    padding: 4px 10px;
-}
-
-.tab-configuration .spacer_box > * + * {
-    border-top: 1px dotted var(--superSubtleAccent);
 }
 
 .tab-configuration .number,
-.tab-configuration .select {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+.tab-configuration .select
+{
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+    border-bottom: 1px dotted var(--superSubtleAccent);
     width: 100%;
-    padding: 4px 0;
-}
-
-.tab-configuration .number > :first-child,
-.tab-configuration .select > :first-child {
-    width: 100px;
-}
-
-.tab-configuration .number > :nth-child(2),
-.tab-configuration .select > :nth-child(2) {
-    flex-grow: 1;
+    float: left;
+    clear: left;
 }
 
 .tab-configuration .board_align_inputs {
@@ -214,10 +174,6 @@
     border-bottom: none;
     padding-bottom: 0;
     margin-bottom: 0;
-}
-
-.tab-configuration .units {
-  padding: 0 2px;
 }
 
 .tab-configuration .gui_box_titlebar {
@@ -295,22 +251,38 @@
     background-position: center;
 }
 
+.tab-configuration .board select {
+    float: left;
+    width: fit-content;
+    max-width: 50%;
+    height: 20px;
+    margin-right: 5px;
+    border-radius:3px;
+}
+
 .tab-configuration .board_align_content {
     width: 100%;
     display: inline-block;
+    border-bottom: 1px dotted var(--superSubtleAccent);
+    padding-bottom: 8px;
 }
 
 .tab-configuration .sensor_align_content {
     margin-top: 4px;
 }
 
-.tab-configuration #gyro-frequency {
-    box-sizing: border-box;
+.tab-configuration .gyroSyncDenom,
+.tab-configuration .pidProcessDenom,
+.tab-configuration .gyroFrequency {
+    width:90px;
+}
+
+.tab-configuration .gyroFrequency {
     border: none;
     background-color: var(--alternativeBackground);
     padding-left: 6px;
+    margin-right: 10px;
     font-weight: bold;
-    width: 100px;
 }
 
 .tab-configuration .model-and-info {

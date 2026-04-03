@@ -11,13 +11,11 @@
   {/if}
   {#if attrs}
     <table class="attrs">
-      <tbody>
-        {#each attrs as attr (attr.name)}
-          <tr>
-            <th>{$i18n.t(attr.name)}</th><td>{attr.value}</td>
-          </tr>
-        {/each}
-      </tbody>
+      {#each attrs as attr (attr.name)}
+        <tr>
+          <th>{$i18n.t(attr.name)}</th><td>{attr.value}</td>
+        </tr>
+      {/each}
     </table>
   {/if}
 </div>

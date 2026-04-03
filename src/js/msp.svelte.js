@@ -47,12 +47,7 @@ export const MSP = {
     crcError:                   false,
 
     callbacks:                  [],
-    get packet_error() {
-        return packet_error;
-    },
-    set packet_error(v) {
-        packet_error = v;
-    },
+    packet_error,
     unsupported:                0,
 
     last_received_timestamp:   null,
@@ -271,7 +266,7 @@ export const MSP = {
         // always reserve 6 bytes for protocol overhead !
         if (data) {
             const size = data.length + 6;
-            let checksum;
+            let checksum = 0;
 
             bufferOut = new ArrayBuffer(size);
             let bufView = new Uint8Array(bufferOut);

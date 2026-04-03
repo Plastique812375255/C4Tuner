@@ -867,10 +867,13 @@ tab.initialize = function (callback) {
     // refresh mode color buttons
     function setModeBackgroundColor(element) {
         element.find('[class*="mode_color"]').each(function() {
+            let m = 0;
+            let d = 0;
+
             const match = $(this).attr("class").match(/(^|\s)mode_color-([0-9]+)-([0-9]+)(\s|$)/);
             if (match) {
-                const m = Number(match[2]);
-                const d = Number(match[3]);
+                m = Number(match[2]);
+                d = Number(match[3]);
                 $(this).css('background-color', HsvToColor(FC.LED_COLORS[getModeColor(m, d)]));
             }
         });
@@ -878,9 +881,11 @@ tab.initialize = function (callback) {
 
     function setBackgroundColor(element) {
         if (element.is('[class*="color"]')) {
+            let colorIndex = 0;
+
             const match = element.attr("class").match(/(^|\s)color-([0-9]+)(\s|$)/);
             if (match) {
-                const colorIndex = match[2];
+                colorIndex = match[2];
                 element.css('background-color', HsvToColor(FC.LED_COLORS[colorIndex]));
             }
         }

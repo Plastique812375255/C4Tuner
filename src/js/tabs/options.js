@@ -1,100 +1,133 @@
 import * as config from "@/js/config.js";
-import { DarkTheme } from "@/js/DarkTheme.js";
-import { i18n } from "@/js/localization.js";
-import { setDarkTheme } from "@/js/main.js";
 
 const tab = {
   tabName: "options",
+};
+tab.initialize = function (callback) {
+  $("#content").load("/src/tabs/options.html", function () {
+    i18n.localizePage();
 
-  initialize(callback) {
-    $("#content").load("/src/tabs/options.html", () => {
-      i18n.localizePage();
+    //tab.initPermanentExpertMode();
+    tab.initRememberLastTab();
+    tab.initCheckForConfiguratorUnstableVersions();
+    tab.initCliAutoComplete();
+    tab.initAutoConnectConnectionTimeout();
+    tab.initCordovaForceComputerUI();
+    tab.initDarkTheme();
+    tab.rememberLastSelectedBoard();
 
-      this.initRememberLastTab();
-      this.initCheckForConfiguratorUnstableVersions();
-      this.initAutoConnectConnectionTimeout();
-      this.initCordovaForceComputerUI();
-      this.initDarkTheme();
-      this.rememberLastSelectedBoard();
-      this.showAdvancedFirmwareOpts();
+    GUI.content_ready(callback);
+  });
+};
 
-      GUI.content_ready(callback);
+tab.cleanup = function (callback) {
+  callback?.();
+};
+
+/**
+tab.initPermanentExpertMode = function () {
+    ConfigStorage.get('permanentExpertMode', function (result) {
+        if (result.permanentExpertMode) {
+            $('div.permanentExpertMode input').prop('checked', true);
+        }
+
+        $('div.permanentExpertMode input').change(function () {
+            const checked = $(this).is(':checked');
+
+            config.set({'permanentExpertMode': checked});
+
+            $('input[name="expertModeCheckbox"]').prop('checked', checked).change();
+        }).change();
     });
-  },
+};
+**/
 
-  cleanup(callback) {
-    callback?.();
-  },
+tab.initRememberLastTab = function () {
+  $("div.rememberLastTab input")
+    .prop("checked", !!config.get("rememberLastTab"))
+    .change(function () {
+      config.set({ rememberLastTab: $(this).is(":checked") });
+    })
+    .change();
+};
 
-  initRememberLastTab() {
-    $("#opt-remember-last-tab")
-      .prop("checked", config.get("rememberLastTab") ?? true)
-      .on("change", function () {
-        config.set({ rememberLastTab: $(this).is(":checked") });
-      })
-      .trigger("change");
-  },
+tab.rememberLastSelectedBoard = function () {
+  $("div.rememberLastSelectedBoard input")
+    .prop("checked", !!config.get("rememberLastSelectedBoard"))
+    .change(function () {
+      config.set({ rememberLastSelectedBoard: $(this).is(":checked") });
+    })
+    .change();
+};
 
-  rememberLastSelectedBoard() {
-    $("#opt-remember-last-board")
-      .prop("checked", config.get("rememberLastSelectedBoard") ?? false)
-      .on("change", function () {
-        config.set({ rememberLastSelectedBoard: $(this).is(":checked") });
-      });
-  },
+tab.initCheckForConfiguratorUnstableVersions = function () {
+  if (config.get("checkForConfiguratorUnstableVersions")) {
+    $("div.checkForConfiguratorUnstableVersions input").prop("checked", true);
+  }
 
-  showAdvancedFirmwareOpts() {
-    $("#opt-show-advanced-firmware-opts")
-      .prop("checked", config.get("showAdvancedFirmwareOpts") ?? false)
-      .on("change", function () {
-        config.set({ showAdvancedFirmwareOpts: $(this).is(":checked") });
-      });
-  },
+  $("div.checkForConfiguratorUnstableVersions input").change(function () {
+    const checked = $(this).is(":checked");
 
-  initCheckForConfiguratorUnstableVersions() {
-    $("#opt-check-unstable-versions")
-      .prop(
-        "checked",
-        config.get("checkForConfiguratorUnstableVersions") ?? true,
-      )
-      .on("change", function () {
-        config.set({
-          checkForConfiguratorUnstableVersions: $(this).is(":checked"),
-        });
-        checkForConfiguratorUpdates();
-      });
-  },
+    config.set({ checkForConfiguratorUnstableVersions: checked });
 
-  initAutoConnectConnectionTimeout() {
-    $("#opt-connection-timeout")
-      .val(config.get("connectionTimeout") ?? 100)
-      .on("change", function () {
-        config.set({ connectionTimeout: parseInt($(this).val()) });
-      });
-  },
+    checkForConfiguratorUpdates();
+  });
+};
 
-  initCordovaForceComputerUI() {
-    $("#opt-cordova-force-computer-ui")
-      .prop("checked", config.get("cordovaForceComputerUI") ?? false)
-      .on("change", function () {
-        const checked = $(this).is(":checked");
-        config.set({ cordovaForceComputerUI: checked });
-        cordovaUI?.set?.();
-      })
-      .closest(".field")
-      .toggle(GUI.isCordova() && cordovaUI.canChangeUI);
-  },
+tab.initCliAutoComplete = function () {
+  $("div.cliAutoComplete input")
+    .prop("checked", CliAutoComplete.configEnabled)
+    .change(function () {
+      const checked = $(this).is(":checked");
 
-  initDarkTheme() {
-    $("#opt-dark-theme")
-      .val(DarkTheme.configEnabled)
-      .on("change", function () {
-        const value = parseInt($(this).val());
+      config.set({ cliAutoComplete: checked });
+      CliAutoComplete.setEnabled(checked);
+    })
+    .change();
+};
 
-        config.set({ darkTheme: value });
-        setDarkTheme(value);
-      });
-  },
+tab.initAutoConnectConnectionTimeout = function () {
+  const connectionTimeout = config.get("connectionTimeout");
+  if (connectionTimeout) {
+    $("#connectionTimeoutSelect").val(connectionTimeout);
+  }
+
+  $("#connectionTimeoutSelect").on("change", function () {
+    const value = parseInt($(this).val());
+    config.set({ connectionTimeout: value });
+  });
+};
+
+tab.initCordovaForceComputerUI = function () {
+  if (GUI.isCordova() && cordovaUI.canChangeUI) {
+    if (config.get("cordovaForceComputerUI")) {
+      $("div.cordovaForceComputerUI input").prop("checked", true);
+    }
+
+    $("div.cordovaForceComputerUI input").change(function () {
+      const checked = $(this).is(":checked");
+
+      config.set({ cordovaForceComputerUI: checked });
+
+      if (typeof cordovaUI.set === "function") {
+        cordovaUI.set();
+      }
+    });
+  } else {
+    $("div.cordovaForceComputerUI").hide();
+  }
+};
+
+tab.initDarkTheme = function () {
+  $("#darkThemeSelect")
+    .val(DarkTheme.configEnabled)
+    .change(function () {
+      const value = parseInt($(this).val());
+
+      config.set({ darkTheme: value });
+      setDarkTheme(value);
+    })
+    .change();
 };
 
 TABS[tab.tabName] = tab;

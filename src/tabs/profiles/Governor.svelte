@@ -78,25 +78,7 @@
     {/if}
 
     {#if govState.govLimits}
-      {#if semver.gte(FC.CONFIG.apiVersion, API_VERSION_12_9)}
-        <Field id="gov-min-throttle" label="govMinThrottle" unit="%">
-          {#snippet tooltip()}
-            <Tooltip
-              help="govMinThrottleHelp"
-              attrs={[
-                { name: "genericDefault", value: "10%" },
-                { name: "genericRange", value: "10% - 100%" },
-              ]}
-            />
-          {/snippet}
-          <NumberInput
-            id="gov-min-throttle"
-            min="10"
-            max="100"
-            bind:value={FC.GOVERNOR.gov_min_throttle}
-          />
-        </Field>
-      {:else if semver.gte(FC.CONFIG.apiVersion, API_VERSION_12_7)}
+      {#if semver.gte(FC.CONFIG.apiVersion, API_VERSION_12_7)}
         <Field id="gov-min-throttle" label="govMinThrottle" unit="%">
           {#snippet tooltip()}
             <Tooltip
@@ -115,43 +97,23 @@
           />
         </Field>
       {/if}
-      {#if semver.gte(FC.CONFIG.apiVersion, API_VERSION_12_9)}
-        <Field id="gov-max-throttle" label="govMaxThrottle" unit="%">
-          {#snippet tooltip()}
-            <Tooltip
-              help="govMaxThrottleHelp"
-              attrs={[
-                { name: "genericDefault", value: "100%" },
-                { name: "genericRange", value: "10% - 100%" },
-              ]}
-            />
-          {/snippet}
-          <NumberInput
-            id="gov-max-throttle"
-            min="10"
-            max="100"
-            bind:value={FC.GOVERNOR.gov_max_throttle}
+      <Field id="gov-max-throttle" label="govMaxThrottle" unit="%">
+        {#snippet tooltip()}
+          <Tooltip
+            help="govMaxThrottleHelp"
+            attrs={[
+              { name: "genericDefault", value: "100%" },
+              { name: "genericRange", value: "0% - 100%" },
+            ]}
           />
-        </Field>
-      {:else}
-        <Field id="gov-max-throttle" label="govMaxThrottle" unit="%">
-          {#snippet tooltip()}
-            <Tooltip
-              help="govMaxThrottleHelp"
-              attrs={[
-                { name: "genericDefault", value: "100%" },
-                { name: "genericRange", value: "0% - 100%" },
-              ]}
-            />
-          {/snippet}
-          <NumberInput
-            id="gov-max-throttle"
-            min="0"
-            max="100"
-            bind:value={FC.GOVERNOR.gov_max_throttle}
-          />
-        </Field>
-      {/if}
+        {/snippet}
+        <NumberInput
+          id="gov-max-throttle"
+          min="0"
+          max="100"
+          bind:value={FC.GOVERNOR.gov_max_throttle}
+        />
+      </Field>
     {/if}
 
     {#if semver.gte(FC.CONFIG.apiVersion, API_VERSION_12_9) && govState.govHeadspeed}

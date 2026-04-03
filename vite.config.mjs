@@ -16,7 +16,6 @@ export default defineConfig({
   build: {
     target: "chrome119",
     outDir: "./bundle",
-    chunkSizeWarningLimit: 1024 * 1024,
     rollupOptions: {
       input: {
         "src/main.html": "src/main.html",

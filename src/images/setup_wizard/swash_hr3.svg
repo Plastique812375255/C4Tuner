@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="172" viewBox="0 28 256 172">
+  <title>swash</title>
+  <circle cx="128" cy="112" r="70" fill="none" stroke="#bfe7f6" stroke-width="3"/>
+  <circle cx="128" cy="112" r="70" fill="none" stroke="#4da8da" stroke-width="12" stroke-linecap="round" opacity="0.85"/>
+  <circle cx="188.62" cy="77.00" r="10" fill="#cfeefb" stroke="#4da8da" stroke-width="3"/>
+  <circle cx="128.00" cy="182.00" r="10" fill="#cfeefb" stroke="#4da8da" stroke-width="3"/>
+  <circle cx="67.38" cy="77.00" r="10" fill="#cfeefb" stroke="#4da8da" stroke-width="3"/>
+  <path d="M 128.0 88.0 L 104.0 118.0 L 118.0 152.0 L 138.0 152.0 L 152.0 118.0 Z M 128.0 98.0 L 114.0 118.0 L 122.0 144.0 L 134.0 144.0 L 142.0 118.0 Z" fill="#1f2540" fill-rule="evenodd"/>
+</svg>

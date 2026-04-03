@@ -17,6 +17,7 @@ export const GuiControl = function () {
     this.current_tab = null;
     this.tab_switch_in_progress = false;
     this.reboot_in_progress = false;
+    this.setupWizardDisconnectPending = false;
     this.operating_system = null;
     this.interval_array = [];
     this.timeout_array = [];
@@ -31,6 +32,7 @@ export const GuiControl = function () {
     this.defaultAllowedFCTabsWhenConnected = [
         'status',
         'setup',
+        'setup_wizard',
         'failsafe',
         'power',
         'adjustments',
@@ -440,11 +442,70 @@ GuiControl.prototype.saveDefaultTab = function(tabName) {
     config.set({ lastTab: tabName });
 };
 
+GuiControl.prototype.activateSetupWizardAfterReconnect = function () {
+    const tabObj = globalThis.TABS?.setup_wizard;
+    GUI.log(`[SetupWizard] activateAfterReconnect: tabObj=${!!tabObj}`);
+    console.log('[SetupWizard] activateSetupWizardAfterReconnect', { hasTab: !!tabObj });
+    if (!tabObj) {
+        this.setupWizardDisconnectPending = false;
+        const lastTab = config.get('lastTab');
+        if (config.get('rememberLastTab') && lastTab) {
+            $(`#tabs ul.mode-connected .tab_${lastTab} a`).click();
+        } else {
+            $('#tabs ul.mode-connected .tab_status a').click();
+        }
+        return;
+    }
+
+    const ui_tabs = $('#tabs > ul');
+    $('li', ui_tabs).removeClass('active');
+    $('#tabs ul.mode-connected .tab_setup_wizard').addClass('active');
+
+    // Stale tab-switch loading layer can block the whole UI (pointer hit-testing over #content).
+    $('#content .data-loading').remove();
+
+    this.active_tab = 'setup_wizard';
+    this.current_tab = tabObj;
+    this.tab_switch_in_progress = false;
+    this.setupWizardDisconnectPending = false;
+
+    if (typeof tabObj.onReconnect === 'function') {
+        tabObj.onReconnect();
+    }
+    GUI.log('[SetupWizard] activateAfterReconnect: onReconnect returned');
+};
+
 GuiControl.prototype.selectDefaultTabWhenConnected = function() {
+    GUI.log(
+        `[SetupWizard] selectDefaultTab: pending=${this.setupWizardDisconnectPending} hasWizardTab=${!!globalThis.TABS?.setup_wizard}`,
+    );
+    console.log('[SetupWizard] selectDefaultTabWhenConnected', {
+        setupWizardDisconnectPending: this.setupWizardDisconnectPending,
+        hasWizardTab: !!globalThis.TABS?.setup_wizard,
+    });
+    if (this.setupWizardDisconnectPending) {
+        if (globalThis.TABS?.setup_wizard) {
+            GUI.log('[SetupWizard] selectDefaultTab: pending → activateSetupWizardAfterReconnect');
+            this.activateSetupWizardAfterReconnect();
+        } else {
+            GUI.log('[SetupWizard] selectDefaultTab: pending but no TABS.setup_wizard — clearing pending');
+            this.setupWizardDisconnectPending = false;
+            const lastTab = config.get('lastTab');
+            if (config.get('rememberLastTab') && lastTab) {
+                $(`#tabs ul.mode-connected .tab_${lastTab} a`).click();
+            } else {
+                $('#tabs ul.mode-connected .tab_status a').click();
+            }
+        }
+        return;
+    }
+
     const lastTab = config.get('lastTab');
     if (config.get('rememberLastTab') && lastTab) {
+        GUI.log(`[SetupWizard] selectDefaultTab: rememberLastTab → ${lastTab}`);
         $(`#tabs ul.mode-connected .tab_${lastTab} a`).click();
     } else {
+        GUI.log('[SetupWizard] selectDefaultTab: default → status');
         $('#tabs ul.mode-connected .tab_status a').click();
     }
 };

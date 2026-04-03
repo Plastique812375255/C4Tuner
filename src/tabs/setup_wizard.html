@@ -1,0 +1,657 @@
+<div class="tab-setup-wizard">
+    <div class="content_wrapper">
+        <div class="tab_title" i18n="tabSetupWizard" style="display: none">Setup Wizard</div>
+        <div class="cf_doc_version_bt">
+            <a id="button-documentation"></a>
+        </div>
+
+        <!-- Screen 0: intro -->
+        <div class="wizard-screen" data-screen="0">
+            <header class="wizard-topbar wizard-topbar--intro">
+                <a href="#" class="regular-button wizard-btn-back" i18n="setupWizardBack"></a>
+                <h2 class="wizard-title" i18n="setupWizardIntroTitle"></h2>
+                <div class="wizard-topbar-right">
+                    <span class="wizard-globe-icon" title="Language" aria-hidden="true">&#9675;</span>
+                    <a href="#" class="regular-button wizard-btn-help" i18n="setupWizardHelp"></a>
+                </div>
+            </header>
+            <div class="wizard-body wizard-intro-columns">
+                <div class="wizard-intro-col wizard-intro-col--left">
+                    <div class="wizard-intro-text">
+                        <p i18n="setupWizardIntroLine1"></p>
+                        <p i18n="setupWizardIntroLine2"></p>
+                        <p i18n="setupWizardIntroLine3"></p>
+                        <p i18n="setupWizardIntroLine4"></p>
+                        <p i18n="setupWizardIntroLine5"></p>
+                        <p i18n="setupWizardIntroLine6"></p>
+                        <p i18n="setupWizardIntroLine7"></p>
+                    </div>
+                </div>
+                <div class="wizard-intro-col wizard-intro-col--right">
+                    <div class="wizard-intro-recommend">
+                        <p class="wizard-intro-recommend-title" i18n="setupWizardIntroRecommendTitle"></p>
+                        <p i18n="setupWizardIntroRecommendLine1"></p>
+                        <p i18n="setupWizardIntroRecommendLine2"></p>
+                        <p i18n="setupWizardIntroRecommendLine3"></p>
+                        <p i18n="setupWizardIntroRecommendLine4"></p>
+                        <p i18n="setupWizardIntroRecommendLine5"></p>
+                    </div>
+                    <button type="button" class="regular-button wizard-btn-quick-basic" i18n="setupWizardQuickBasicSetup"></button>
+                </div>
+            </div>
+            <footer class="wizard-footer">
+                <a href="#" class="regular-button wizard-btn-next" i18n="setupWizardNext"></a>
+            </footer>
+        </div>
+
+        <!-- Screen 1: step 1/12 servo type -->
+        <div class="wizard-screen" data-screen="1">
+            <header class="wizard-topbar">
+                <div class="wizard-topbar-left">
+                    <a href="#" class="regular-button wizard-btn-back" i18n="setupWizardBack"></a>
+                    <span class="wizard-step-label"></span>
+                </div>
+                <h2 class="wizard-title" i18n="setupWizardTitleServoType"></h2>
+                <a href="#" class="regular-button wizard-btn-help" i18n="setupWizardHelp"></a>
+            </header>
+            <div class="wizard-body">
+                <p class="wizard-prompt" i18n="setupWizardServoTypePrompt"></p>
+                <div class="wizard-grid-row">
+                    <span class="wizard-row-label" i18n="setupWizardSwashServo"></span>
+                    <label class="wizard-control"><span class="wizard-label-text" i18n="setupWizardNeutralPoint"></span><select id="wizard-swash-neutral-point" class="wizard-select"><option i18n="setupWizardSelectPlaceholder"></option></select></label>
+                    <label class="wizard-control"><span class="wizard-label-text" i18n="setupWizardFrequency"></span><select id="wizard-swash-frequency" class="wizard-select"><option i18n="setupWizardSelectPlaceholder"></option></select></label>
+                </div>
+                <div class="wizard-grid-row">
+                    <span class="wizard-row-label" i18n="setupWizardTailServo"></span>
+                    <label class="wizard-control"><span class="wizard-label-text" i18n="setupWizardNeutralPoint"></span><select id="wizard-tail-neutral-point" class="wizard-select"><option i18n="setupWizardSelectPlaceholder"></option></select></label>
+                    <label class="wizard-control"><span class="wizard-label-text" i18n="setupWizardFrequency"></span><select id="wizard-tail-frequency" class="wizard-select"><option i18n="setupWizardSelectPlaceholder"></option></select></label>
+                </div>
+            </div>
+            <footer class="wizard-footer">
+                <a href="#" class="regular-button wizard-btn-next" i18n="setupWizardNext"></a>
+            </footer>
+        </div>
+
+        <!-- Screen 2: basic settings -->
+        <div class="wizard-screen" data-screen="2">
+            <header class="wizard-topbar">
+                <div class="wizard-topbar-left">
+                    <a href="#" class="regular-button wizard-btn-back" i18n="setupWizardBack"></a>
+                    <span class="wizard-step-label"></span>
+                </div>
+                <h2 class="wizard-title" i18n="setupWizardTitleBasic"></h2>
+                <a href="#" class="regular-button wizard-btn-help" i18n="setupWizardHelp"></a>
+            </header>
+            <div class="wizard-body">
+                <div class="wizard-basic-columns">
+                    <div class="wizard-field-row wizard-field-row--basic-col">
+                        <span class="wizard-field-label" i18n="setupWizardSwashplateType"></span>
+                        <div class="wizard-radio-group wizard-radio-group--install-grid wizard-radio-group--swash-six" data-name="swash">
+                            <label class="wizard-install-tile">
+                                <input type="radio" name="swash" value="hr3_120" />
+                                <span class="wizard-install-tile-visual" aria-hidden="true">
+                                    <img src="/images/setup_wizard/swash_hr3.svg" alt="" />
+                                </span>
+                                <span class="wizard-install-tile-caption" aria-hidden="true" i18n="setupWizardSwashHr3_120"></span>
+                                <span class="wizard-visually-hidden">HR3 120</span>
+                            </label>
+                            <label class="wizard-install-tile">
+                                <input type="radio" name="swash" value="hr3_135" />
+                                <span class="wizard-install-tile-visual" aria-hidden="true">
+                                    <img src="/images/setup_wizard/swash_135.svg" alt="" />
+                                </span>
+                                <span class="wizard-install-tile-caption" aria-hidden="true" i18n="setupWizardSwashHr3_135"></span>
+                                <span class="wizard-visually-hidden">HR3 135</span>
+                            </label>
+                            <label class="wizard-install-tile">
+                                <input type="radio" name="swash" value="hr3_140" />
+                                <span class="wizard-install-tile-visual" aria-hidden="true">
+                                    <img src="/images/setup_wizard/swash_140.svg" alt="" />
+                                </span>
+                                <span class="wizard-install-tile-caption" aria-hidden="true" i18n="setupWizardSwashHr3_140"></span>
+                                <span class="wizard-visually-hidden">HR3 140</span>
+                            </label>
+                            <label class="wizard-install-tile">
+                                <input type="radio" name="swash" value="h3_120" />
+                                <span class="wizard-install-tile-visual" aria-hidden="true">
+                                    <img src="/images/setup_wizard/swash_h3.svg" alt="" />
+                                </span>
+                                <span class="wizard-install-tile-caption" aria-hidden="true" i18n="setupWizardSwashH3_120"></span>
+                                <span class="wizard-visually-hidden">H3 120</span>
+                            </label>
+                            <label class="wizard-install-tile">
+                                <input type="radio" name="swash" value="h3_135" />
+                                <span class="wizard-install-tile-visual" aria-hidden="true">
+                                    <img src="/images/setup_wizard/swash_h3_135.svg" alt="" />
+                                </span>
+                                <span class="wizard-install-tile-caption" aria-hidden="true" i18n="setupWizardSwashH3_135"></span>
+                                <span class="wizard-visually-hidden">H3 135</span>
+                            </label>
+                            <label class="wizard-install-tile">
+                                <input type="radio" name="swash" value="h3_140" />
+                                <span class="wizard-install-tile-visual" aria-hidden="true">
+                                    <img src="/images/setup_wizard/swash_h3_140.svg" alt="" />
+                                </span>
+                                <span class="wizard-install-tile-caption" aria-hidden="true" i18n="setupWizardSwashH3_140"></span>
+                                <span class="wizard-visually-hidden">H3 140</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="wizard-field-row wizard-field-row--basic-col">
+                        <span class="wizard-field-label" i18n="setupWizardInstallDirection"></span>
+                        <div class="wizard-radio-group wizard-radio-group--install-grid wizard-radio-group--install-grid-2x2">
+                            <label class="wizard-install-tile">
+                                <input type="radio" name="install" value="1" />
+                                <span class="wizard-install-tile-visual" aria-hidden="true"></span>
+                                <span class="wizard-install-tile-caption" i18n="setupWizardInstallFaceUpWireFront"></span>
+                            </label>
+                            <label class="wizard-install-tile">
+                                <input type="radio" name="install" value="2" />
+                                <span class="wizard-install-tile-visual" aria-hidden="true"></span>
+                                <span class="wizard-install-tile-caption" i18n="setupWizardInstallFaceUpWireRear"></span>
+                            </label>
+                            <label class="wizard-install-tile">
+                                <input type="radio" name="install" value="3" />
+                                <span class="wizard-install-tile-visual" aria-hidden="true"></span>
+                                <span class="wizard-install-tile-caption" i18n="setupWizardInstallFaceDownWireFront"></span>
+                            </label>
+                            <label class="wizard-install-tile">
+                                <input type="radio" name="install" value="4" />
+                                <span class="wizard-install-tile-visual" aria-hidden="true"></span>
+                                <span class="wizard-install-tile-caption" i18n="setupWizardInstallFaceDownWireRear"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="wizard-footer">
+                <a href="#" class="regular-button wizard-btn-next" i18n="setupWizardNext"></a>
+            </footer>
+        </div>
+
+        <!-- Screen 3: more settings -->
+        <div class="wizard-screen" data-screen="3">
+            <header class="wizard-topbar">
+                <div class="wizard-topbar-left">
+                    <a href="#" class="regular-button wizard-btn-back" i18n="setupWizardBack"></a>
+                    <span class="wizard-step-label"></span>
+                </div>
+                <h2 class="wizard-title" i18n="setupWizardTitleMore"></h2>
+                <a href="#" class="regular-button wizard-btn-help" i18n="setupWizardHelp"></a>
+            </header>
+            <div class="wizard-body">
+                <p class="wizard-more-skip-hint" i18n="setupWizardMoreSkipHint"></p>
+                <div class="wizard-more-columns">
+                    <div class="wizard-field-row wizard-more-group">
+                        <span class="wizard-field-label" i18n="setupWizardRotationDirection"></span>
+                        <div class="wizard-img-radio-group" role="radiogroup" aria-label="rotation_direction">
+                            <label class="wizard-install-tile wizard-more-img-tile">
+                                <input type="radio" name="more_rotation_dir" value="0" checked />
+                                <span class="wizard-install-tile-visual" aria-hidden="true"></span>
+                                <span class="wizard-install-tile-caption" i18n="mixerClockwise"></span>
+                            </label>
+                            <label class="wizard-install-tile wizard-more-img-tile">
+                                <input type="radio" name="more_rotation_dir" value="1" />
+                                <span class="wizard-install-tile-visual" aria-hidden="true"></span>
+                                <span class="wizard-install-tile-caption" i18n="mixerCounterClockwise"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="wizard-field-row wizard-more-group">
+                        <span class="wizard-field-label" i18n="setupWizardPositivePitchDirection"></span>
+                        <div class="wizard-img-radio-group" role="radiogroup" aria-label="positive_pitch_direction">
+                            <label class="wizard-install-tile wizard-more-img-tile">
+                                <input type="radio" name="more_positive_pitch_dir" value="positive" checked />
+                                <span class="wizard-install-tile-visual" aria-hidden="true"></span>
+                                <span class="wizard-install-tile-caption">向上</span>
+                            </label>
+                            <label class="wizard-install-tile wizard-more-img-tile">
+                                <input type="radio" name="more_positive_pitch_dir" value="negative" />
+                                <span class="wizard-install-tile-visual" aria-hidden="true"></span>
+                                <span class="wizard-install-tile-caption">向下</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="wizard-footer">
+                <a href="#" class="regular-button wizard-btn-next" i18n="setupWizardNext"></a>
+            </footer>
+        </div>
+
+        <!-- Screen 4: receiver -->
+        <div class="wizard-screen" data-screen="4">
+            <header class="wizard-topbar">
+                <div class="wizard-topbar-left">
+                    <a href="#" class="regular-button wizard-btn-back" i18n="setupWizardBack"></a>
+                    <span class="wizard-step-label"></span>
+                </div>
+                <h2 class="wizard-title" i18n="setupWizardTitleReceiver"></h2>
+                <a href="#" class="regular-button wizard-btn-help" i18n="setupWizardHelp"></a>
+            </header>
+            <div class="wizard-body">
+                <div class="wizard-receiver-row">
+                    <label class="wizard-control"><span class="wizard-label-text" i18n="setupWizardReceiverType"></span><select class="wizard-select"><option value="9">TBS CRSF</option></select></label>
+                    <div class="wizard-hint-box" i18n="setupWizardReceiverHint"></div>
+                </div>
+                <div class="wizard-receiver-status-grid">
+                    <div class="wizard-receiver-status-cell">
+                        <div class="wizard-receiver-status-line">
+                            <span class="wizard-receiver-status-label" i18n="setupWizardReceiverStatusArmLabel"></span>
+                            <span class="wizard-receiver-status-value" data-wizard-rc-strip="arm"></span>
+                        </div>
+                    </div>
+                    <div class="wizard-receiver-status-cell">
+                        <div class="wizard-receiver-status-line">
+                            <span class="wizard-receiver-status-label" i18n="setupWizardReceiverStatusThrottleLabel"></span>
+                            <span class="wizard-receiver-status-value" data-wizard-rc-strip="throttle"></span>
+                        </div>
+                    </div>
+                    <div class="wizard-receiver-status-cell">
+                        <div class="wizard-receiver-status-line">
+                            <span class="wizard-receiver-status-label" i18n="setupWizardReceiverStatusBankLabel"></span>
+                            <span class="wizard-receiver-status-value" data-wizard-rc-strip="bank"></span>
+                        </div>
+                    </div>
+                    <div class="wizard-receiver-status-cell">
+                        <div class="wizard-receiver-status-line">
+                            <span class="wizard-receiver-status-label" i18n="setupWizardReceiverStatusMotorLabel"></span>
+                            <span class="wizard-receiver-status-value" data-wizard-rc-strip="motor"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="wizard-channels wizard-channels--lr">
+                    <div class="wizard-channels-left">
+                        <div class="wizard-channel-horizontal" data-wizard-rc-index="2">
+                            <span class="wizard-channel-name" i18n="setupWizardChannelRudder"></span>
+                            <div class="wizard-bar wizard-bar-h wizard-bar--signed">
+                                <div class="wizard-bar-center" aria-hidden="true"></div>
+                                <div class="wizard-bar-fill wizard-bar-fill--h"></div>
+                            </div>
+                            <span class="wizard-channel-value" i18n="setupWizardReceiverPctZero">0%</span>
+                        </div>
+                        <div class="wizard-channel-horizontal" data-wizard-rc-index="0">
+                            <span class="wizard-channel-name" i18n="setupWizardChannelAileron"></span>
+                            <div class="wizard-bar wizard-bar-h wizard-bar--signed">
+                                <div class="wizard-bar-center" aria-hidden="true"></div>
+                                <div class="wizard-bar-fill wizard-bar-fill--h"></div>
+                            </div>
+                            <span class="wizard-channel-value" i18n="setupWizardReceiverPctZero">0%</span>
+                        </div>
+                    </div>
+                    <div class="wizard-channels-right">
+                        <div class="wizard-vertical-panel">
+                            <div class="wizard-channel-vertical" data-wizard-rc-index="3">
+                                <span class="wizard-channel-name" i18n="setupWizardChannelCollective"></span>
+                                <div class="wizard-bar wizard-bar-v wizard-bar--signed">
+                                    <div class="wizard-bar-center" aria-hidden="true"></div>
+                                    <div class="wizard-bar-fill wizard-bar-fill--v"></div>
+                                </div>
+                                <span class="wizard-channel-value" i18n="setupWizardReceiverPctZero">0%</span>
+                            </div>
+                            <div class="wizard-channel-vertical" data-wizard-rc-index="1">
+                                <span class="wizard-channel-name" i18n="setupWizardChannelElevator"></span>
+                                <div class="wizard-bar wizard-bar-v wizard-bar--signed">
+                                    <div class="wizard-bar-center" aria-hidden="true"></div>
+                                    <div class="wizard-bar-fill wizard-bar-fill--v"></div>
+                                </div>
+                                <span class="wizard-channel-value" i18n="setupWizardReceiverPctZero">0%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="wizard-footer">
+                <a href="#" class="regular-button wizard-btn-next" i18n="setupWizardNext"></a>
+            </footer>
+        </div>
+
+        <!-- Screen 5: servo direction -->
+        <div class="wizard-screen" data-screen="5">
+            <header class="wizard-topbar">
+                <div class="wizard-topbar-left">
+                    <a href="#" class="regular-button wizard-btn-back" i18n="setupWizardBack"></a>
+                    <span class="wizard-step-label"></span>
+                </div>
+                <h2 class="wizard-title" i18n="setupWizardTitleServoDir"></h2>
+                <a href="#" class="regular-button wizard-btn-help" i18n="setupWizardHelp"></a>
+            </header>
+            <div class="wizard-body">
+                <p i18n="setupWizardServoDirLine1"></p>
+                <p i18n="setupWizardServoDirLine2"></p>
+                <p i18n="setupWizardServoDirLine3"></p>
+                <div class="wizard-servo-dir-layout">
+                    <table class="wizard-wiring-table">
+                        <thead><tr><th i18n="setupWizardTablePort"></th><th i18n="setupWizardTableConnect"></th></tr></thead>
+                        <tbody>
+                            <tr><td>S1</td><td i18n="setupWizardWireS1"></td></tr>
+                            <tr><td>S2</td><td i18n="setupWizardWireS2"></td></tr>
+                            <tr><td>S3</td><td i18n="setupWizardWireS3"></td></tr>
+                            <tr><td>TAIL</td><td i18n="setupWizardWireTail"></td></tr>
+                            <tr><td>ESC</td><td i18n="setupWizardWireEsc"></td></tr>
+                            <tr><td>RPM</td><td i18n="setupWizardWireRpm"></td></tr>
+                            <tr><td>TLM</td><td i18n="setupWizardWireTlm"></td></tr>
+                        </tbody>
+                    </table>
+                    <div class="wizard-dir-group">
+                        <a href="#" class="wizard-arrow-btn wizard-dir-prev" aria-label="prev">&#9664;</a>
+                        <div class="wizard-dir-index"><span id="wizard-dir-index">1</span></div>
+                        <a href="#" class="wizard-arrow-btn wizard-dir-next" aria-label="next">&#9654;</a>
+                    </div>
+                    <div class="wizard-animation-placeholder" i18n="setupWizardAnimationPlaceholder"></div>
+                </div>
+            </div>
+            <footer class="wizard-footer">
+                <a href="#" class="regular-button wizard-btn-next" i18n="setupWizardNext"></a>
+            </footer>
+        </div>
+
+        <!-- Screen 6: zero pitch -->
+        <div class="wizard-screen" data-screen="6">
+            <header class="wizard-topbar">
+                <div class="wizard-topbar-left">
+                    <a href="#" class="regular-button wizard-btn-back" i18n="setupWizardBack"></a>
+                    <span class="wizard-step-label"></span>
+                </div>
+                <h2 class="wizard-title" i18n="setupWizardTitleZeroPitch"></h2>
+                <a href="#" class="regular-button wizard-btn-help" i18n="setupWizardHelp"></a>
+            </header>
+            <div class="wizard-body wizard-body--zero-pitch">
+                <div class="wizard-zero-pitch-row">
+                    <div class="wizard-zero-pitch-figures" aria-hidden="true">
+                        <img src="/images/setup_wizard/png/uplook.png" alt="" />
+                        <img src="/images/setup_wizard/png/zeroPitch.png" alt="" />
+                    </div>
+                    <div class="wizard-zero-pitch-right wizard-zero-pitch-right--compact">
+                        <p i18n="setupWizardZeroPitchWarn"></p>
+                        <p i18n="setupWizardZeroPitchLine2"></p>
+                        <p i18n="setupWizardZeroPitchLine3"></p>
+                        <p class="wizard-zero-pitch-live" aria-live="polite"></p>
+                        <div class="wizard-stack-btns wizard-zero-pitch-actions">
+                            <a href="#" class="regular-button wizard-zero-pitch-trim" data-zero-trim="increase" i18n="setupWizardIncrease"></a>
+                            <a href="#" class="regular-button wizard-zero-pitch-trim" data-zero-trim="decrease" i18n="setupWizardDecrease"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="wizard-footer">
+                <a href="#" class="regular-button wizard-btn-next" i18n="setupWizardNext"></a>
+            </footer>
+        </div>
+
+        <!-- Screen 7: swash level -->
+        <div class="wizard-screen" data-screen="7">
+            <header class="wizard-topbar">
+                <div class="wizard-topbar-left">
+                    <a href="#" class="regular-button wizard-btn-back" i18n="setupWizardBack"></a>
+                    <span class="wizard-step-label"></span>
+                </div>
+                <h2 class="wizard-title" i18n="setupWizardTitleSwashLevel"></h2>
+                <a href="#" class="regular-button wizard-btn-help" i18n="setupWizardHelp"></a>
+            </header>
+            <div class="wizard-body">
+                <div class="wizard-swash-level-row">
+                    <div class="wizard-swash-level-copy">
+                        <p i18n="setupWizardSwashLevelHint"></p>
+                        <p class="wizard-swash-level-live" aria-live="polite"></p>
+                    </div>
+                    <div class="wizard-swash-level-dpad">
+                        <div class="wizard-dpad">
+                            <a href="#" class="wizard-dpad-btn wizard-dpad-front" data-dir="front" i18n="setupWizardSwashFront"></a>
+                            <a href="#" class="wizard-dpad-btn wizard-dpad-back" data-dir="back" i18n="setupWizardSwashBack"></a>
+                            <a href="#" class="wizard-dpad-btn wizard-dpad-left" data-dir="left" i18n="setupWizardSwashLeft"></a>
+                            <a href="#" class="wizard-dpad-btn wizard-dpad-right" data-dir="right" i18n="setupWizardSwashRight"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="wizard-footer">
+                <a href="#" class="regular-button wizard-btn-next" i18n="setupWizardNext"></a>
+            </footer>
+        </div>
+
+        <!-- Screen 8: pitch calibration -->
+        <div class="wizard-screen" data-screen="8">
+            <header class="wizard-topbar">
+                <div class="wizard-topbar-left">
+                    <a href="#" class="regular-button wizard-btn-back" i18n="setupWizardBack"></a>
+                    <span class="wizard-step-label"></span>
+                </div>
+                <h2 class="wizard-title" i18n="setupWizardTitlePitchCalib"></h2>
+                <a href="#" class="regular-button wizard-btn-help" i18n="setupWizardHelp"></a>
+            </header>
+            <div class="wizard-body wizard-body--pitch-calib wizard-body--pitch-calib-page8">
+                <div class="wizard-pitch-calib-row">
+                    <div class="wizard-pitch-calib-main">
+                        <div class="wizard-calib-block">
+                            <span class="wizard-calib-step-num" aria-hidden="true">1</span>
+                            <p class="wizard-calib-text" i18n="setupWizardPitchStep1"></p>
+                            <div class="wizard-calib-actions">
+                                <a href="#" class="regular-button wizard-calib-side-btn wizard-calib-pitch-zero-btn" i18n="setupWizardZeroBtn"></a>
+                            </div>
+                        </div>
+                        <div class="wizard-calib-block wizard-calib-block--pitch-collective">
+                            <span class="wizard-calib-step-num" aria-hidden="true">2</span>
+                            <div class="wizard-calib-copy">
+                                <p class="wizard-calib-text" i18n="setupWizardPitchStep2"></p>
+                                <p class="wizard-calib-live" aria-live="polite"></p>
+                            </div>
+                            <div class="wizard-calib-actions">
+                                <a href="#" class="regular-button wizard-calib-side-btn wizard-calib-pitch-test-btn" i18n="setupWizardTestBtn"></a>
+                                <div class="wizard-calib-adjust">
+                                    <a href="#" class="regular-button wizard-calib-pitch-adjust-btn" i18n="setupWizardIncrease"></a>
+                                    <a href="#" class="regular-button wizard-calib-pitch-adjust-btn" i18n="setupWizardDecrease"></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="wizard-calib-block wizard-calib-block--pitch-cyclic">
+                            <span class="wizard-calib-step-num" aria-hidden="true">3</span>
+                            <div class="wizard-calib-copy">
+                                <p class="wizard-calib-text" i18n="setupWizardPitchStep3"></p>
+                                <p class="wizard-calib-live" aria-live="polite"></p>
+                            </div>
+                            <div class="wizard-calib-actions">
+                                <a href="#" class="regular-button wizard-calib-side-btn wizard-calib-pitch-test-btn" i18n="setupWizardTestBtn"></a>
+                                <div class="wizard-calib-adjust">
+                                    <a href="#" class="regular-button wizard-calib-pitch-adjust-btn" i18n="setupWizardIncrease"></a>
+                                    <a href="#" class="regular-button wizard-calib-pitch-adjust-btn" i18n="setupWizardDecrease"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="wizard-pitch-calib-gauge" aria-hidden="true">
+                        <img src="/images/setup_wizard/png/gauge.png" alt="" />
+                    </div>
+                </div>
+            </div>
+            <footer class="wizard-footer">
+                <a href="#" class="regular-button wizard-btn-next" i18n="setupWizardNext"></a>
+            </footer>
+        </div>
+
+        <!-- Screen 9: tail direction + tail zero pitch -->
+        <div class="wizard-screen" data-screen="9">
+            <header class="wizard-topbar">
+                <div class="wizard-topbar-left">
+                    <a href="#" class="regular-button wizard-btn-back" i18n="setupWizardBack"></a>
+                    <span class="wizard-step-label"></span>
+                </div>
+                <h2 class="wizard-title" i18n="setupWizardTitleTail"></h2>
+                <a href="#" class="regular-button wizard-btn-help" i18n="setupWizardHelp"></a>
+            </header>
+            <div class="wizard-body">
+                <div class="wizard-tail-dir">
+                    <span class="wizard-field-label" i18n="setupWizardTailDirection"></span>
+                    <div class="wizard-radio-group">
+                        <label class="wizard-pill wizard-pill--large"><input type="radio" name="taildir" value="fwd" checked /><span i18n="setupWizardTailForward"></span></label>
+                        <label class="wizard-pill wizard-pill--large"><input type="radio" name="taildir" value="rev" /><span i18n="setupWizardTailReverse"></span></label>
+                    </div>
+                </div>
+                <div class="wizard-body--pitch-calib wizard-body--tail-zero">
+                    <div class="wizard-calib-block wizard-calib-block--tail-zero">
+                        <span class="wizard-calib-accent-bar" aria-hidden="true"></span>
+                        <div class="wizard-calib-copy">
+                            <p class="wizard-calib-text" i18n="setupWizardTailZeroStep"></p>
+                            <p class="wizard-calib-live" aria-live="polite"></p>
+                        </div>
+                        <div class="wizard-calib-actions">
+                            <a href="#" class="regular-button wizard-calib-tail-zero-test-btn" i18n="setupWizardTestBtn"></a>
+                            <div class="wizard-calib-adjust">
+                                <a href="#" class="regular-button wizard-calib-tail-zero-adjust-btn" i18n="setupWizardTailLeft"></a>
+                                <a href="#" class="regular-button wizard-calib-tail-zero-adjust-btn" i18n="setupWizardTailRight"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="wizard-footer">
+                <a href="#" class="regular-button wizard-btn-next" i18n="setupWizardNext"></a>
+            </footer>
+        </div>
+
+        <!-- Screen 10: tail pitch 22 + travel limits (calib rows) -->
+        <div class="wizard-screen" data-screen="10">
+            <header class="wizard-topbar">
+                <div class="wizard-topbar-left">
+                    <a href="#" class="regular-button wizard-btn-back" i18n="setupWizardBack"></a>
+                    <span class="wizard-step-label"></span>
+                </div>
+                <h2 class="wizard-title" i18n="setupWizardTitleTailPitch"></h2>
+                <a href="#" class="regular-button wizard-btn-help" i18n="setupWizardHelp"></a>
+            </header>
+            <div class="wizard-body wizard-body--pitch-calib wizard-body--tail-pitch-screen">
+                <div class="wizard-calib-block wizard-calib-block--tail-travel-left">
+                    <span class="wizard-calib-step-num" aria-hidden="true">1</span>
+                    <div class="wizard-calib-copy">
+                        <p class="wizard-calib-text" i18n="setupWizardTailTravelLeftStep"></p>
+                        <p class="wizard-calib-live" aria-live="polite"></p>
+                    </div>
+                    <div class="wizard-calib-actions">
+                        <a href="#" class="regular-button wizard-calib-tail-travel-left-test-btn" i18n="setupWizardTestBtn"></a>
+                        <div class="wizard-calib-adjust">
+                            <a href="#" class="regular-button wizard-calib-tail-travel-left-adjust-btn" i18n="setupWizardIncrease"></a>
+                            <a href="#" class="regular-button wizard-calib-tail-travel-left-adjust-btn" i18n="setupWizardDecrease"></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="wizard-calib-block wizard-calib-block--tail-travel-right">
+                    <span class="wizard-calib-step-num" aria-hidden="true">2</span>
+                    <div class="wizard-calib-copy">
+                        <p class="wizard-calib-text" i18n="setupWizardTailTravelRightStep"></p>
+                        <p class="wizard-calib-live" aria-live="polite"></p>
+                    </div>
+                    <div class="wizard-calib-actions">
+                        <a href="#" class="regular-button wizard-calib-tail-travel-right-test-btn" i18n="setupWizardTestBtn"></a>
+                        <div class="wizard-calib-adjust">
+                            <a href="#" class="regular-button wizard-calib-tail-travel-right-adjust-btn" i18n="setupWizardIncrease"></a>
+                            <a href="#" class="regular-button wizard-calib-tail-travel-right-adjust-btn" i18n="setupWizardDecrease"></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="wizard-calib-block wizard-calib-block--tail-pitch22">
+                    <span class="wizard-calib-step-num" aria-hidden="true">3</span>
+                    <div class="wizard-calib-copy">
+                        <p class="wizard-calib-text" i18n="setupWizardTailPitch22Step"></p>
+                        <p class="wizard-calib-live" aria-live="polite"></p>
+                    </div>
+                    <div class="wizard-calib-actions">
+                        <a href="#" class="regular-button wizard-calib-tail-pitch22-test-btn" i18n="setupWizardTestBtn"></a>
+                        <div class="wizard-calib-adjust">
+                            <a href="#" class="regular-button wizard-calib-tail-pitch22-adjust-btn" i18n="setupWizardIncrease"></a>
+                            <a href="#" class="regular-button wizard-calib-tail-pitch22-adjust-btn" i18n="setupWizardDecrease"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="wizard-footer">
+                <a href="#" class="regular-button wizard-btn-next" i18n="setupWizardNext"></a>
+            </footer>
+        </div>
+
+        <!-- Screen 11: governor -->
+        <div class="wizard-screen" data-screen="11">
+            <header class="wizard-topbar">
+                <div class="wizard-topbar-left">
+                    <a href="#" class="regular-button wizard-btn-back" i18n="setupWizardBack"></a>
+                    <span class="wizard-step-label"></span>
+                </div>
+                <h2 class="wizard-title" i18n="setupWizardTitleGovernor"></h2>
+                <a href="#" class="regular-button wizard-btn-help" i18n="setupWizardHelp"></a>
+            </header>
+            <div class="wizard-body">
+                <div class="wizard-form-stack">
+                    <label class="wizard-control"><span class="wizard-label-text" i18n="setupWizardGovernor"></span><select class="wizard-select"><option i18n="setupWizardSelectPlaceholder"></option></select></label>
+                    <div class="wizard-governor-metrics-row">
+                        <label class="wizard-control"><span class="wizard-label-text" i18n="setupWizardMotorKv"></span><input type="text" class="wizard-input" /></label>
+                        <label class="wizard-control"><span class="wizard-label-text" i18n="setupWizardMotorPoles"></span><select id="wizard-motor-poles" class="wizard-select"><option value="" i18n="setupWizardSelectPlaceholder"></option></select></label>
+                        <label class="wizard-control"><span class="wizard-label-text" i18n="setupWizardBatteryVoltage"></span><input type="text" class="wizard-input" /></label>
+                    </div>
+                    <div class="wizard-label-with-btn">
+                        <label class="wizard-control wizard-control--inline">
+                            <span class="wizard-label-text" i18n="setupWizardGearRatio"></span>
+                            <input type="text" class="wizard-input wizard-input--inline" />
+                        </label>
+                        <a href="#" class="regular-button wizard-calc-btn" i18n="setupWizardCalculator"></a>
+                    </div>
+                </div>
+                <div class="wizard-governor-status">
+                    <span i18n="setupWizardGovStatusThrottle"></span>
+                    <span i18n="setupWizardGovStatusRpm"></span>
+                </div>
+            </div>
+            <footer class="wizard-footer">
+                <a href="#" class="regular-button wizard-btn-next" i18n="setupWizardNext"></a>
+            </footer>
+        </div>
+
+        <!-- Screen 12: presets / finish -->
+        <div class="wizard-screen" data-screen="12">
+            <header class="wizard-topbar">
+                <div class="wizard-topbar-left">
+                    <a href="#" class="regular-button wizard-btn-back" i18n="setupWizardBack"></a>
+                    <span class="wizard-step-label"></span>
+                </div>
+                <h2 class="wizard-title" i18n="setupWizardTitlePresets"></h2>
+                <a href="#" class="regular-button wizard-btn-help" i18n="setupWizardHelp"></a>
+            </header>
+            <div class="wizard-body">
+                <div class="wizard-presets-layout">
+                    <div class="wizard-presets-left">
+                        <label class="wizard-control"><span class="wizard-label-text" i18n="setupWizardPresetSize"></span><select class="wizard-select"><option i18n="setupWizardSelectPlaceholder"></option></select></label>
+                        <label class="wizard-control"><span class="wizard-label-text" i18n="setupWizardPresetModel"></span><select class="wizard-select"><option i18n="setupWizardSelectPlaceholder"></option></select></label>
+                        <label class="wizard-control"><span class="wizard-label-text" i18n="setupWizardPresetServo"></span><select class="wizard-select"><option i18n="setupWizardSelectPlaceholder"></option></select></label>
+                        <label class="wizard-control"><span class="wizard-label-text" i18n="setupWizardPresetRotor"></span><select class="wizard-select"><option i18n="setupWizardSelectPlaceholder"></option></select></label>
+                    </div>
+                    <div class="wizard-presets-right">
+                        <p i18n="setupWizardPresetHint"></p>
+                        <ul class="wizard-preset-list">
+                            <li>Sab Goblin Raw 700</li>
+                            <li>Theta THS 788</li>
+                            <li>Theta THS 782</li>
+                            <li>VTX 716</li>
+                        </ul>
+                        <a href="#" class="regular-button wizard-write-params" i18n="setupWizardWriteParams"></a>
+                    </div>
+                </div>
+            </div>
+            <footer class="wizard-footer">
+                <a href="#" class="regular-button wizard-btn-finish" i18n="setupWizardFinish"></a>
+            </footer>
+        </div>
+
+        <!-- Help view (replaces wizard screen contents) -->
+        <div class="wizard-help-screen" aria-hidden="true">
+            <header class="wizard-topbar">
+                <!-- Empty left slot to keep the same grid layout -->
+                <div class="wizard-topbar-left" aria-hidden="true"></div>
+                <h2 class="wizard-title" id="wizard-help-title"></h2>
+                <a href="#" class="regular-button wizard-btn-help wizard-btn-help--back" i18n="setupWizardBack"></a>
+            </header>
+            <div class="wizard-body">
+                <div id="wizard-help-content"></div>
+            </div>
+        </div>
+
+    </div>
+</div>

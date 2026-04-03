@@ -2,15 +2,11 @@ import semver from "semver";
 import {
   API_VERSION_12_7,
   API_VERSION_12_8,
-  API_VERSION_12_9,
 } from "@/js/configurator.svelte.js";
 import { FC } from "@/js/fc.svelte";
 import { createEnum } from "@/js/utils/common.js";
-import {
-  getCustomCrsfSensors,
-  getNativeCrsfSensors,
-} from "./telemetry/crsf.js";
-import { getSmartPortSensors } from "./telemetry/smartport.js";
+import { CUSTOM_CRSF_SENSORS, getNativeCrsfSensors } from "./telemetry/crsf.js";
+import { SMARTPORT_SENSORS } from "./telemetry/smartport.js";
 import { GHOST_SENSORS } from "./telemetry/ghost.js";
 import { HUB_SENSORS } from "./telemetry/frsky_hub.js";
 
@@ -26,7 +22,7 @@ function getCrsfTelemetry() {
     return {
       proto: "crsf",
       type: TelemetryType.ORDERED_LIST,
-      sensors: getCustomCrsfSensors(),
+      sensors: CUSTOM_CRSF_SENSORS,
     };
   }
 
@@ -50,7 +46,7 @@ function getSmartportTelemetry() {
     return {
       proto: "smartport",
       type: TelemetryType.ORDERED_LIST,
-      sensors: getSmartPortSensors(),
+      sensors: SMARTPORT_SENSORS,
     };
   }
 
@@ -193,15 +189,6 @@ export const RX_PROTOCOLS = [
     id: 7,
     feature: "RX_SERIAL",
     telemetry: { type: TelemetryType.TOGGLE },
-  },
-  {
-    name: "Flysky IBUS2",
-    id: 19,
-    feature: "RX_SERIAL",
-    telemetry: { type: TelemetryType.TOGGLE },
-    get hide() {
-      return semver.lt(FC.CONFIG.apiVersion, API_VERSION_12_9);
-    },
   },
   {
     name: "JR XBUS Mode A",

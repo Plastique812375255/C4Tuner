@@ -58,6 +58,18 @@ realclean: clean
 distclean: realclean
 	rm -fr node_modules
 
+.PHONY: redist-osx-arm64
+redist-osx-arm64: ## Build macOS Apple Silicon DMG in ./redist (requires macOS)
+	pnpm gulp redist --platform osx --arch arm64
+
+.PHONY: redist-osx-x86_64
+redist-osx-x86_64: ## Build macOS Intel DMG in ./redist (requires macOS)
+	pnpm gulp redist --platform osx --arch x86_64
+
+.PHONY: redist-win-x64
+redist-win-x64: ## Build Windows x64 installer (.exe) and zip in ./redist (requires Windows; Inno Setup)
+	pnpm gulp redist --platform win --arch x86_64
+
 # ========================================
 # HELP
 # ========================================

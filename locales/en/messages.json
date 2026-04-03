@@ -200,10 +200,6 @@
     "language_default_pretty": {
         "message": "System Default ($t(detectedLanguage))"
     },
-    "language_bg": {
-        "message": "Български",
-        "description": "Don't translate!!!"
-    },
     "language_ca": {
         "message": "Català",
         "description": "Don't translate!!!"
@@ -404,6 +400,564 @@
     },
     "tabSetup": {
         "message": "Setup"
+    },
+    "tabSetupWizard": {
+        "message": "Setup Wizard"
+    },
+    "setupWizardBack": {
+        "message": "Back"
+    },
+    "setupWizardHelp": {
+        "message": "Help"
+    },
+    "setupWizardNext": {
+        "message": "Next"
+    },
+    "setupWizardFinish": {
+        "message": "Finish"
+    },
+    "setupWizardStepProgress": {
+        "message": "Step {{current}} / {{total}}"
+    },
+    "setupWizardHelpDemo": {
+        "message": "[Demo] Help is not implemented."
+    },
+    "setupWizardFinishDemo": {
+        "message": "[Demo] Wizard finished."
+    },
+    "setupWizardIntroTitle": {
+        "message": "Setup Wizard Start"
+    },
+    "setupWizardIntroLine1": {
+        "message": "This wizard currently supports only helicopters with a tail servo and collective pitch. Other types may be added later."
+    },
+    "setupWizardIntroLine2": {
+        "message": "Ensure your helicopter is fully assembled per the manual and linkage lengths match the manual."
+    },
+    "setupWizardIntroLine3": {
+        "message": "If this is the first time tuning this Rotor Flight unit, connect only the tuning cable to the gyro—do not connect servos or ESC yet."
+    },
+    "setupWizardIntroLine4": {
+        "message": "Assemble the helicopter and have a pitch gauge and linkage tools ready."
+    },
+    "setupWizardIntroLine5": {
+        "message": "Click Next to start."
+    },
+    "setupWizardIntroLine6": {
+        "message": "This is an alpha build; unknown bugs may exist. The governor page has no real functionality yet. Experienced users are strongly advised to verify parameters via other tabs."
+    },
+    "setupWizardIntroLine7": {
+        "message": "This section was designed by C4Master (C4教主) to simplify the Rotorflight setup workflow."
+    },
+    "setupWizardIntroRecommendTitle": {
+        "message": "We strongly recommend using our basic preset"
+    },
+    "setupWizardIntroRecommendLine1": {
+        "message": "This is how most people set up the unit; it enables the full RF feature set."
+    },
+    "setupWizardIntroRecommendLine2": {
+        "message": "It mainly configures:"
+    },
+    "setupWizardIntroRecommendLine3": {
+        "message": "ARM switch, profile switch, and flight mode switch."
+    },
+    "setupWizardIntroRecommendLine4": {
+        "message": "It does not lock you to a helicopter type—it only enables basic functions."
+    },
+    "setupWizardIntroRecommendLine5": {
+        "message": "Open Help to see exactly what will change."
+    },
+    "setupWizardQuickBasicSetup": {
+        "message": "Apply basic preset"
+    },
+    "setupWizardQuickBasicWriting": {
+        "message": "Applying…"
+    },
+    "setupWizardQuickBasicDone": {
+        "message": "Basic preset applied"
+    },
+    "setupWizardQuickBasicFailed": {
+        "message": "Could not apply or verify the basic preset. Check modes and adjustments tabs."
+    },
+    "setupWizardQuickBasicNeedAux": {
+        "message": "At least three AUX channels are required (receiver must expose AUX1–AUX3)."
+    },
+    "setupWizardQuickBasicFailedTitle": {
+        "message": "Basic preset failed"
+    },
+    "setupWizardQuickBasicFailUnknown": {
+        "message": "Unknown failure (no detail)."
+    },
+    "setupWizardQuickBasicFailAux": {
+        "message": "AUX channels: need at least {{need}}, current usable AUX count is {{current}}."
+    },
+    "setupWizardQuickBasicFailBoxArm": {
+        "message": "Flight mode list from FC has no ARM (check firmware / MSP_BOXNAMES)."
+    },
+    "setupWizardQuickBasicFailBoxAngle": {
+        "message": "Flight mode list from FC has no ANGLE (check firmware / MSP_BOXNAMES)."
+    },
+    "setupWizardQuickBasicFailBox": {
+        "message": "Box name issue: {{detail}}"
+    },
+    "setupWizardQuickBasicFailModeEmpty": {
+        "message": "No mode ranges returned (MODE_RANGES empty)."
+    },
+    "setupWizardQuickBasicFailModeLen": {
+        "message": "MODE_RANGES length ({{mr}}) does not match MODE_RANGES_EXTRA ({{mre}})."
+    },
+    "setupWizardQuickBasicFailModeNoArm": {
+        "message": "Missing ARM range: AUX1, 1900–2100 µs."
+    },
+    "setupWizardQuickBasicFailModeNoAngle": {
+        "message": "Missing ANGLE range: AUX3, 1900–2100 µs."
+    },
+    "setupWizardQuickBasicFailModeExtraArm": {
+        "message": "Extra ARM ranges found that do not match the target (other channels/ranges must be removed first)."
+    },
+    "setupWizardQuickBasicFailModeExtraAngle": {
+        "message": "Extra ANGLE ranges found that do not match the target (other channels/ranges must be removed first)."
+    },
+    "setupWizardQuickBasicFailMode": {
+        "message": "Mode ranges: {{detail}}"
+    },
+    "setupWizardQuickBasicFailAdjEmpty": {
+        "message": "No adjustment ranges (ADJUSTMENT_RANGES empty)."
+    },
+    "setupWizardQuickBasicFailAdjMissingPid": {
+        "message": "Missing Profile Selection (PID) mapping row matching the preset."
+    },
+    "setupWizardQuickBasicFailAdjMissingRate": {
+        "message": "Missing Rate Profile Selection mapping row matching the preset."
+    },
+    "setupWizardQuickBasicFailAdjBadPid": {
+        "message": "PID/Profile row at slot index {{slot}} does not match preset (ena always, AUX2 map 970–2025 → 1–3)."
+    },
+    "setupWizardQuickBasicFailAdjBadRate": {
+        "message": "Rate row at slot index {{slot}} does not match preset (ena always, AUX2 map 970–2025 → 1–3)."
+    },
+    "setupWizardQuickBasicFailAdjDupPid": {
+        "message": "Multiple PID/Profile mapping rows ({{count}}); only one should remain."
+    },
+    "setupWizardQuickBasicFailAdjDupRate": {
+        "message": "Multiple Rate mapping rows ({{count}}); only one should remain."
+    },
+    "setupWizardQuickBasicFailAdj": {
+        "message": "Adjustments: {{detail}}"
+    },
+    "setupWizardQuickBasicFailModeSlotArm": {
+        "message": "No free mode slot to write ARM (all slots in use; free one in Modes tab)."
+    },
+    "setupWizardQuickBasicFailModeSlotAngle": {
+        "message": "No free mode slot to write ANGLE (all slots in use; free one in Modes tab)."
+    },
+    "setupWizardQuickBasicFailAdjSlotPid": {
+        "message": "No free adjustment slot to write PID/Profile mapping."
+    },
+    "setupWizardQuickBasicFailAdjSlotRate": {
+        "message": "No free adjustment slot to write Rate mapping."
+    },
+    "setupWizardQuickBasicFailPatch": {
+        "message": "Apply error code: {{code}}"
+    },
+    "setupWizardQuickBasicFailPatchNoop": {
+        "message": "Apply produced no changes (unexpected)."
+    },
+    "setupWizardQuickBasicFailVerifyTitle": {
+        "message": "EEPROM saved but verification failed — details:"
+    },
+    "setupWizardQuickBasicFailMspRead": {
+        "message": "MSP read failed or connection lost (could not read back FC state)."
+    },
+    "setupWizardQuickBasicVerifyRetry": {
+        "message": "Verification did not match; retrying one more write to EEPROM."
+    },
+    "setupWizardTitleServoType": {
+        "message": "Servo Type"
+    },
+    "setupWizardServoTypePrompt": {
+        "message": "Select your servo types:"
+    },
+    "setupWizardSwashServo": {
+        "message": "Swash servos"
+    },
+    "setupWizardTailServo": {
+        "message": "Tail servo"
+    },
+    "setupWizardNeutralPoint": {
+        "message": "Neutral"
+    },
+    "setupWizardFrequency": {
+        "message": "Frequency"
+    },
+    "setupWizardSelectPlaceholder": {
+        "message": "Please select"
+    },
+    "setupWizardTitleBasic": {
+        "message": "Basic Settings"
+    },
+    "setupWizardTitleMore": {
+        "message": "More settings"
+    },
+    "setupWizardMoreSkipHint": {
+        "message": "For most helicopters, you can skip this page."
+    },
+    "setupWizardSwashplateType": {
+        "message": "Swashplate type"
+    },
+    "setupWizardInstallDirection": {
+        "message": "Install orientation"
+    },
+    "setupWizardSwashHr3_120": {
+        "message": "HR3 120"
+    },
+    "setupWizardSwashHr3_135": {
+        "message": "HR3 135"
+    },
+    "setupWizardSwashHr3_140": {
+        "message": "HR3 140"
+    },
+    "setupWizardSwashH3_120": {
+        "message": "H3 120"
+    },
+    "setupWizardSwashH3_135": {
+        "message": "H3 135"
+    },
+    "setupWizardSwashH3_140": {
+        "message": "H3 140"
+    },
+    "setupWizardSwashH3": {
+        "message": "120° H3"
+    },
+    "setupWizardSwashHR3": {
+        "message": "120° HR3"
+    },
+    "setupWizardSwash135": {
+        "message": "135° HR3"
+    },
+    "setupWizardSwash140": {
+        "message": "140° HR3"
+    },
+    "setupWizardInstallFaceUpWireFront": {
+        "message": "Face Up / Wire Front"
+    },
+    "setupWizardInstallFaceUpWireRear": {
+        "message": "Face Up / Wire Rear"
+    },
+    "setupWizardInstallFaceDownWireFront": {
+        "message": "Face Down / Wire Front"
+    },
+    "setupWizardInstallFaceDownWireRear": {
+        "message": "Face Down / Wire Rear"
+    },
+    "setupWizardRotationDirection": {
+        "message": "Rotation direction"
+    },
+    "setupWizardPositivePitchDirection": {
+        "message": "Positive pitch direction"
+    },
+    "setupWizardTitleReceiver": {
+        "message": "Receiver Calibration"
+    },
+    "setupWizardReceiverType": {
+        "message": "Receiver type"
+    },
+    "setupWizardReceiverHint": {
+        "message": "Plug the receiver into the CRSF port."
+    },
+    "setupWizardReceiverStatusArmLabel": {
+        "message": "ARM:"
+    },
+    "setupWizardReceiverArmYes": {
+        "message": "Yes"
+    },
+    "setupWizardReceiverArmNo": {
+        "message": "No"
+    },
+    "setupWizardReceiverStatusThrottleLabel": {
+        "message": "Throttle:"
+    },
+    "setupWizardReceiverStatusBankLabel": {
+        "message": "Bank:"
+    },
+    "setupWizardReceiverStatusMotorLabel": {
+        "message": "Motor:"
+    },
+    "setupWizardReceiverMotorStarted": {
+        "message": "Started"
+    },
+    "setupWizardReceiverMotorStopped": {
+        "message": "Stopped"
+    },
+    "setupWizardChannelCollective": {
+        "message": "Collective"
+    },
+    "setupWizardChannelElevator": {
+        "message": "Elevator"
+    },
+    "setupWizardChannelRudder": {
+        "message": "Rudder"
+    },
+    "setupWizardChannelAileron": {
+        "message": "Aileron"
+    },
+    "setupWizardReceiverPctZero": {
+        "message": "0%"
+    },
+    "setupWizardReceiverPctPitchForward": {
+        "message": "Forward {{percent}}%"
+    },
+    "setupWizardReceiverPctPitchBack": {
+        "message": "Aft {{percent}}%"
+    },
+    "setupWizardReceiverPctLateralRight": {
+        "message": "Right {{percent}}%"
+    },
+    "setupWizardReceiverPctLateralLeft": {
+        "message": "Left {{percent}}%"
+    },
+    "setupWizardReceiverPctCollectivePos": {
+        "message": "Positive pitch {{percent}}%"
+    },
+    "setupWizardReceiverPctCollectiveNeg": {
+        "message": "Negative pitch {{percent}}%"
+    },
+    "setupWizardTitleServoDir": {
+        "message": "Servo Direction"
+    },
+    "setupWizardServoDirLine1": {
+        "message": "Connect all wiring per the table below and power on the helicopter."
+    },
+    "setupWizardServoDirLine2": {
+        "message": "Move the collective stick (non-returning) and observe swashplate motion."
+    },
+    "setupWizardServoDirLine3": {
+        "message": "Switch direction groups until the swashplate motion matches the animation on the right."
+    },
+    "setupWizardTablePort": {
+        "message": "Port"
+    },
+    "setupWizardTableConnect": {
+        "message": "Connect to"
+    },
+    "setupWizardWireS1": {
+        "message": "Rear swash servo"
+    },
+    "setupWizardWireS2": {
+        "message": "Left swash servo"
+    },
+    "setupWizardWireS3": {
+        "message": "Right swash servo"
+    },
+    "setupWizardWireTail": {
+        "message": "Tail servo"
+    },
+    "setupWizardWireEsc": {
+        "message": "ESC signal"
+    },
+    "setupWizardWireRpm": {
+        "message": "ESC RPM telemetry"
+    },
+    "setupWizardWireTlm": {
+        "message": "ESC telemetry"
+    },
+    "setupWizardAnimationPlaceholder": {
+        "message": "Swashplate animation (placeholder)"
+    },
+    "setupWizardTitleZeroPitch": {
+        "message": "Zero Pitch"
+    },
+    "setupWizardZeroPitchWarn": {
+        "message": "Warning: ensure rotor blade geometry is consistent before this step. Use Help for a tutorial."
+    },
+    "setupWizardZeroPitchLine2": {
+        "message": "Fold main blades in the same direction and use the buttons below until both blades overlap when viewed from the side."
+    },
+    "setupWizardZeroPitchLine3": {
+        "message": "Unfold the blades when done."
+    },
+    "setupWizardLiveCollectiveTrim": {
+        "message": "Collective pitch trim: {{value}}%"
+    },
+    "setupWizardLiveSwashAdjust": {
+        "message": "Current trim: {{rollDir}} {{rollVal}}%, {{pitchDir}} {{pitchVal}}%"
+    },
+    "setupWizardLiveCollectiveCalib": {
+        "message": "Collective pitch calibration: {{value}}%"
+    },
+    "setupWizardLiveCyclicCalib": {
+        "message": "Cyclic pitch calibration: {{value}}%"
+    },
+    "setupWizardLiveTailTrim": {
+        "message": "Tail trim: {{value}}"
+    },
+    "setupWizardLiveTailYawCalib": {
+        "message": "Yaw calibration: {{value}}%"
+    },
+    "setupWizardLiveTailYawLimitCCW": {
+        "message": "CCW travel limit: {{value}}°"
+    },
+    "setupWizardLiveTailYawLimitCW": {
+        "message": "CW travel limit: {{value}}°"
+    },
+    "setupWizardPitchUp": {
+        "message": "Pitch Up"
+    },
+    "setupWizardPitchDown": {
+        "message": "Pitch Down"
+    },
+    "setupWizardTitleSwashLevel": {
+        "message": "Swash Leveling"
+    },
+    "setupWizardSwashLevelHint": {
+        "message": "Use the buttons below to adjust the swash so it is perpendicular to the main shaft."
+    },
+    "setupWizardSwashFront": {
+        "message": "Front"
+    },
+    "setupWizardSwashBack": {
+        "message": "Back"
+    },
+    "setupWizardSwashLeft": {
+        "message": "Left"
+    },
+    "setupWizardSwashRight": {
+        "message": "Right"
+    },
+    "setupWizardSwashTrimCenter": {
+        "message": "Center"
+    },
+    "setupWizardTitlePitchCalib": {
+        "message": "Pitch Calibration"
+    },
+    "setupWizardPitchStep1": {
+        "message": "Step 1: Zero the pitch gauge. Place the heli on solid ground, click Zero on the right, place the gauge on the main blade above the tail boom, and zero the gauge."
+    },
+    "setupWizardPitchStep2": {
+        "message": "Step 2: Collective pitch. Click Test, then use Increase/Decrease until the gauge shows 12°."
+    },
+    "setupWizardPitchStep3": {
+        "message": "Step 3: Cyclic pitch. Click Test, then use Increase/Decrease until the gauge shows 9°."
+    },
+    "setupWizardZeroBtn": {
+        "message": "Zero"
+    },
+    "setupWizardTestBtn": {
+        "message": "Test"
+    },
+    "setupWizardTestEndBtn": {
+        "message": "Finish"
+    },
+    "setupWizardIncrease": {
+        "message": "Increase"
+    },
+    "setupWizardDecrease": {
+        "message": "Decrease"
+    },
+    "setupWizardTitleTail": {
+        "message": "Tail Adjustment"
+    },
+    "setupWizardTailDirection": {
+        "message": "Tail direction"
+    },
+    "setupWizardTailForward": {
+        "message": "Normal"
+    },
+    "setupWizardTailReverse": {
+        "message": "Reverse"
+    },
+    "setupWizardLeftLimit": {
+        "message": "Left limit"
+    },
+    "setupWizardRightLimit": {
+        "message": "Right limit"
+    },
+    "setupWizardTitleTailPitch": {
+        "message": "Tail pitch adjustment"
+    },
+    "setupWizardTailZeroStep": {
+        "message": "Click Test on the right, then adjust until tail blade pitch is 0°."
+    },
+    "setupWizardTailPitch22Step": {
+        "message": "Click Test on the right, then adjust until tail blade pitch is 22°."
+    },
+    "setupWizardTailTravelLeftStep": {
+        "message": "Click Test, then adjust the left travel until it is near the limit."
+    },
+    "setupWizardTailTravelRightStep": {
+        "message": "Click Test, then adjust the right travel until it is near the limit."
+    },
+    "setupWizardTailLeft": {
+        "message": "Left"
+    },
+    "setupWizardTailRight": {
+        "message": "Right"
+    },
+    "setupWizardTitleGovernor": {
+        "message": "Governor"
+    },
+    "setupWizardGovernor": {
+        "message": "Governor"
+    },
+    "setupWizardMotorKv": {
+        "message": "Motor KV"
+    },
+    "setupWizardMotorPoles": {
+        "message": "Motor poles"
+    },
+    "setupWizardBatteryVoltage": {
+        "message": "Battery voltage"
+    },
+    "setupWizardGearRatio": {
+        "message": "Gear ratio"
+    },
+    "setupWizardCalculator": {
+        "message": "Calculator"
+    },
+    "setupWizardGovStatusThrottle": {
+        "message": "Throttle input: 86%"
+    },
+    "setupWizardGovStatusRpm": {
+        "message": "Target RPM: 2230"
+    },
+    "setupWizardTitlePresets": {
+        "message": "Parameter Presets"
+    },
+    "setupWizardPresetSize": {
+        "message": "Helicopter size"
+    },
+    "setupWizardPresetModel": {
+        "message": "Helicopter model"
+    },
+    "setupWizardPresetServo": {
+        "message": "Servo model"
+    },
+    "setupWizardPresetRotor": {
+        "message": "Main rotor"
+    },
+    "setupWizardPresetHint": {
+        "message": "No exact match. The list below is for reference only."
+    },
+    "setupWizardWriteParams": {
+        "message": "Write parameters"
+    },
+    "setupWizardDemoPitch": {
+        "message": "[Demo] Pitch adjust"
+    },
+    "setupWizardDemoDpad": {
+        "message": "[Demo] Swash trim: {{dir}}"
+    },
+    "setupWizardDemoAdjust": {
+        "message": "[Demo] Adjust"
+    },
+    "setupWizardDemoCalibBtn": {
+        "message": "[Demo] Calibration action"
+    },
+    "setupWizardDemoCalculator": {
+        "message": "[Demo] Calculator"
+    },
+    "setupWizardDemoWrite": {
+        "message": "[Demo] Write parameters"
     },
     "tabSetupOSD": {
         "message": "OSD Setup"
@@ -874,6 +1428,9 @@
     "statusFlightTime": {
         "message": "Flight Time:"
     },
+    "statusFlightTimeValue": {
+        "message": "$1 min $2 sec"
+    },
     "statusArmingDisableFlags": {
         "message": "Arming Disable Flags:"
     },
@@ -989,9 +1546,6 @@
     "statusArmingDisableFlagsTooltipMOTOR_PROTO": {
         "message": "There is no motor throttle protocol selected",
         "description": "Message that pops up to describe the MOTOR_PROTO arming disable flag"
-    },
-    "statusArmingDisableFlagsTooltipOVERRIDE": {
-        "message": "Servo Override or Mixer Override is active"
     },
     "statusArmingDisableFlagsTooltipARM_SWITCH": {
         "message": "Arm switch is activated while other arming disable conditions are active",
@@ -1317,33 +1871,6 @@
     },
     "configurationBeeperHelp": {
         "message": "Enable or disable when to sound the Buzzer"
-    },
-    "configuration.personalisation.model_id.label": {
-        "message": "Model Id"
-    },
-    "configuration.flight_stats.heading": {
-        "message": "Flight Statistics"
-    },
-    "configuration.flight_stats.enable.label": {
-        "message": "Record Flight Statistics"
-    },
-    "configuration.flight_stats.reset.label": {
-        "message": "Reset"
-    },
-    "configuration.flight_stats.min_armed_time.label": {
-        "message": "Minimum flight time"
-    },
-    "configuration.flight_stats.min_armed_time.help": {
-        "message": "Minimum duration the flight controller must be armed for the flights statistics to be counted towards the total."
-    },
-    "configuration.flight_stats.flight_count.label": {
-        "message": "Flight Count"
-    },
-    "configuration.flight_stats.flight_time.label": {
-        "message": "Flight Time"
-    },
-    "configuration.flight_stats.distance.label": {
-        "message": "Distance"
     },
     "beeper_GYRO_CALIBRATED": {
         "message": "Beeps when gyro has been calibrated"
@@ -2389,9 +2916,6 @@
     "adjustmentsFunctionOSDProfile": {
         "message": "OSD Profile Selection"
     },
-    "adjustmentsFunctionBatteryProfile": {
-        "message": "Battery Profile Selection"
-    },
     "adjustmentsFunctionPitchRate": {
         "message": "Pitch Rate"
     },
@@ -2667,12 +3191,6 @@
     },
     "servoRateHelp": {
         "message": "PWM update rate in Hz. For analog servos, set it to 50Hz, as higher values can cause damage. For digital servos, values from 100Hz to 560Hz are typical. Please check the servo data sheet.<br><b>Note</b>: Select <i>Save and reboot</i> to actually change the update rate, as the rate is initialised at boot time."
-    },
-    "servoSource": {
-        "message": "Source"
-    },
-    "servoSourceHelp": {
-        "message": "Source of the servo signal. <b>Mixer</b>: servo is controlled by the flight controller mixer. <b>RX</b>: servo receives direct pass-through from the receiver channel."
     },
     "servoSpeed": {
         "message": "Speed [ms]"
@@ -4171,11 +4689,17 @@
     "firmwareFlasherFullChipEraseDescription": {
         "message": "Wipes all configuration data currently stored on the board."
     },
-    "firmware_flasher.show_legacy_targets.label": {
-        "message": "Show Legacy Targets"
+    "firmwareFlasherManualPort": {
+        "message": "Port"
     },
-    "firmware_flasher.show_legacy_targets.description": {
-        "message": "Show targets for many Betaflight boards. These targets are not actively maintained."
+    "firmwareFlasherManualBaud": {
+        "message": "Manual baud rate"
+    },
+    "firmwareFlasherManualBaudDescription": {
+        "message": "Manual selection of baud rate for boards that don't support the default speed or for flashing via bluetooth.<br /><span class=\"message-negative\">Note:</span> Not used when flashing via USB DFU"
+    },
+    "firmwareFlasherBaudRate": {
+        "message": "Baud Rate"
     },
     "firmwareFlasherOptionLoading": {
         "message": "Loading ..."
@@ -5236,30 +5760,6 @@
     "rateYawDynamicDeadbandGainHelp": {
         "message": "Increases stick deadband while rapidly approaching center."
     },
-    "rates.cyclic_ring.heading": {
-        "message": "Cyclic Ring"
-    },
-    "rates.cyclic_ring.enable_cyclic_ring.label": {
-        "message": "Enable Cyclic Ring"
-    },
-    "rates.cyclic_ring.enable_cyclic_ring.help": {
-        "message": "Limits combined cyclic input to a circular range, preventing excessive rates with diagonal inputs."
-    },
-    "rates.cyclic_ring.cyclic_ring_level.label": {
-        "message": "Cyclic Ring Level"
-    },
-    "rates.cyclic_ring.cyclic_ring_level.help": {
-        "message": "<p>Adjusts to what degree the cyclic ring limits diagonal input.</p><br /><p>At 100%, the combined cyclic range forms a true circle. Increasing this value relaxes the limit, allowing more diagonal deflection.</p>"
-    },
-    "rates.cyclic_ring.polar_coordinates.label": {
-        "message": "Enable Polar Coordinates"
-    },
-    "rates.cyclic_ring.polar_coordinates.help": {
-        "message": "<p>Apply cyclic rates to the combined cyclic direction and magnitude.</p><br /><p>When disabled, rates are applied to each cyclic axis separately.</p>"
-    },
-    "rates.config.cyclic.label": {
-        "message": "CYCLIC"
-    },
     "gyroFilterSettings": {
         "message": "Gyro Filter Settings"
     },
@@ -5701,9 +6201,6 @@
     "powerBatteryVoltageMeterTypeEsc": {
         "message": "ESC Telemetry"
     },
-    "powerBatteryVoltageMeterTypeFbus": {
-        "message": "FrSky Sensor"
-    },
     "powerBatteryCurrentMeterSource": {
         "message": "Battery Current Source"
     },
@@ -5715,9 +6212,6 @@
     },
     "powerBatteryCurrentMeterTypeEsc": {
         "message": "ESC Telemetry"
-    },
-    "powerBatteryCurrentMeterTypeFbus": {
-        "message": "FrSky Sensor"
     },
     "powerBatteryCurrentMeterTypeMsp": {
         "message": "MSP Sensor"
@@ -5934,12 +6428,6 @@
     },
     "powerBatteryCellCount": {
         "message": "Cell count"
-    },
-    "powerBatteryProfile": {
-        "message": "Battery $1"
-    },
-    "options.show_advanced_firmware_opts.label": {
-        "message": "Show advanced firmware flashing options"
     },
     "osdSetupTitle": {
         "message": "OSD"
